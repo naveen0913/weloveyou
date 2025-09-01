@@ -3,31 +3,51 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
-import { loginStart,loginSuccess,loginFailure } from "../../Store/Slices/authSlice";
+import { loginStart, loginSuccess, loginFailure } from "../../Store/Slices/authSlice";
+import { validateEmail, validatePassword } from "../Constants";
 
 
 const Login = () => {
 
     const [form, setForm] = useState({ email: "", password: "" });
-    const [error, setError] = useState("");
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+    });
     const [processing, setProcessing] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+        let error = "";
+        if (name === "email") {
+            error = validateEmail(value);
+        }
+        setErrors((prev) => ({ ...prev, [name]: error }));
+    };
 
 
     const handleSubmit = async (e) => {
         setProcessing(true);
         e.preventDefault();
-        setError(""); // Clear previous error
+        const emailError = validateEmail(form.email);
+        setErrors({
+            email: emailError,
+        });
+
+        if (emailError) {
+            return;
+        }
         dispatch(loginStart());
         try {
             const response = await fetch("http://localhost:8081/api/user/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
-                credentials: "include", // 👈 necessary for HttpOnly cookie
+                credentials: "include",
             });
             const data = await response.json();
             console.log("Login Response:", data);
@@ -63,9 +83,7 @@ const Login = () => {
         }
     };
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+
 
     return (
 
@@ -108,6 +126,8 @@ const Login = () => {
                                                 type="email" name="email" placeholder="Enter your email add..."
                                                 onChange={handleChange}
                                             />
+                                            {errors.email && <small className="text-danger m-top">{errors.email}</small>}
+
                                         </span>
                                         <span className="mn-login-wrap">
                                             <label>Password*</label>
@@ -115,8 +135,9 @@ const Login = () => {
                                                 type="password" name="password" placeholder="Enter your password"
                                                 onChange={handleChange}
                                                 required />
+
                                         </span>
-                                        <span className="mn-login-wrap mn-login-fp">
+                                        <span className="mn-login-wrap mn-login-fp no-spacing">
                                             {/* <span className="mn-remember">
                                                 <input type="checkbox" value="" />
                                                 Remember
@@ -125,17 +146,17 @@ const Login = () => {
                                             <label>
                                                 {/* <a href="#"></a> */}
                                                 <Link to="/forgot-password" >
-                                                Forgot Password?
+                                                    Forgot Password?
                                                 </Link>
                                             </label>
                                         </span>
-                                        <span className="mn-login-wrap mn-login-btn">
+                                        <span className="mn-login-wrap mn-login-btn mt-4">
                                             <span>
-                                            <Link to="/register" >
-                                            Create Account?
+                                                <Link to="/register" >
+                                                    Create Account?
                                                 </Link>
-                                               
-                                                </span>
+
+                                            </span>
                                             <button className="mn-btn-1 btn" onClick={handleSubmit} type="submit"><span>Login</span></button>
                                         </span>
                                     </form>

@@ -84,3 +84,26 @@ export const isUserLoggedIn = () => {
 };
 
 export const RAZORPAY_KEY = "rzp_test_4OZcnUQlJc16Lu";
+
+export const validateEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+  if (!email) {
+    return "Email is required";
+  }
+  if (!regex.test(email)) {
+    return "Please enter a valid email address";
+  }
+  return ""; 
+};
+
+export const validatePassword = (password) => {
+  if (!password) return "Password is required";
+  if (password.length < 6) return "Password must be at least 6 characters";
+  return "";
+};
+
+export const validateUsername = (username) => {
+  if (!username.trim()) return "Username is required";
+  return "";
+};

@@ -29,12 +29,12 @@ function Footer() {
                 <div className="col-sm-12 col-lg-3 mn-footer-cat">
                   <div className="mn-footer-widget mn-footer-company">
                     <img
-                      src="/src/assets/img/logo/logo.png"
+                      src="img/logo/logo.png"
                       className="mn-footer-logo"
                       alt="footer logo"
                     />
                     <img
-                      src="/src/assets/img/logo/logo-dark.png"
+                      src="img/logo/logo-dark.png"
                       className="mn-footer-dark-logo"
                       alt="footer logo"
                     />
@@ -219,7 +219,7 @@ function Footer() {
                       <div className="mn-copy">
                         Copyright © <span id="copyright_year"></span>
                         <a className="site-name" href="index.html">
-                          The Mantu
+                          WeLoveYou
                         </a>{" "}
                         all rights reserved.
                       </div>

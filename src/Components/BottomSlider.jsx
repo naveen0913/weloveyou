@@ -14,39 +14,39 @@ function BottomSlider() {
     {
       id: 1,
       href: "#",
-      src: "/src/assets/img/instagram/1.jpg",
+      src: "img/instagram/1.jpg",
       alt: "image-1"
     },
     {
       id: 2,
       href: "#",
-      src: "/src/assets/img/instagram/2.jpg",
+      src: "img/instagram/2.jpg",
       alt: "image-2"
     },
     {
       id: 3,
       href: "#",
-      src: "/src/assets/img/instagram/3.jpg",
+      src: "img/instagram/3.jpg",
       alt: "image-3"
     },
     {
       id: 4,
-      href: "#", src: "/src/assets/img/instagram/4.jpg",
+      href: "#", src: "img/instagram/4.jpg",
       alt: "image-4"
     },
     {
       id: 5,
-      href: "#", src: "/src/assets/img/instagram/5.jpg",
+      href: "#", src: "img/instagram/5.jpg",
       alt: "image-5"
     },
     {
       id: 6,
-      href: "#", src: "/src/assets/img/instagram/6.jpg",
+      href: "#", src: "img/instagram/6.jpg",
       alt: "image-6"
     },
     {
       id: 7,
-      href: "#", src: "/src/assets/img/instagram/7.jpg",
+      href: "#", src: "img/instagram/7.jpg",
       alt: "image-7"
     }
   ]

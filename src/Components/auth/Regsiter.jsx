@@ -2,28 +2,55 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { validateEmail, validatePassword, validateUsername } from "../Constants";
 
 
 const Register = () => {
 
     const [form, setForm] = useState({ username: "", email: "", password: "" });
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({
+        username: "",
+        email: "",
+        password: "",
+    });
     const [processing, setProcessing] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-        setErrors({ ...errors, [e.target.name]: "" });
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+
+        let error = "";
+        if (name === "username") {
+            error = validateUsername(value);
+        } else if (name === "email") {
+            error = validateEmail(value);
+        } else if (name === "password") {
+            error = validatePassword(value);
+        }
+
+        setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
     const handleSubmit = async (e) => {
         setProcessing(true);
         e.preventDefault();
 
-        const errs = validate();
-        setErrors(errs);
+        const usernameError = validateUsername(form.username);
+        const emailError = validateEmail(form.email);
+        const passwordError = validatePassword(form.password);
+
+        setErrors({
+            username: usernameError,
+            email: emailError,
+            password: passwordError,
+        });
+
+        if (usernameError || emailError || passwordError) {
+            return;
+        }
         if (Object.keys(errs).length === 0) {
             try {
                 const response = await fetch("http://localhost:8081/api/user/signup", {
@@ -81,102 +108,87 @@ const Register = () => {
             </div>
 
             {/* <!-- Register section --> */}
-            <section className="mn-register p-b-15">
+
+            <section className="mn-login p-b-15">
                 <div className="mn-title d-none">
-                    <h2>Register<span></span></h2>
-                    <p>Best place to buy and sell digital products.</p>
+                    <h2>Login<span></span></h2>
+                    <p>Get access to your Orders, Wishlist and Recommendations.</p>
                 </div>
-                <div className="row">
-                    <div className="mn-register-wrapper">
-                        <div className="mn-register-container">
-                            <div className="mn-register-form">
-                                <form action="#" method="post">
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>First Name*</label>
-                                        <input className="text-dark" type="text" name="firstname" placeholder="Enter your first name"
-                                            required />
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>Last Name*</label>
-                                        <input className="text-dark" type="text" name="lastname" placeholder="Enter your last name" required />
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>Email*</label>
-                                        <input className="text-dark" type="email" name="email" placeholder="Enter your email add..." required />
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>Phone Number*</label>
-                                        <input className="text-dark" type="text" name="phonenumber" placeholder="Enter your phone number"
-                                            required />
-                                    </span>
-                                    <span className="mn-register-wrap">
-                                        <label>Address</label>
-                                        <input className="text-dark" type="text" name="address" placeholder="Address Line 1" />
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>City *</label>
-                                        <span className="mn-rg-select-inner">
-                                            <select name="gi_select_city" id="mn-select-city"
-                                                className="mn-register-select">
-                                                <option selected disabled>City</option>
-                                                <option value="1">City 1</option>
-                                                <option value="2">City 2</option>
-                                                <option value="3">City 3</option>
-                                                <option value="4">City 4</option>
-                                                <option value="5">City 5</option>
-                                            </select>
+                <div className="mn-login-content">
+                    <div className="mn-login-box">
+                        <div className="mn-login-wrapper">
+                            <div className="mn-login-container">
+                                <div className="mn-login-form">
+                                    <form onSubmit={handleSubmit}>
+                                        {/* Username */}
+                                        <span className="mn-login-wrap">
+                                            <label htmlFor="username">Username*</label>
+                                            <input
+                                                id="username"
+                                                className="text-dark"
+                                                value={form.username}
+                                                type="text"
+                                                name="username"
+                                                placeholder="Enter your username"
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            {errors.username && <small className="text-danger m-top">{errors.username}</small>}
                                         </span>
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>Post Code</label>
-                                        <input className="text-dark" type="text" name="postalcode" placeholder="Post Code" />
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>Country *</label>
-                                        <span className="mn-rg-select-inner">
-                                            <select name="gi_select_country" id="mn-select-country"
-                                                className="mn-register-select">
-                                                <option selected disabled>Country</option>
-                                                <option value="1">Country 1</option>
-                                                <option value="2">Country 2</option>
-                                                <option value="3">Country 3</option>
-                                                <option value="4">Country 4</option>
-                                                <option value="5">Country 5</option>
-                                            </select>
+
+                                        {/* Email */}
+                                        <span className="mn-login-wrap">
+                                            <label htmlFor="email">Email Address*</label>
+                                            <input
+                                                id="email"
+                                                className="text-dark"
+                                                value={form.email}
+                                                type="email"
+                                                name="email"
+                                                placeholder="Enter your email address"
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            {errors.email && <small className="text-danger m-btm">{errors.email}</small>}
                                         </span>
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-half">
-                                        <label>Region State</label>
-                                        <span className="mn-rg-select-inner">
-                                            <select name="gi_select_state" id="mn-select-state"
-                                                className="mn-register-select">
-                                                <option selected disabled>Region/State</option>
-                                                <option value="1">Region/State 1</option>
-                                                <option value="2">Region/State 2</option>
-                                                <option value="3">Region/State 3</option>
-                                                <option value="4">Region/State 4</option>
-                                                <option value="5">Region/State 5</option>
-                                            </select>
+
+                                        {/* Password */}
+                                        <span className="mn-login-wrap">
+                                            <label>Password*</label>
+                                            <input
+                                                className="text-dark"
+                                                value={form.password}
+                                                type="password"
+                                                name="password"
+                                                placeholder="Enter your password"
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            {errors.password && <small className="text-danger m-btm">{errors.password}</small>}
                                         </span>
-                                    </span>
-                                    <span className="mn-register-wrap mn-recaptcha">
-                                        <span className="g-recaptcha"
-                                            data-sitekey="6LfKURIUAAAAAO50vlwWZkyK_G2ywqE52NU7YO0S"
-                                            data-callback="verifyRecaptchaCallback"
-                                            data-expired-callback="expiredRecaptchaCallback"></span>
-                                        <input className="form-control d-none" data-recaptcha="true" required
-                                            data-error="Please complete the Captcha" />
-                                        <span className="help-block with-errors"></span>
-                                    </span>
-                                    <span className="mn-register-wrap mn-register-btn">
-                                        <span>Have an account?
-                                            <Link to='/login'>
-                                                Login</Link>
+
+                                        {/* Submit */}
+                                        <span className="mn-login-wrap mn-login-btn no-spacing">
+                                            <span>
+                                                Have an account?
+                                                <Link to="/login"> Login</Link>
+                                            </span>
+                                            <button
+                                                className="mn-btn-1 btn"
+                                                type="submit"
+                                                disabled={errors.username || errors.email || errors.password}
+                                            >
+                                                <span>Register</span>
+                                            </button>
                                         </span>
-                                        <button className="mn-btn-1" type="submit"><span>Register</span></button>
-                                    </span>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div className="mn-login-box d-n-991">
+                        <div className="mn-login-img">
+                            <img src="assets/img/common/about-3.png" alt="login" />
                         </div>
                     </div>
                 </div>

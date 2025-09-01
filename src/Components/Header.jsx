@@ -24,7 +24,6 @@ const Header = () => {
   }, [dispatch]);
 
 
-
   return (
     <>
       {/* <!-- Header --> */}
@@ -35,7 +34,7 @@ const Header = () => {
               <Link
                 to="/"
                 className="logo">
-                <img src="/src/assets/img/logo/logo.png" alt="logo" />
+                <img src="img/LOGO1.png" alt="logo" />
               </Link>
               <a
                 onClick={() => {

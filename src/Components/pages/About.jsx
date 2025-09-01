@@ -31,26 +31,10 @@ const About = () => {
                     <div className="row">
                         <div className="col-lg-6 col-md-12">
                             <div className="mn-about-img">
-                                <img
-                                    src="/src/assets/img/common/about-1.png"
-                                    className="v-img"
-                                    alt="about"
-                                />
-                                <img
-                                    src="/src/assets/img/common/about-2.png"
-                                    className="h-img"
-                                    alt="about"
-                                />
-                                <img
-                                    src="/src/assets/img/common/about-3.png"
-                                    className="h-img"
-                                    alt="about"
-                                />
-                                <img
-                                    src="/src/assets/img/common/about-4.png"
-                                    className="h-img"
-                                    alt="about"
-                                />
+                                <img src="/img/common/about-1.png" alt="about 1" className="v-img" />
+                                <img src="/img/common/about-2.png" alt="about 2" className="h-img" />
+                                <img src="/img/common/about-3.png" alt="about 3" className="h-img" />
+                                <img src="/img/common/about-4.png" alt="about 4" className="h-img" />
                             </div>
                         </div>
                         <div className="col-lg-6 col-md-12">
@@ -201,7 +185,7 @@ const About = () => {
                 </section> */}
 
                 {/* shipping block */}
-                <section className="mn-service p-tb-15">
+                {/* <section className="mn-service p-tb-15">
                     <div className="row m-b-m-24">
                         <div
                             className="mn-ser-content mn-ser-content-1 col-sm-6 col-xl-3 m-b-24"
@@ -364,7 +348,7 @@ const About = () => {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
 
                 <section className="mn-facts-section p-tb-15">
                     <div className="row m-b-m-24">
