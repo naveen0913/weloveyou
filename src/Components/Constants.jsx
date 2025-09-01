@@ -1,0 +1,86 @@
+export const BaseUrl = "http://localhost:8081/api/"
+
+export const serverPort = "http://localhost:8081"
+
+export const API_METHODS = {
+  get: "GET",
+  post: "POST",
+  put: "PUT",
+  delete: "DELETE",
+}
+
+export const userRoles = {
+  user: "user",
+  admin: "admin",
+};
+
+export const logout = () => {
+  localStorage.removeItem("userId");
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+}
+
+export const SidebarType = {
+  MENU: "menu",
+  CART: "cart",
+  WISHLIST: "wishlist"
+}
+
+export const initialAddressState = {
+  firstName: '',
+  lastName: '',
+  addressLine1: '',
+  addressLine2: '',
+  city: '',
+  state: '',
+  country: '',
+  pincode: '',
+  phone: '',
+  alterPhone: '',
+  addressType: '',
+};
+
+export const calculateCartItemTotals = (item, gstRate = 18) => {
+  const price = item?.cartAddedOption?.[0]?.optionPrice;
+  const quantity = item?.cartQuantity;
+
+  const subTotal = quantity * price;
+  const gst = (subTotal * gstRate) / 100;
+  const shippingCharges = quantity > 1 ? 0 : 50;
+  const totalAmount = subTotal + gst + shippingCharges;
+
+  return {
+    subTotal,
+    gst,
+    shippingCharges,
+    totalAmount,
+  };
+};
+
+export const menuItems = [
+  { name: "Home" },
+  { name: "Categories" },
+  { name: "Products" },
+  {
+    name: "Pages",
+    children: [
+      { name: "About Us", path: "/about-us" },
+      { name: "Contact Us", path: "/contact-us" },
+      { name: "FAQs", path: "/frequently-asked-questions" },
+      { name: "Check Out", path: "/check-out/items" },
+      { name: "Cart", path: "/cart-items" },
+    ],
+  },
+  { name: "Blog" },
+];
+
+
+export const isUserLoggedIn = () => {
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  return !!(userId && token && role);
+};
+
+export const RAZORPAY_KEY = "rzp_test_4OZcnUQlJc16Lu";
