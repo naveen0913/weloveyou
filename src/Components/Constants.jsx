@@ -1,5 +1,4 @@
 export const BaseUrl = "http://localhost:8081/api/"
-
 export const serverPort = "http://localhost:8081"
 
 export const API_METHODS = {
@@ -58,20 +57,24 @@ export const calculateCartItemTotals = (item, gstRate = 18) => {
 };
 
 export const menuItems = [
-  { name: "Home" },
-  { name: "Categories" },
-  { name: "Products" },
+  { name: "Home", path: "/", icon: "pi pi-home" },
+  // { name: "Categories", icon: "pi pi-th-large" },
+  { name: "Products", path: "/products", icon: "pi pi-shopping-bag" },
+  { name: "My Account", path: "/account-details", icon: "pi pi-user" },
   {
     name: "Pages",
+    icon: "pi pi-clone",
     children: [
       { name: "About Us", path: "/about-us" },
+      { name: "Cart", path: "/cart-items" },
+      { name: "Check Out", path: "/check-out/items" },
       { name: "Contact Us", path: "/contact-us" },
       { name: "FAQs", path: "/frequently-asked-questions" },
-      { name: "Check Out", path: "/check-out/items" },
-      { name: "Cart", path: "/cart-items" },
     ],
   },
-  { name: "Blog" },
+  // { name: "Blog", path: "/blog", icon: "pi pi-book" },
+  { name: "Logout", path: "/", icon: "pi pi-sign-out" },
+  { name: "Login", path: "/login", icon: "pi pi-sign-in" },
 ];
 
 
@@ -107,3 +110,11 @@ export const validateUsername = (username) => {
   if (!username.trim()) return "Username is required";
   return "";
 };
+
+export const isVideo = (url) => {
+  return url.match(/\.(mp4|webm|ogg)$/i);
+};
+
+export const addNavigation = (url) => {
+   navigation(url)
+}

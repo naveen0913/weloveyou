@@ -44,13 +44,27 @@ const authSlice = createSlice({
     checkAuthSuccess: (state, action) => {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload;
-    },
+      state.user = action.payload.user;
+      state.role = action.payload.role;
+      state.userId = action.payload.userId;
+    },    
     checkAuthFailure: (state, action) => {
       state.loading = false;
       state.isAuthenticated = false;
       state.user = null;
       state.error = action.payload;
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+      state.userId = action.payload.id;
+      state.role = action.payload.role;
+      state.isAuthenticated = true;
+    },
+    clearUser: (state) => {
+      state.user = null;
+      state.userId = null;
+      state.role = null;
+      state.isAuthenticated = false;
     },
   },
 });
@@ -63,6 +77,8 @@ export const {
   checkAuthStart,
   checkAuthSuccess,
   checkAuthFailure,
+  setUser,
+  clearUser
 } = authSlice.actions;
 
 export default authSlice.reducer;

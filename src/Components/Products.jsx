@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Slider from "./Slider";
 import { Link, useNavigate } from "react-router-dom";
 import BottomSlider from "./BottomSlider";
+import { isVideo } from "./Constants";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -22,7 +23,7 @@ const Products = () => {
                     sorted.find(p => p.pCategory === cat)
                 ).filter(Boolean);
                 setProducts(filteredProducts);
-                
+
             } else {
                 console.error("No Products Found");
                 setProducts([]);
@@ -40,9 +41,6 @@ const Products = () => {
         navigate(`/product-details/${id}`);
     }
 
-    const isVideo = (url) => {
-        return url.match(/\.(mp4|webm|ogg)$/i);
-    };
 
     return (
         <div className="mn-main-content" >
@@ -74,6 +72,29 @@ const Products = () => {
                                                 }}
                                                 onClick={() => navigateToProductDetail(p.productId)}
                                             >
+                                                {isVideo(p.productUrl) ? (
+                                                    <video
+                                                        src={p.productUrl}
+                                                        className="w-100 h-100"
+                                                        style={{
+                                                            objectFit: "cover",
+                                                            borderRadius: "15px",
+                                                        }}
+                                                        controls
+                                                        muted
+                                                        loop
+                                                    />
+                                                ) : (
+                                                    <div
+                                                        className="w-100 h-100"
+                                                        style={{
+                                                            background: `url(${p.productUrl})`,
+                                                            backgroundSize: "cover",
+                                                            backgroundPosition: "center",
+                                                            borderRadius: "15px",
+                                                        }}
+                                                    />
+                                                )}
 
                                             </div>
                                             <div className="mn-banner-contact">
@@ -86,8 +107,8 @@ const Products = () => {
                                                     {/* <p>{p.status}</p> */}
                                                 </div>
                                                 <div className="banner-btn">
-                                                    <Link to="/products" className="mn-btn-1" >
-                                                        <span>Shop Now</span>
+                                                    <Link to={`/product-details/${p.productId}`} className="mn-btn-1" >
+                                                        <span >Shop Now</span>
                                                     </Link>
 
                                                 </div>

@@ -3,16 +3,23 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const API_BASE = "http://localhost:8081/api/cart";
-const userId = localStorage.getItem("userId");
 
 export const fetchCartItems = createAsyncThunk(
   "cart/fetchItems",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const res = await axios.get(`${API_BASE}/user/${userId}`);
+      const { auth } = getState();
+      const userId = auth?.userId;
+      if (!userId) {
+        return rejectWithValue("User not authenticated");
+      }
+
+      const res = await axios.get(
+        `http://localhost:8081/api/cart/user/${userId}`
+      );
 
       if (res.data.code === 200) {
-        return res.data.data;
+        return { items: res.data.data };
       } else {
         return rejectWithValue("Failed to fetch cart items");
       }
@@ -80,48 +87,43 @@ export const addToCart = createAsyncThunk(
   "cart/addItem",
   async (
     { selectedOption, userId, productId, payload },
-    { rejectWithValue }
+    { rejectWithValue, dispatch }
   ) => {
     try {
       if (!selectedOption) return rejectWithValue("No option selected");
 
       const formData = new FormData();
-      formData.append("cartPayload", JSON.stringify(payload));
+      const { mainPhoto, uploadedPhotos, ...restPayload } = payload;
+      formData.append("cartPayload", JSON.stringify(restPayload));
 
-      // Append images if provided
-      if (payload.mainPhoto instanceof File) {
-        formData.append("customImages", payload.mainPhoto);
+      if (mainPhoto instanceof File) {
+        formData.append("customImages", mainPhoto);
       }
-      if (payload.uploadedPhotos?.length) {
-        payload.uploadedPhotos.forEach((file) => {
+
+      if (Array.isArray(uploadedPhotos) && uploadedPhotos.length > 0) {
+        uploadedPhotos.forEach((file) => {
           if (file instanceof File) {
             formData.append("customImages", file);
           }
         });
       }
+
       if (
-        !payload.mainPhoto &&
-        (!payload.uploadedPhotos || payload.uploadedPhotos.length === 0)
+        !(mainPhoto instanceof File) &&
+        (!Array.isArray(uploadedPhotos) || uploadedPhotos.length === 0)
       ) {
-        formData.append("customImages", new File([], ""));
+        formData.append("customImages", new File([], "empty.jpg"));
       }
 
       const res = await axios.post(
         `${API_BASE}/add/${selectedOption.id}/${userId}/${productId}`,
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (res.data.code === 201) {
-        toast.success("Item added to cart successfully!", {
-          autoClose: 500,
-          position: "top-right",
-        });
-        return res.data.data;
+        const updatedCart = await dispatch(fetchCartItems()).unwrap();
+        return updatedCart;
       } else {
         toast.error("Failed to add item. Try again.");
         return rejectWithValue("Failed to add item");
@@ -155,27 +157,18 @@ const cartSlice = createSlice({
     toggleCart: (state) => {
       state.isOpen = !state.isOpen;
     },
+    setCartItems: (state, action) => {
+      console.log("cart", action);
+      const items = Array.isArray(action.payload) ? action.payload : [];
+      state.items = items;
+      state.itemCount = items.length;
+    },
   },
   extraReducers: (builder) => {
     // Add item
     builder.addCase(addToCart.fulfilled, (state, action) => {
       if (!action.payload) return;
-
-      const newItem = action.payload;
-
-      if (Array.isArray(newItem)) {
-        state.items = newItem;
-      } else {
-        const existingItem = state.items.find(
-          (item) => item.cartItemId === newItem.cartItemId
-        );
-        if (existingItem) {
-          existingItem.cartQuantity = newItem.cartQuantity;
-        } else {
-          state.items.push(newItem);
-        }
-      }
-
+      state.items = action.payload.items;
       state.itemCount = state.items.length;
       state.total = state.items.reduce(
         (total, item) =>
@@ -189,13 +182,16 @@ const cartSlice = createSlice({
     builder
       .addCase(fetchCartItems.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload || [];
+        state.items = action.payload.items;
         state.itemCount = state.items.length;
         state.total = state.items.reduce(
-          (total, item) => total + item.price * item.cartQuantity,
+          (total, item) =>
+            total +
+            (item.price ?? item.optionPrice ?? 0) * (item.cartQuantity ?? 1),
           0
         );
       })
@@ -232,5 +228,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { clearCart, toggleCart } = cartSlice.actions;
+export const { clearCart, setCartItems, toggleCart } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
-const UserCustomImage = ({ productId }) => {
+const UserCustomImage = ({ productId,uploadedImage }) => {
     const [product, setProduct] = useState(null);
     const imgRefs = useRef({});
     const canvasRefs = useRef({});
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
 
     useEffect(() => {
         axios
@@ -19,6 +21,9 @@ const UserCustomImage = ({ productId }) => {
     const handleFileChange = (imageId, hotspotIndex, e) => {
         const file = e.target.files[0];
         if (!file) return;
+        if (uploadedImage) {
+            uploadedImage(file);
+        }
 
         const reader = new FileReader();
         reader.onload = (ev) => {
@@ -123,6 +128,10 @@ const UserCustomImage = ({ productId }) => {
 
     const handleSubmit = async (imgId) => {
         const finalImage = await prepareFinalImage(imgId);
+        if (!isAuthenticated) {
+            alert("Please login to check preview");
+            return;
+        }
         if (finalImage.blob == null) {
             alert("Please Upload image for Preview");
             return;
@@ -130,25 +139,28 @@ const UserCustomImage = ({ productId }) => {
         console.log("final", finalImage);
         const formData = new FormData();
         formData.append("file", finalImage.blob, "customized.png");
-        formData.append("email", "unb1309@outlook.com")
-
+        formData.append("email", user?.email);
         const res = await axios.post(`http://localhost:8081/api/products/${productId}/custom-image`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
         console.log("res", res);
+        if (res.status === 200) {
+            alert("Preview Image Sent to Email")
+        } else {
+            alert("something went wrong!")
+        }
 
     };
 
     const resetCustomImage = (imageId, hotspotIndex) => {
         const canvasEl = canvasRefs.current[`${imageId}-${hotspotIndex}`];
-        if (canvasEl===null) {
+        if (canvasEl === null) {
             alert("Upload your Image!");
             return;
         }
         const ctx = canvasEl.getContext("2d");
         ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
     };
-    
 
 
     if (!product) return <p>Loading...</p>;
@@ -166,7 +178,7 @@ const UserCustomImage = ({ productId }) => {
                             }
                         }}
                         src={`http://localhost:8081${img.imageUrl}`}
-                        alt=""
+                        alt={img.imageUrl}
                         className="img-fluid"
                     />
                     {img.hotspots.map((_, hotspotIndex) => (
@@ -181,8 +193,7 @@ const UserCustomImage = ({ productId }) => {
                     {img.hotspots.map((_, hotspotIndex) => (
                         <div key={hotspotIndex} className="mt-2">
                             <div className="d-flex flex-row gap-2 justify-content-end mb-2">
-                                <i className="pi pi-refresh"     onClick={() => resetCustomImage(img.id, hotspotIndex)} 
- ></i>
+                                <i className="pi pi-refresh" onClick={() => resetCustomImage(img.id, hotspotIndex)} ></i>
                                 <i className="pi pi-download" onClick={() => handleSubmit(img.id)} ></i>
                             </div>
                             <label

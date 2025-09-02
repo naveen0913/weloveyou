@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomSidebar from "./Sidebar";
-import { SidebarType, isUserLoggedIn } from "./Constants";
+import { SidebarType } from "./Constants";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart, setCartItems } from "../Store/Slices/cartSlice";
 
 
 function Footer() {
@@ -14,9 +15,31 @@ function Footer() {
   const [sidebarType, setSidebarType] = useState("");
   const { items, itemCount } = useSelector((state) => state.cart);
 
+  const [openSections, setOpenSections] = useState({
+    category: false,
+    company: false,
+    contact:false,
+    account:false
+  });
 
-  const loggedIn = isUserLoggedIn();
+  const toggleSection = (key) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
+
   const nav = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(setCartItems());
+    } else {
+      dispatch(clearCart());
+    }
+  }, [isAuthenticated, dispatch]);
 
 
   return (
@@ -158,22 +181,21 @@ function Footer() {
                               <i className="ri-map-pin-line"></i>
                             </span>
                             <p>
-                              1234 Elm Street Springfield Avenue, Brooklyn den,
-                              IL 62704 USA.
+                              Hyderabad, Telangana, India
                             </p>
                           </li>
                           <li className="mn-footer-link mn-foo-call">
                             <span>
                               <i className="ri-whatsapp-line"></i>
                             </span>
-                            <a href="tel:+009876543210">+00 9876543210</a>
+                            <a href="tel:+917013220781">+91 7013220781</a>
                           </li>
                           <li className="mn-footer-link mn-foo-mail">
                             <span>
                               <i className="ri-mail-line"></i>
                             </span>
-                            <a href="mailto:example@email.com">
-                              example@email.com
+                            <a href="mailto:info@weloveyou.in">
+                              info@weloveyou.in
                             </a>
                           </li>
                         </ul>

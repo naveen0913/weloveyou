@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { serverPort } from "./Constants";
-
+import './styles.css';
 
 const AllProducts = () => {
 
@@ -9,7 +8,6 @@ const AllProducts = () => {
     const navigate = useNavigate();
     const [sortOption, setSortOption] = useState("");
     const [viewMode, setViewMode] = useState("grid");
-
 
 
     useEffect(() => {
@@ -39,13 +37,13 @@ const AllProducts = () => {
                     <div className="col-12">
                         <div className="row gi_breadcrumb_inner">
                             <div className="col-md-6 col-sm-12">
-                                <h2 className="mn-breadcrumb-title">Shop Page</h2>
+                                <h2 className="mn-breadcrumb-title">Products</h2>
                             </div>
                             <div className="col-md-6 col-sm-12">
                                 {/* <!-- mn-breadcrumb-list start --> */}
                                 <ul className="mn-breadcrumb-list">
-                                    <li className="mn-breadcrumb-item"><a href="index.html">Home</a></li>
-                                    <li className="mn-breadcrumb-item active">Shop Page</li>
+                                    <li className="mn-breadcrumb-item"><a onClick={()=>navigate("/")}>Home</a></li>
+                                    <li className="mn-breadcrumb-item active">Products</li>
                                 </ul>
                                 {/* <!-- mn-breadcrumb-list end --> */}
                             </div>
@@ -453,7 +451,7 @@ const AllProducts = () => {
                                                 <i className="ri-gallery-view-2"></i>
                                             </button>
                                             <button
-                                                className={`grid-btn btn-list-50 ${viewMode === "list" ? "active" : ""}`}
+                                                className={`grid-btn hide-mobile-view btn-list-50 ${viewMode === "list" ? "active" : ""}`}
                                                 onClick={() => setViewMode("list")}
                                             >
                                                 <i className="ri-list-check-2"></i>

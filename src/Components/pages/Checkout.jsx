@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { RAZORPAY_KEY, calculateCartItemTotals, initialAddressState, serverPort } from "../Constants";
+import { RAZORPAY_KEY, calculateCartItemTotals, initialAddressState, isVideo, serverPort } from "../Constants";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCartItems } from "../../Store/Slices/cartSlice";
 
 const Checkout = () => {
     const navigate = useNavigate();
@@ -35,18 +35,22 @@ const Checkout = () => {
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [accountId, setAccountId] = useState(null);
     const [mode, setMode] = useState("existing");
-    const { user } = useSelector((state) => state.auth);
-    const userId = user?.data?.id;
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
     const { items, total, itemCount, loading } = useSelector((state) => state.cart);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchCartItems());
+    }, [dispatch]);
 
     const fetchAddresses = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:8081/api/account/user/${userId}`);
+                `http://localhost:8081/api/account/user/${user?.id}`);
 
             const accountData = response.data?.data;
             const addressList = accountData?.addresses;
-            console.log("address", addressList);
 
             setAccountId(accountData.id);
             setAddresses(addressList);
@@ -76,10 +80,10 @@ const Checkout = () => {
     }, [items]);
 
     useEffect(() => {
-        if (userId) {
+        if (isAuthenticated && user?.id) {
             fetchAddresses();
         }
-    }, [user])
+    }, [isAuthenticated, user?.id])
 
     const addNewAddress = async () => {
         try {
@@ -299,58 +303,7 @@ const Checkout = () => {
 
                         <div className="mn-checkout-content">
                             <div className="mn-checkout-inner">
-                                {/* <div className="mn-checkout-wrap m-b-30">
-                                    <div className="mn-checkout-block mn-check-new">
-                                        <h3 className="mn-checkout-title">New Customer</h3>
-                                        <div className="mn-check-block-content">
-                                            <div className="mn-check-subtitle">Checkout Options</div>
-                                            <form action="#">
-                                                <span className="mn-new-option">
-                                                    <span className="m-b-15">
-                                                        <input type="radio" id="account1" name="radio-group" defaultChecked />
-                                                        <label htmlFor="account1">Register Account</label>
-                                                    </span>
-                                                    <span className="m-b-15">
-                                                        <input type="radio" id="account2" name="radio-group" />
-                                                        <label htmlFor="account2">Guest Account</label>
-                                                    </span>
-                                                </span>
-                                            </form>
-                                            <div className="mn-new-desc">By creating an account you will be able to shop
-                                                faster,
-                                                be up to date on an order's status, and keep track of the orders you
-                                                have
-                                                previously made.
-                                            </div>
-                                            <div className="mn-new-btn"><a href="#"
-                                                className="mn-btn-2"><span>Continue</span></a></div>
 
-                                        </div>
-                                    </div>
-                                    <div className="mn-checkout-block mn-check-login">
-                                        <h3 className="mn-checkout-title">Returning Customer</h3>
-                                        <div className="mn-check-login-form">
-                                            <form action="#" method="post">
-                                                <span className="mn-check-login-wrap">
-                                                    <label>Email Address</label>
-                                                    <input type="text" name="name"
-                                                        placeholder="Enter your email address" required />
-                                                </span>
-                                                <span className="mn-check-login-wrap">
-                                                    <label>Password</label>
-                                                    <input type="password" name="password"
-                                                        placeholder="Enter your password" required />
-                                                </span>
-
-                                                <span className="mn-check-login-wrap mn-check-login-btn">
-                                                    <button className="mn-btn-2" type="submit"><span>Login</span></button>
-                                                    <a className="mn-check-login-fp" href="#">Forgot Password?</a>
-                                                </span>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div> */}
                                 <div className="mn-checkout-wrap m-b-30 padding-bottom-3">
                                     <div className="mn-checkout-block mn-check-bill">
                                         <h3 className="mn-checkout-title">Billing Details</h3>
@@ -650,8 +603,8 @@ const Checkout = () => {
                                                         >
                                                             <div className="container-fluid">
                                                                 <div className="row">
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="firstName" className="form-label">First Name</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="firstName" className="form-label no-spacing">First Name*</label>
                                                                         <input
                                                                             type="text"
                                                                             id="firstName"
@@ -670,7 +623,7 @@ const Checkout = () => {
                                                                     </div>
 
                                                                     <div className="col-md-6">
-                                                                        <label htmlFor="lastName" className="form-label">Last Name</label>
+                                                                        <label htmlFor="lastName" className="form-label no-spacing">Last Name</label>
                                                                         <input
                                                                             type="text"
                                                                             id="lastName"
@@ -688,8 +641,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="addressLine1" className="form-label">Address Line 1</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="addressLine1" className="form-label no-spacing">Address Line 1*</label>
                                                                         <input
                                                                             type="text"
                                                                             id="addressLine1"
@@ -707,8 +660,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="addressLine2" className="form-label">Address Line 2</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="addressLine2" className="form-label no-spacing">Address Line 2</label>
                                                                         <input
                                                                             type="text"
                                                                             id="addressLine2"
@@ -725,8 +678,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="city" className="form-label">City</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="city" className="form-label no-spacing">City*</label>
                                                                         <input
                                                                             type="text"
                                                                             id="city"
@@ -744,8 +697,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="state" className="form-label">State</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="state" className="form-label no-spacing">State*</label>
                                                                         <input
                                                                             type="text"
                                                                             id="state"
@@ -763,8 +716,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="country" className="form-label">Country</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="country" className="form-label no-spacing">Country*</label>
                                                                         <input
                                                                             type="text"
                                                                             id="country"
@@ -782,8 +735,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="pincode" className="form-label">Pincode</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="pincode" className="form-label no-spacing">Pincode*</label>
                                                                         <input
                                                                             type="text"
                                                                             id="pincode"
@@ -801,8 +754,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="phone" className="form-label">Phone</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="phone" className="form-label no-spacing">Phone*</label>
                                                                         <input
                                                                             type="number"
                                                                             id="phone"
@@ -820,8 +773,8 @@ const Checkout = () => {
                                                                         )}
                                                                     </div>
 
-                                                                    <div className="col-md-6">
-                                                                        <label htmlFor="alterPhone" className="">Alternate Phone</label>
+                                                                    <div className="col-md-6 mb-3">
+                                                                        <label htmlFor="alterPhone" className="form-label no-spacing">Alternate Phone</label>
                                                                         <input
                                                                             type="text"
                                                                             id="alterPhone"
@@ -837,6 +790,64 @@ const Checkout = () => {
                                                                             <div className="invalid-feedback d-block">{formErrors.alterPhone}</div>
                                                                         )}
                                                                     </div>
+                                                                    <span>
+                                                                        <div>
+                                                                            <label>Address Type*</label>
+                                                                            <div className="d-flex flex-row gap-3 mb-3 align-items-center address-type-mobile-view">
+                                                                                <span>
+                                                                                    <input
+                                                                                        type="radio"
+                                                                                        id="home"
+                                                                                        name="addressType"
+                                                                                        value="Home"
+                                                                                        checked={newAddress.addressType === "Home"}
+                                                                                        onChange={(e) => {
+                                                                                            setNewAddress({ ...newAddress, addressType: e.target.value });
+                                                                                            if (isEditing) {
+                                                                                                setEditingAddressData({ ...editingAddressData, addressType: e.target.value });
+                                                                                            }
+                                                                                        }}
+
+                                                                                    />
+                                                                                    <label htmlFor="home">Home</label>
+                                                                                </span>
+                                                                                <span>
+                                                                                    <input
+                                                                                        type="radio"
+                                                                                        id="work"
+                                                                                        name="addressType"
+                                                                                        value="Work"
+                                                                                        checked={newAddress.addressType === "Work"}
+                                                                                        onChange={(e) => {
+                                                                                            setNewAddress({ ...newAddress, addressType: e.target.value });
+                                                                                            if (isEditing) {
+                                                                                                setEditingAddressData({ ...editingAddressData, addressType: e.target.value });
+                                                                                            }
+                                                                                        }}
+
+                                                                                    />
+                                                                                    <label htmlFor="work">Work</label>
+                                                                                </span>
+                                                                                <span>
+                                                                                    <input
+                                                                                        type="radio"
+                                                                                        id="other"
+                                                                                        name="addressType"
+                                                                                        value="Other"
+                                                                                        checked={newAddress.addressType === "Other"}
+                                                                                        onChange={(e) => {
+                                                                                            setNewAddress({ ...newAddress, addressType: e.target.value });
+                                                                                            if (isEditing) {
+                                                                                                setEditingAddressData({ ...editingAddressData, addressType: e.target.value });
+                                                                                            }
+                                                                                        }}
+
+                                                                                    />
+                                                                                    <label htmlFor="other">Other</label>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </span>
                                                                 </div>
 
                                                                 <div className="d-flex flex-row justify-content-end mt-4 mb-3">
@@ -860,24 +871,30 @@ const Checkout = () => {
                                                                     backgroundColor: selectedAddressId === addr.addressId ? "#f0f8ff" : "white",
                                                                 }}
                                                             >
-                                                                <div style={{ position: "absolute", top: "12px", right: "10px", display: "flex", gap: "8px" }}>
-                                                                    <i
-                                                                        className="pi pi-pencil"
-                                                                        style={{ cursor: "pointer" }}
-                                                                        title="Edit"
-                                                                        onClick={() => openUpdateAddress(addr.addressId)}
-                                                                    ></i>
-                                                                </div>
+                                                                {
+                                                                    selectedAddressId === addr.addressId && (
+                                                                        <div style={{ position: "absolute", top: "12px", right: "10px", display: "flex", gap: "8px" }}>
+                                                                            <i
+                                                                                className="pi pi-pencil"
+                                                                                style={{ cursor: "pointer" }}
+                                                                                title="Edit"
+                                                                                onClick={() => openUpdateAddress(addr.addressId)}
+                                                                            ></i>
+                                                                        </div>
+                                                                    )
+                                                                }
+
 
                                                                 <div className="d-flex" style={{ alignItems: "start" }}>
                                                                     <input
                                                                         type="radio"
                                                                         name="selectedAddress"
-                                                                        id="selectedAddress"
+                                                                        id={`selectedAddress-${addr.addressId}`}
                                                                         checked={selectedAddressId === addr.addressId}
                                                                         onChange={() => setSelectedAddressId(addr.addressId)}
                                                                     />
-                                                                    <label htmlFor="selectedAddress"></label>
+                                                                    <label htmlFor={`selectedAddress-${addr.addressId}`}
+                                                                    ></label>
                                                                     <div>
                                                                         <strong>{addr.firstName} {addr.lastName}</strong>
                                                                         <span className="badge bg-secondary ms-2">{addr.addressType}</span>
@@ -901,6 +918,7 @@ const Checkout = () => {
                             </div>
                         </div>
                     </div>
+
                     {
                         items.length >= 1 && (
                             <div className="mn-checkout-rightside col-lg-4 col-md-12 m-t-991">
@@ -955,22 +973,37 @@ const Checkout = () => {
                                                                         () => navigate(`/product-details/${item.product.productId}`)
                                                                     }
                                                                         className="image">
-                                                                        <img
-                                                                            className="main-image"
-                                                                            src={serverPort + item.product.productUrl}
-                                                                            alt={item.product.productName}
-                                                                            onClick={
-                                                                                () => navigate(`/product-details/${item.product.productId}`)
-                                                                            }
-                                                                        />
-                                                                        <img
-                                                                            className="hover-image main-image"
-                                                                            src={serverPort + item.product.productUrl}
-                                                                            alt={item.product.productName}
-                                                                            onClick={
-                                                                                () => navigate(`/product-details/${item.product.productId}`)
-                                                                            }
-                                                                        />
+                                                                        {
+                                                                            isVideo(item.product.productUrl) ? (
+                                                                                <video
+                                                                                    src={serverPort + `${item.product.productUrl}`}
+                                                                                    width="75"
+                                                                                    height="75"
+                                                                                    style={{
+                                                                                        objectFit: "cover",
+                                                                                        borderRadius: "8px",
+                                                                                        cursor: "pointer",
+                                                                                    }}
+                                                                                    onClick={() => {
+                                                                                        nav(`/product-details/${item.product.productId}`);
+                                                                                        onHide();
+                                                                                    }}
+                                                                                />
+                                                                            ) : (
+                                                                                <>
+                                                                                    <img
+                                                                                        className="main-image"
+                                                                                        src={serverPort + item.product.productUrl}
+                                                                                        alt={item.product.productName}
+                                                                                        onClick={() => navigate(`/product-details/${item.product.productId}`)} /><img
+                                                                                        className="hover-image main-image"
+                                                                                        src={serverPort + item.product.productUrl}
+                                                                                        alt={item.product.productName}
+                                                                                        onClick={() => navigate(`/product-details/${item.product.productId}`)} />
+                                                                                </>
+                                                                            )
+                                                                        }
+
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -989,7 +1022,8 @@ const Checkout = () => {
                                                             </div> */}
 
                                                                 <span className="mn-price">
-                                                                    <span className="old-price"> {item.cartAddedOption[0]?.optionDiscountPrice} </span>
+
+
                                                                     <span className="new-price">
                                                                         {item?.cartAddedOption?.[0]?.optionPrice
                                                                             ? `₹${item.cartAddedOption[0].optionPrice}`

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Plus, Edit, Trash2, Home, Building } from "lucide-react";
 import { API_METHODS, BaseUrl } from "../../Constants";
+import axios from "axios";
 
 
 const AddressBook = () => {
   const { user } = useSelector((state) => state.auth);
-  const userAddresses = user?.data?.accountDetails?.addresses;
-  const accountId = user?.data?.accountDetails?.id;
-
+  const accountId = user?.accountDetails?.id;
+  const [defaultChecked,setDefaultChecked] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
@@ -27,13 +27,25 @@ const AddressBook = () => {
     isDefault: false,
   });
 
+  const fetchAddresses = async () => {
+    try {
+      const response = await axios.get(`${BaseUrl}account/user/${user?.id}`);
+      if (response.data.code === 200) {
+        const addressList = response.data.data.addresses;
+        setAddresses(addressList);
+      } else {
+        setAddresses([]);
+      }
+    } catch (error) {
+      console.error("Error loading addresses", error);
+      toast.error("Failed to load addresses");
+    }
+  };
 
 
   useEffect(() => {
-    if (user?.data?.accountDetails?.addresses) {
-      setAddresses(user.data.accountDetails.addresses);
-    } else {
-      setAddresses([]);
+    if (user) {
+      fetchAddresses();
     }
   }, [user]);
 
@@ -43,6 +55,7 @@ const AddressBook = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    console.log("checked",checked);
   };
 
   // Add Address
@@ -92,68 +105,51 @@ const AddressBook = () => {
     }
   };
 
-  // Save (Add / Update)
   const handleSaveAddress = async (e) => {
     e.preventDefault();
 
-    if (editingAddress) {
-      // Update existing
-      const updated = addresses.map((addr) =>
-        addr.addressId === editingAddress ? { ...formData, addressId: editingAddress } : addr
-      );
-      setAddresses(updated);
-      try {
+    try {
+      if (editingAddress) {
+        let updatedAddress = { ...formData, addressId: editingAddress };
         const res = await fetch(`${BaseUrl}user-address/${editingAddress}`, {
           method: API_METHODS.put,
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedAddress),
         });
+
         if (res.status === 200) {
-          alert("Address Updated")
+          alert("Address Updated");
+          setShowForm(false);
+          fetchAddresses();
         } else {
-          alert("Failed to Update address!")
+          console.error("Failed to update address!");
         }
 
-      } catch (error) {
-        console.error("Error:", error);
-      }
-      console.log("Updated address:", formData);
-    } else {
-      // Add new
-      const newAddress = {
-        ...formData,
-      };
-      try {
+      } else {
+        const newAddress = { ...formData, isDefault: false };
+
         const res = await fetch(`${BaseUrl}user-address/${accountId}`, {
           method: API_METHODS.post,
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newAddress),
         });
+
         if (res.status === 201) {
-          setAddresses([...addresses, newAddress]);
+          alert("Address Added");
           setShowForm(false);
-          setEditingAddress(null);
+          fetchAddresses();
         } else {
-          alert("Failed to add address!")
+          toast.error("Failed to add address!");
         }
-
-      } catch (error) {
-        console.error("Error:", error);
       }
-      // TODO: Call backend API for add
-      console.log("Added address:", newAddress);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Something went wrong");
     }
-
-
   };
 
-  // Cancel
   const handleCancel = () => {
     setShowForm(false);
     setEditingAddress(null);
@@ -205,7 +201,7 @@ const AddressBook = () => {
                 <div className="form-group">
                   <label>Phone*</label>
                   <input
-                    type="tel"
+                    type="number"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
@@ -218,16 +214,14 @@ const AddressBook = () => {
                 <div className="form-group">
                   <label>Alternate Phone</label>
                   <input
-                    type="tel"
+                    type="number"
                     name="alterPhone"
                     value={formData.alterPhone}
                     onChange={handleChange}
                     placeholder="enter alternate phone number"
                   />
                 </div>
-
               </div>
-
 
               <div className="form-group">
                 <label>Address Line 1*</label>
@@ -301,9 +295,6 @@ const AddressBook = () => {
                   />
                 </div>
               </div>
-
-
-
               <div>
                 <label>Address Type*</label>
                 <div className="d-flex flex-row gap-3 align-items-center mt-2">
@@ -345,11 +336,9 @@ const AddressBook = () => {
                 </div>
               </div>
 
-
-
-              <div>
-                <div className="d-flex flex-row justify-content-start">
-                  <div htmlFor="isDefault" className="d-flex flex-row justify-content-start align-items-center">
+              {/* <div className="no-spacing">
+                <div className="d-flex flex-row gap-2 justify-content-start">
+                  <div className="d-flex flex-row  justify-content-start align-items-center">
                     <input
                       type="checkbox"
                       name="isDefault"
@@ -357,17 +346,14 @@ const AddressBook = () => {
                       checked={formData.isDefault}
                       onChange={handleChange}
                     />
-                    Default Address
                   </div>
-
+                  <label htmlFor="isDefault">
+                    Set as Default Address
+                  </label>
                 </div>
-              </div>
-
-
-
+              </div> */}
 
               <div className="form-actions">
-
                 <button type="button" onClick={handleCancel} className="btn btn-outline-danger">
                   Cancel
                 </button>

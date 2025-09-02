@@ -14,10 +14,9 @@ import { addToCart } from "../Store/Slices/cartSlice";
 const ProductDetails = () => {
 
     const { isAuthenticated, user } = useSelector(state => state.auth);
-    const userSessionId = user?.data?.id;
-    const navigation = useNavigate();
+    const userSessionId = user?.id;
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
 
     const { id } = useParams();
     const [options, setOptions] = useState([]);
@@ -25,8 +24,6 @@ const ProductDetails = () => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [giftWrap, setGiftWrap] = useState(false);
-    const [uploadedImage, setUploadedImage] = useState(null);
-    const [bannerImageUrl, setBannerImageUrl] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [designOptions, setDesignOptions] = useState([]);
@@ -36,23 +33,12 @@ const ProductDetails = () => {
     const [sheetData, setSheetData] = useState([]);
     const [countFromOption, setCountFromOption] = useState(1);
     const [uploadedPhotos, setUploadedPhotos] = useState([]);
-    const [mainPhotoPreview, setMainPhotoPreview] = useState(null);
-
-    const [selectedDesignId, setSelectedDesignId] = useState(null);
-    const [selectedDesign, setSelectedDesign] = useState(null);
     const [selectedDesigns, setSelectedDesigns] = useState([]);
 
     const [thumbnails, setThumbnails] = useState([]);
-    const [selectedThumbnailIndex, setSelectedThumbnailIndex] = useState(null);
     const [thumbnailImages, setThumbnailImages] = useState(thumbnails);
-    const [overlays, setOverlays] = useState({});
-    const fileInputRef = useRef(null);
     const [custom, setCustom] = useState({});
     const [product, setProduct] = useState({});
-
-    const role = localStorage.getItem("role");
-    // const userId = localStorage.getItem("userId");
-    const isAdmin = role === "admin";
     const [relatedProducts, setRelatedProducts] = useState([]);
 
     const fetchData = async () => {
@@ -78,7 +64,7 @@ const ProductDetails = () => {
                     showUploadMultiple: Boolean(customization.multiUpload),
                     showDesign: Boolean(customization.design),
                 });
-                setBannerImageUrl(customization.bannerImageUrl);
+                // setBannerImageUrl(customization.bannerImageUrl);
                 setThumbnails(
                     customization.thumbnailImages
                         ? customization.thumbnailImages.map((img) => img.thumbnailUrl)
@@ -172,98 +158,14 @@ const ProductDetails = () => {
         setSelectedDesigns(updated);
     };
 
+    const imageFromChild = (file) => {
+        setMainPhoto(file);
+    };
 
-    // const addToCart = async () => {
-
-    //     if (!isAuthenticated) {
-    //         toast.error("User not identified. Please log in again.");
-    //         navigation('/login');
-    //         return;
-    //     }
-    //     if (!selectedOption) {
-    //         toast.warning("Select an option first.");
-    //         return;
-    //     }
-    //     if (toggles.showInput && !mainName.trim()) {
-    //         toast.error("Please enter a name.");
-    //         return;
-    //     }
-
-    //     if (toggles.showUploadMultiple && uploadedPhotos.length === 0) {
-    //         toast.error("Please upload at least one additional photo.");
-    //         return;
-    //     }
-
-
-    //     const cartItemDesigns = {};
-    //     selectedDesigns.forEach((design) => {
-    //         if (design && design.designName && design.designId != null) {
-    //             cartItemDesigns[design.designName] = design.designId;
-    //         }
-    //     });
-    //     const totalPrice = (quantity * selectedOption.originalPrice).toFixed(2);
-    //     const item = {
-    //         cartItemName: selectedOption.optionLabel,
-    //         cartQuantity: quantity,
-    //         cartGiftWrap: giftWrap,
-    //         customName: mainName,
-    //         optionCount: countFromOption,
-    //         optionPrice: selectedOption.originalPrice,
-    //         optiondiscountPrice: selectedOption.oldPrice,
-    //         optiondiscount: selectedOption.discount,
-    //         totalPrice: totalPrice,
-    //         // labelDesigns: labelDesigns,
-    //         cartItemDesigns: cartItemDesigns,
-    //     };
-
-    //     const formData = new FormData();
-    //     formData.append("cartPayload", JSON.stringify(item));
-    //     let hasImage = false;
-    //     if (mainPhoto instanceof File) {
-    //         formData.append("customImages", mainPhoto);
-    //         hasImage = true;
-    //     }
-    //     uploadedPhotos.forEach((file) => {
-    //         if (file instanceof File) {
-    //             formData.append("customImages", file);
-    //             hasImage = true;
-    //         }
-    //     });
-    //     if (!hasImage) {
-    //         formData.append("customImages", new File([], ""));
-    //     }
-    //     for (let [key, value] of formData.entries()) {
-    //         console.log(`${key}:`, value);
-    //     }
-    //     console.log("form", formData);
-    //     try {
-    //         const response = await axios.post(
-    //             `http://localhost:8081/api/cart/add/${selectedOption.id}/${userSessionId}/${id}`,
-    //             formData,
-    //             {
-    //                 headers: {
-    //                     "Content-Type": "multipart/form-data",
-    //                 },
-    //             },
-    //         );
-    //         if (response.data.code === 201) {
-    //             toast.success("Item added to cart successfully!", {
-    //                 autoClose: 500,
-    //                 position: "top-right",
-    //             });
-    //         } else {
-    //             toast.error("Failed to add item. Try again.");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error adding to cart:", error);
-    //         toast.error("Something went wrong while adding to cart.");
-    //     }
-    // };
-
-    const addCart = async (selectedOption,userId,id,) => {
+    const addCart = async (selectedOption, userId, id,) => {
         if (!isAuthenticated) {
             toast.error("User not identified. Please log in again.");
-            navigation('/login');
+            addNavigation('/login');
             return;
         }
         if (!selectedOption) {
@@ -290,7 +192,7 @@ const ProductDetails = () => {
             formData.append("customImages", new File([], ""));
         }
         for (let [key, value] of formData.entries()) {
-            console.log(`${key}:`, value);
+            console.log(`image payoload-> ${key}:`, value);
         }
         const cartItemDesigns = {};
         selectedDesigns.forEach((design) => {
@@ -300,23 +202,21 @@ const ProductDetails = () => {
         });
         const totalPrice = (quantity * selectedOption.originalPrice).toFixed(2);
         const payload = {
-        cartItemName: selectedOption.optionLabel,
-        cartQuantity: quantity,
-        cartGiftWrap: giftWrap,
-        customName: mainName,
-        optionCount: countFromOption,
-        optionPrice: selectedOption.originalPrice,
-        optiondiscountPrice: selectedOption.oldPrice,
-        optiondiscount: selectedOption.discount,
-        totalPrice: totalPrice,
-        cartItemDesigns: cartItemDesigns,
+            cartItemName: selectedOption.optionLabel,
+            cartQuantity: quantity,
+            cartGiftWrap: giftWrap,
+            customName: mainName,
+            optionCount: countFromOption,
+            optionPrice: selectedOption.originalPrice,
+            optiondiscountPrice: selectedOption.oldPrice,
+            optiondiscount: selectedOption.discount,
+            totalPrice: totalPrice,
+            cartItemDesigns: cartItemDesigns,
+            mainPhoto:mainPhoto || null,
+            uploadedPhotos:uploadedPhotos || []
         };
-        console.log("payload",payload);
         dispatch(addToCart({ selectedOption, userId, productId: id, payload }));
-
     }
-
-
 
     return (
 
@@ -331,7 +231,8 @@ const ProductDetails = () => {
                             <div className="col-md-6 col-sm-12">
                                 {/* <!-- mn-breadcrumb-list start --> */}
                                 <ul className="mn-breadcrumb-list">
-                                    <li className="mn-breadcrumb-item"><a href="/home">Home</a></li>
+                                    <li className="mn-breadcrumb-item" onClick={() => navigate('/')} >Home</li>
+                                    <li className="mn-breadcrumb-item" onClick={() => navigate('/products')} >Products</li>
                                     <li className="mn-breadcrumb-item active">Product Detail Page</li>
                                 </ul>
                                 {/* <!-- mn-breadcrumb-list end --> */}
@@ -347,45 +248,9 @@ const ProductDetails = () => {
                             <div className="mn-pro-rightside mn-common-rightside col-lg-9 col-md-12 m-b-15">
                                 {/* <!-- Single product content Start --> */}
 
-
-
                                 <div className="single-pro-block">
                                     <div className="single-pro-inner">
                                         <div className="row">
-
-                                            {/* <div className="single-pro-img">
-                                                <div className="single-product-scroll">
-                                                    <div className="single-product-cover">
-                                                        <div className="single-slide zoom-image-hover">
-                                                            <img className="img-responsive" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQefv-EQBVmicVIzhjn-SyioTT8-RA4DIvTlw&s"
-                                                                alt="" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="single-nav-thumb">
-                                                        <div className="single-slide">
-                                                            <img className="img-responsive" src="assets/img/product/27.jpg"
-                                                                alt="" />
-                                                        </div>
-                                                        <div className="single-slide">
-                                                            <img className="img-responsive" src="assets/img/product/28.jpg"
-                                                                alt="" />
-                                                        </div>
-                                                        <div className="single-slide">
-                                                            <img className="img-responsive" src="assets/img/product/29.jpg"
-                                                                alt="" />
-                                                        </div>
-                                                        <div className="single-slide">
-                                                            <img className="img-responsive" src="assets/img/product/30.jpg"
-                                                                alt="" />
-                                                        </div>
-                                                        <div className="single-slide">
-                                                            <img className="img-responsive" src="assets/img/product/29.jpg"
-                                                                alt="" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> */}
-
                                             <Gallery thumbnailImages={thumbnailImages} />
 
                                             <div className="single-pro-desc m-t-991">
@@ -393,34 +258,6 @@ const ProductDetails = () => {
                                                     <h5 className="mn-single-title">
                                                         {product.productName}
                                                     </h5>
-                                                    {/* ratings block*/}
-                                                    {/* <div className="mn-single-rating-wrap">
-                                                        
-                                                        <div className="mn-single-rating mn-pro-rating">
-                                                            <i className="ri-star-fill"></i>
-                                                            <i className="ri-star-fill"></i>
-                                                            <i className="ri-star-fill"></i>
-                                                            <i className="ri-star-fill"></i>
-                                                            <i className="ri-star-fill grey"></i>
-                                                        </div>
-                                                        <span className="mn-read-review">
-                                                            |&nbsp;&nbsp;<a href="#mn-spt-nav-review">992 Ratings</a>
-                                                        </span>
-                                                    </div> */}
-
-                                                    {/* price block */}
-                                                    {/* <div className="mn-single-price-stoke">
-                                                        <div className="mn-single-price">
-                                                            <div className="final-price">$664.00<span
-                                                                className="price-des">-78%</span>
-                                                            </div>
-                                                            <div className="mrp">M.R.P. : <span>$2,999.00</span></div>
-                                                        </div>
-                                                        <div className="mn-single-stoke">
-                                                            <span className="mn-single-sku">SKU#: WH12</span>
-                                                            <span className="mn-single-ps-title">IN STOCK</span>
-                                                        </div>
-                                                    </div> */}
 
                                                     {/* estimation delivery */}
                                                     {/* <div className="mn-single-sales">
@@ -431,7 +268,6 @@ const ProductDetails = () => {
                                                             </div>
                                                         </div>
                                                     </div> */}
-
 
                                                     <div className="mn-single-sales">
                                                         <div className="mn-single-sales-inner">
@@ -557,22 +393,31 @@ const ProductDetails = () => {
                                                         </div>
                                                     )}
 
+                                                    {toggles.showInput && (
+                                                        <div className="col-12 col-md-6 mb-3">
+                                                            <div
+                                                                className="bg-white rounded shadow p-3 h-100 small"
+                                                                style={{ fontSize: "0.85em" }}>
+                                                                <label htmlFor="mainName" className="fw-semibold mb-1">
+                                                                    Custom  Name
+                                                                </label>
+                                                                <input
+                                                                    id="mainName"
+                                                                    type="text"
+                                                                    className="form-control mb-2 h-75"
+                                                                    placeholder="Enter Name"
+                                                                    value={mainName}
+                                                                    onChange={(e) => setMainName(e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )}
+
                                                     {
                                                         toggles.showUpload && (
-                                                            <UserCustomImage productId={id} />
+                                                            <UserCustomImage productId={id} uploadedImage={imageFromChild} />
                                                         )
                                                     }
-
-
-                                                    {/* <div className="mn-single-list">
-                                                        <ul>
-                                                            <li><strong>Closure :</strong> Hook & Loop</li>
-                                                            <li><strong>Sole :</strong> Polyvinyl Chloride</li>
-                                                            <li><strong>Width :</strong> Medium</li>
-                                                            <li><strong>Outer Material :</strong> A-Grade Standard
-                                                                Quality</li>
-                                                        </ul>
-                                                    </div> */}
 
                                                     <div className="d-flex flex-row gap-2 mb-3">
 
@@ -584,40 +429,6 @@ const ProductDetails = () => {
                                                         </label>
                                                     </div>
 
-
-                                                    {/* <div className="mn-pro-variation"> */}
-                                                    {/* sizes */}
-                                                    {/* <div
-                                                            className="mn-pro-variation-inner mn-pro-variation-size m-b-24">
-                                                            <span>Size</span>
-                                                            <div className="mn-pro-variation-content">
-                                                                <ul>
-                                                                    <li className="active"><span>s</span></li>
-                                                                    <li><span>m</span></li>
-                                                                    <li><span>l</span></li>
-                                                                    <li><span>xl</span></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div> */}
-                                                    {/* colors */}
-                                                    {/* <div className="mn-pro-variation-inner mn-pro-variation-color">
-                                                            <span>Colors</span>
-                                                            <div className="mn-pro-variation-content">
-                                                                <ul>
-                                                                    <li className="active"><span
-                                                                        style={{ backgroundColor: "#1b4a87" }}
-                                                                    ></span>
-                                                                    </li>
-                                                                    <li><span style={{ backgroundColor: "#5f94d6" }} ></span>
-                                                                    </li>
-                                                                    <li><span style={{ backgroundColor: "#72aea2" }} ></span>
-                                                                    </li>
-                                                                    <li><span style={{ backgroundColor: "#c79782" }} ></span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div> */}
-                                                    {/* </div> */}
                                                     <div className="mn-single-qty">
                                                         <div className="qty-plus-minus">
                                                             <i className="pi pi-minus" style={{ fontSize: ".8rem" }}
@@ -632,8 +443,8 @@ const ProductDetails = () => {
                                                         <div className="mn-btns">
                                                             <div className="mn-single-cart">
                                                                 <button
-                                                                    onClick={()=>{
-                                                                        addCart(selectedOption,userSessionId,id)
+                                                                    onClick={() => {
+                                                                        addCart(selectedOption, userSessionId, id)
                                                                     }}
                                                                     // onClick={addToCart}
 

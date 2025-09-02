@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchCartItems, updateCartQuantity, deleteCartItem } from "../../Store/Slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { calculateCartItemTotals } from "../Constants";
+import { calculateCartItemTotals, isVideo, serverPort } from "../Constants";
 
 const CartItems = () => {
     const navigate = useNavigate();
@@ -98,17 +98,43 @@ const CartItems = () => {
                                                             {items.map((item) => (
                                                                 <tr key={item.cartItemId} className="mn-cart-product">
                                                                     <td data-label="Product" className="mn-cart-pro-name">
-                                                                        <a href="product-detail.html">
-                                                                            <img
-                                                                                className="mn-cart-pro-img"
-                                                                                src={`http://localhost:8081${item.product.productUrl}`}
-                                                                                alt="Product-Image"
-                                                                            />
-                                                                            {item.product.productName}
+                                                                        <a>
+                                                                            {
+                                                                                isVideo(item.product.productUrl) ? (
+                                                                                    <video
+                                                                                        src={serverPort + `${item.product.productUrl}`}
+                                                                                        width="65"
+                                                                                        height="50"
+                                                                                        style={{
+                                                                                            objectFit: "cover",
+                                                                                            borderRadius: "8px",
+                                                                                            cursor: "pointer",
+                                                                                        }}
+                                                                                        onClick={() => navigate(`/product-details/${item.product.productId}`)}
+                                                                                    />
+                                                                                ) : (
+                                                                                    <img
+                                                                                        className="mn-cart-pro-img"
+                                                                                        src={`http://localhost:8081${item.product.productUrl}`}
+                                                                                        alt={item.product.productName}
+                                                                                        onClick={() => navigate(`/product-details/${item.product.productId}`)}
+
+                                                                                    />
+                                                                                )
+                                                                            }
+                                                                            <span style={{ marginLeft: '10px',cursor:'pointer' }}
+                                                                                onClick={() => navigate(`/product-details/${item.product.productId}`)}
+                                                                            >
+                                                                                {item.product.productName}
+                                                                            </span>
                                                                         </a>
                                                                     </td>
                                                                     <td className="mn-cart-pro-price">
-                                                                        Rs {item?.cartAddedOption[0]?.optionPrice}
+                                                                        Rs {" "}
+                                                                        {/* {item?.cartAddedOption[0]?.optionPrice} */}
+                                                                        {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                                                            ? item.cartAddedOption[0].optionPrice
+                                                                            : ""}
                                                                     </td>
                                                                     <td className="mn-cart-pro-qty" style={{ alignItems: "center" }}>
                                                                         <div className="d-flex flex-row justify-content-between gap-2 align-items-center padding">
@@ -131,7 +157,13 @@ const CartItems = () => {
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td className="mn-cart-pro-subtotal">Rs {item?.cartAddedOption[0]?.optionPrice * item.cartQuantity}</td>
+                                                                    <td className="mn-cart-pro-subtotal">Rs
+                                                                        {" "}
+                                                                        {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                                                            ? item.cartAddedOption[0].optionPrice * item.cartQuantity
+                                                                            : ""}
+                                                                        {/* {item?.cartAddedOption[0]?.optionPrice * item.cartQuantity} */}
+                                                                    </td>
                                                                     <td className="mn-cart-pro-remove">
                                                                         <a onClick={() => handleDeleteItem(item.cartItemId)}>
                                                                             <i className="ri-delete-bin-line"></i>

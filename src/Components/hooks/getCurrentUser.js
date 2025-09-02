@@ -18,8 +18,19 @@ export const getAuthUser = () => async (dispatch) => {
       return;
     }
 
-    const data = await response.json();
-    dispatch(checkAuthSuccess(data));
+    const result = await response.json();
+    const userData = result?.data;
+    dispatch(
+      checkAuthSuccess({
+        user: userData,
+        role: userData.role,
+        userId: userData.id,
+      })
+    );
+    if (!userData) {
+      dispatch(checkAuthFailure("Invalid user data"));
+      return;
+    }
   } catch (error) {
     dispatch(checkAuthFailure(error.message));
   }

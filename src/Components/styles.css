@@ -288,4 +288,9 @@
   opacity: 1;
 }
 
+@media (max-width:992px){
+  .hide-mobile-view{
+    display: none !important;
+  }
+}
 

@@ -6,8 +6,8 @@ const AccountProfile = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  const accountDetails = user?.data?.accountDetails;
-  const accountId = user?.data?.accountDetails?.id;
+  const accountDetails = user?.accountDetails;
+  const accountId = user?.accountDetails?.id;
   const userEmail = accountDetails?.accountEmail;
 
   // Form state

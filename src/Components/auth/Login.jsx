@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
-import { loginStart, loginSuccess, loginFailure } from "../../Store/Slices/authSlice";
-import { validateEmail, validatePassword } from "../Constants";
+import { loginStart, loginSuccess, loginFailure, setUser } from "../../Store/Slices/authSlice";
+import { validateEmail } from "../Constants";
 
 
 const Login = () => {
@@ -50,7 +50,6 @@ const Login = () => {
                 credentials: "include",
             });
             const data = await response.json();
-            console.log("Login Response:", data);
 
             if (data.code !== 200) {
                 dispatch(loginFailure(data.message));
@@ -65,7 +64,7 @@ const Login = () => {
                     userId: data.data.user.id,
                 })
             );
-
+            dispatch(setUser({ userId: data.data.id }));
             toast.success("Login successful!", { autoClose: 500 });
             setForm({ email: "", password: "" });
             setProcessing(false);
@@ -73,7 +72,8 @@ const Login = () => {
             if (data.data.user.role === "admin") {
                 navigate("/admindashboard");
             } else {
-                navigate("/", { replace: true, state: { showAccountPrompt: true } });
+                window.location.href='/';
+                // navigate("/", { replace: true, state: { showAccountPrompt: true } });
             }
         } catch (err) {
             console.error("Login error:", err);
@@ -123,7 +123,7 @@ const Login = () => {
                                         <span className="mn-login-wrap">
                                             <label htmlFor="email">Email Address*</label>
                                             <input id="email" className="text-dark" value={form.email} required
-                                                type="email" name="email" placeholder="Enter your email add..."
+                                                type="email" name="email" placeholder="Enter your email address"
                                                 onChange={handleChange}
                                             />
                                             {errors.email && <small className="text-danger m-top">{errors.email}</small>}

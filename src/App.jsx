@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuthUser } from "./Components/hooks/getCurrentUser";
 import { useEffect } from "react";
 import ForgotPassword from "./Components/auth/Forgotpassword";
+import { fetchCartItems } from "./Store/Slices/cartSlice";
 
 function App() {
 
@@ -28,6 +29,12 @@ function App() {
     dispatch(getAuthUser());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (isAuthenticated && user?.id) {
+      dispatch(fetchCartItems());
+    }
+  }, [isAuthenticated, user?.id, dispatch]);
+  
   return (
     <>
       <Header />

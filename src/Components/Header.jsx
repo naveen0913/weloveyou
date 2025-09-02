@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from "./hooks/userLogout";
 import { getAuthUser } from "./hooks/getCurrentUser";
+import { clearCart, setCartItems } from "../Store/Slices/cartSlice";
 
 const Header = () => {
 
@@ -23,6 +24,14 @@ const Header = () => {
     dispatch(getAuthUser());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(setCartItems());
+    } else {
+      dispatch(clearCart());
+    }
+  }, [isAuthenticated, dispatch]);
+
 
   return (
     <>
@@ -34,7 +43,7 @@ const Header = () => {
               <Link
                 to="/"
                 className="logo">
-                <img src="img/LOGO1.png" alt="logo" />
+                <img src="/img/LOGO1.png" alt="logo" />
               </Link>
               <a
                 onClick={() => {
@@ -64,7 +73,13 @@ const Header = () => {
                               Home
                             </Link>
                           </li>
-                          <li className="dropdown drop-list">
+                          <li className="non-drop">
+                            <Link to='/products'>
+                              Products
+                            </Link>
+                          </li>
+                          {/* template categories */}
+                          {/* <li className="dropdown drop-list">
                             <a href="javascript:void(0)" className="dropdown-arrow">
                               Categories<i className="ri-arrow-down-s-line"></i>
                             </a>
@@ -123,8 +138,9 @@ const Header = () => {
                                 </ul>
                               </li>
                             </ul>
-                          </li>
-                          <li className="dropdown drop-list">
+                          </li> */}
+                          {/* template products */}
+                          {/* <li className="dropdown drop-list">
                             <a href="javascript:void(0)" className="dropdown-arrow">
                               Products<i className="ri-arrow-down-s-line"></i>
                             </a>
@@ -148,7 +164,7 @@ const Header = () => {
                                 </a>
                               </li>
                             </ul>
-                          </li>
+                          </li> */}
                           <li className="dropdown drop-list">
                             <a href="javascript:void(0)" className="dropdown-arrow">
                               Pages<i className="ri-arrow-down-s-line"></i>

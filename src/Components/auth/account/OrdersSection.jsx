@@ -8,8 +8,8 @@ import ViewTracking from './ViewTracking';
 
 const OrdersSection = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('Last 6 months');
-  const { user } = useSelector((state) => state.auth);
-  const accountId = user?.data?.accountDetails?.id;
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const accountId = user?.accountDetails?.id;
   const [orders, setOrders] = useState([]);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [navType,setNavType] = useState('');
@@ -21,7 +21,6 @@ const OrdersSection = () => {
       const ordersRes = await axios.get(
         `http://localhost:8081/api/order/account/${accountId}`,
       );
-      console.log("Orders Response:", ordersRes.data.data);
       if (ordersRes.data.code === 200) {
         setOrders(ordersRes.data.data);
       } else {

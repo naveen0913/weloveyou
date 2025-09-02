@@ -17,11 +17,6 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      toast.error("Please fix the errors in the form.");
-      return;
-    }
-
     const payload = {
       contactName: form.name,
       email: form.email,
@@ -38,23 +33,17 @@ const Contact = () => {
         },
       );
 
-      if (response.ok) {
+      if (response.status===201) {
         setSuccess("Your message has been sent successfully!");
-        toast.success("Message Sent Successfully", {
-          onClose: () => window.location.reload(),
-          autoClose: 1000,
-        });
         setForm({ name: "", email: "", message: "" });
         setError("");
         setFormErrors({});
       } else {
         setError("Failed to send your message. Please try again.");
-        toast.error("Please try again");
       }
     } catch (err) {
       console.error("Contact form submission error:", err);
       setError("An error occurred while sending your message.");
-      toast.error("Error: " + err.message);
     }
   };
 
@@ -133,20 +122,24 @@ const Contact = () => {
                         <div className="col-md-6 m-t-767">
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
+                                    <label htmlFor="name"></label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="fname"
+                                        id="name"
+                                        name="name"
                                         placeholder="Full Name"
                                         value={form.name}
                                         onChange={handleChange}
                                     />
                                 </div>
                                 <div className="form-group">
+                                    <label htmlFor="email"></label>
                                     <input
                                         type="email"
                                         className="form-control"
                                         id="email"
+                                        name="email"
                                         placeholder="Email"
                                         value={form.email}
                                         onChange={handleChange}
@@ -161,10 +154,12 @@ const Contact = () => {
                                     />
                                 </div>
                                 <div className="form-group">
+                                    <label htmlFor="message"></label>
                                     <textarea
                                         className="form-control"
                                         id="message"
                                         rows="5"
+                                        name="message"
                                         value={form.message}
                                         onChange={handleChange}
                                         placeholder="Message"></textarea>
