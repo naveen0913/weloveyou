@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { isVideo, serverPort } from "../../Constants"
+import { cartImageUrlPort, isVideo, serverPort } from "../../Constants"
 import './accountstyles.css';
 import { useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import html2pdf from "html2pdf.js";
+
 
 const ViewOrder = ({ data, onBack }) => {
     const [order, setOrder] = useState({});
@@ -43,16 +47,30 @@ const ViewOrder = ({ data, onBack }) => {
         }
     ];
 
+    // const handleDownload = () => {
+    //     html2canvas(invoiceRef.current).then((canvas) => {
+    //         const imgData = canvas.toDataURL("image/png");
+    //         const pdf = new jsPDF("p", "mm", "a4");
+    //         const imgProps = pdf.getImageProperties(imgData);
+    //         const pdfWidth = pdf.internal.pageSize.getWidth();
+    //         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    //         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    //         pdf.save(`invoice_order_${data}.pdf`);
+    //     });
+    // };
+
     const handleDownload = () => {
-        html2canvas(invoiceRef.current).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF("p", "mm", "a4");
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`invoice_order_${order?.orderId}.pdf`);
-        });
+        const element = invoiceRef.current;
+
+        const opt = {
+            margin: 0.5,
+            filename: `invoice_order_${data}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save();
     };
 
     const handleViewAll = (images) => {
@@ -69,6 +87,11 @@ const ViewOrder = ({ data, onBack }) => {
         <>
             <div className="breadcrumb-container">
                 <BreadCrumb model={items} />
+                <button onClick={handleDownload}  className="download-btn mb-2">
+                    <i className="pi pi-download d-block d-md-none download-icon" ></i>
+                    <span className="d-none d-md-block" title="Download Invoice">Download Invoice</span>
+                </button>
+
             </div>
             {/*  mainpage */}
             <main className="col-12 col-md-9 col-lg-12 main-c">
@@ -77,13 +100,13 @@ const ViewOrder = ({ data, onBack }) => {
                         <div className="col">
                             <h4 className="mb-0">Order Invoice</h4>
                         </div>
-                        <div className="col-auto">
+                        {/* <div className="col-auto">
                             <button onClick={handleDownload} className="btn btn-success">
                                 <i className="pi pi-download d-block d-md-none" ></i>
                                 {" "}
                                 <span className="d-none d-md-block" title="Download Invoice">Download Invoice</span>
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
                     <hr />
@@ -212,9 +235,25 @@ const ViewOrder = ({ data, onBack }) => {
                                         <td data-label="Custom Name">
                                             {item?.customName ? item.customName : "N/A"}
                                         </td>
-                                        <td data-label="Uploded Custom Image">
-                                            {"N/A"}
-                                        </td>
+                                        {
+                                            item.customImages.length === 0 && (
+                                                <td data-label="Uploded Custom Image">
+                                                    {"N/A"}
+                                                </td>
+                                            )
+                                        }
+                                        {
+                                            item.customImages.map((i) => {
+                                                return (
+                                                    <>
+                                                        <td data-label="Uploded Custom Image">
+                                                            <img src={cartImageUrlPort + i} alt={i} className="cart-uploaded-image" />
+                                                        </td>
+                                                    </>
+                                                )
+                                            })
+                                        }
+
                                         <td data-label="Price">Rs {item.optionPrice}</td>
                                         <td data-label="Quantity">{item.quantity}</td>
                                         <td data-label="Total">Rs {item.quantity * item.optionPrice}</td>
@@ -271,9 +310,7 @@ const ViewOrder = ({ data, onBack }) => {
                         <p>
                             <strong>Total Amount:</strong> {order?.payment?.amount} {" "} Rs
                         </p>
-
                     </div>
-
                 </div>
             </main>
         </>

@@ -22,7 +22,10 @@ const OrdersSection = () => {
         `http://localhost:8081/api/order/account/${accountId}`,
       );
       if (ordersRes.data.code === 200) {
-        setOrders(ordersRes.data.data);
+        const sortedOrders = ordersRes.data.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setOrders(sortedOrders);
       } else {
         setOrders([]);
       }
@@ -55,12 +58,10 @@ const OrdersSection = () => {
     setNavType(nav);
   }
 
-  // Handle back to orders
   const goBack = () => {
     setSelectedOrderId(null);
   };
 
-  // If a specific order is selected → render ViewOrder
   if (selectedOrderId) {
     return navType ==='order' ? <ViewOrder data={selectedOrderId} onBack={goBack} /> : <ViewTracking data={selectedOrderId} onBack={goBack} />;
   }

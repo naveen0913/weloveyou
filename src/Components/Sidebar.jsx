@@ -89,23 +89,29 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
     const { subTotal, gst, shippingCharges, totalAmount } = calculateCartTotals(items);
 
 
-    const filteredMenu = menuItems.filter((menu) => {
-        if (menu.name === "My Account" || menu.name ==="Logout") {
-            return isAuthenticated; 
-        }
-        if (menu.name==="Login") {
-            return !isAuthenticated;
-        }
-        if (menu.children) {
-            menu.children = menu.children.filter((child) => {
-                if (child.name === "Check Out") {
-                    return isAuthenticated;
-                }
-                return true;
-            });
-        }
-        return true;
-    });
+    const filteredMenu = menuItems
+        .map((menu) => {
+            let newChildren = menu.children
+                ? menu.children.filter((child) => {
+                    if (child.name === "Check Out") {
+                        return isAuthenticated;
+                    }
+                    return true;
+                })
+                : null;
+
+            return { ...menu, children: newChildren };
+        })
+        .filter((menu) => {
+            if (menu.name === "My Account" || menu.name === "Logout") {
+                return isAuthenticated;
+            }
+            if (menu.name === "Login") {
+                return !isAuthenticated;
+            }
+            return true;
+        });
+
 
     const onChangeMenu = (menu) => {
         if (menu.name === "Logout") {
@@ -151,7 +157,7 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
                             <div
                                 className=" d-flex flex-row gap-3 border-round shadow-1 p-2"
                                 style={{ background: "#fff" }}>
-                                    
+
                                 {isVideo(item.product.productUrl) ? (
                                     <video
                                         src={serverPort + `${item.product.productUrl}`}

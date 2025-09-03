@@ -9,6 +9,8 @@ import { PrimeReactProvider } from 'primereact/api';
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./Store/index.js";
+import "react-toastify/dist/ReactToastify.css";
+
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

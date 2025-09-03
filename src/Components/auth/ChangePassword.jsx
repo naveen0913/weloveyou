@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 // import { BsEye, BsEyeSlash } from "react-icons/bs";
 // import "./Style.css";
 
-const  ChangePassword = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
 
   const [currentPassword, setCurrentPassword] = useState("");
@@ -17,19 +17,10 @@ const  ChangePassword = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [processing, setProcessing] = useState(false);
+
 
   const navy = "#001f4d";
-
-  const logoutAndRedirect = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userId");
-
-    toast.success("Password changed successfully. Logging out...", {
-      autoClose: 2000,
-      onClose: () => navigate("/login"),
-    });
-  };
 
   const handleReset = async (e) => {
     e.preventDefault();
@@ -44,10 +35,10 @@ const  ChangePassword = () => {
       toast.error("Passwords do not match.");
       return;
     }
-
+    setProcessing(true);
     try {
       setLoading(true);
-      await axios.post(
+      const res = await axios.post(
         `http://localhost:8081/api/user/${userId}/change-password`,
         {
           currentPassword,
@@ -55,103 +46,124 @@ const  ChangePassword = () => {
           confirmNewPassword,
         }
       );
+      if (res.data.code === 200) {
+        setProcessing(false);
+        toast.success("Change Password Successful");
+      } else {
+        toast.error("Failed to change Password!");
+      }
 
-      logoutAndRedirect();
     } catch (error) {
       toast.error(
         error?.response?.data?.message ||
-          "Failed to change password. Please try again."
+        "Failed to change password. Please try again."
       );
     } finally {
       setLoading(false);
+      setProcessing(false);
     }
   };
 
   return (
-    <div className="backg">
-      <div className="container-fluid d-flex align-items-center justify-content-center mt-5">
-        <ToastContainer position="top-center" />
-        <div className="card shadow p-4" style={{ maxWidth: 400, width: "100%" }}>
-          <h4 className="text-center" style={{ color: navy }}>
-            Change Your Password
-          </h4>
-          <hr />
-          <form onSubmit={handleReset}>
-            {/* Current Password */}
-            <div className="mb-3 mt-3">
-              <label>Current Password</label>
-              <div className="input-group">
-                <input
-                  type={showCurrentPassword ? "text" : "password"}
-                  className="form-control"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={() => setShowCurrentPassword((prev) => !prev)}
-                >
-                  {showCurrentPassword ? <BsEyeSlash /> : <BsEye />}
-                </button>
-              </div>
-            </div>
 
-            {/* New Password */}
-            <div className="mb-3">
-              <label>New Password</label>
-              <div className="input-group">
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  className="form-control"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={() => setShowNewPassword((prev) => !prev)}
-                >
-                  {showNewPassword ? <BsEyeSlash /> : <BsEye />}
-                </button>
-              </div>
-            </div>
+    <>
+      <div>
+        {processing && (
+          <div className="overlay-screen">
+            <ProgressSpinner style={{ width: '60px', height: '60px' }} strokeWidth="3" />
+          </div>
+        )}
+      </div>
 
-            {/* Confirm Password */}
-            <div className="mb-3">
-              <label>Confirm New Password</label>
-              <div className="input-group">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  className="form-control"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                >
-                  {showConfirmPassword ? <BsEyeSlash /> : <BsEye />}
-                </button>
-              </div>
-            </div>
 
+      <ToastContainer />
+      <div className="card form-container m-auto p-3 ">
+        <form className="p-1" onSubmit={handleReset}>
+          {/* Current Password */}
+          <div className="mb-3">
+            <label htmlFor="currentpassword">Current Password</label>
+            <div className="password-input-wrapper">
+              <input
+                id="currentpassword"
+                type={showCurrentPassword ? "text" : "password"}
+                className="form-control password-input"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="enter current password"
+                required />
+
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowCurrentPassword((prev) => !prev)}
+              >
+                {showCurrentPassword ? (
+                  <i className="pi pi-eye-slash"></i>
+                ) : (
+                  <i className="pi pi-eye"></i>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* New Password */}
+          <div className="mb-3">
+            <label htmlFor="newpassword">New Password</label>
+            <div className="password-input-wrapper">
+              <input
+                id="newpassword"
+                type={showNewPassword ? "text" : "password"}
+                className="form-control password-input"
+                value={newPassword}
+                placeholder="enter new password"
+                onChange={(e) => setNewPassword(e.target.value)}
+                required />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowNewPassword((prev) => !prev)}
+              >
+                {showNewPassword ? <i className="pi pi-eyeslash" ></i> : <i className="pi pi-eye" ></i>}
+              </button>
+            </div>
+          </div>
+
+          {/* Confirm Password */}
+          <div className="mb-3">
+            <label htmlFor="confirmpassword">Confirm New Password</label>
+            <div className="password-input-wrapper">
+              <input
+                id="confirmpassword"
+                type={showConfirmPassword ? "text" : "password"}
+                className="form-control password-input"
+                value={confirmNewPassword}
+                placeholder="enter confirm new password"
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                required />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+              >
+                {showConfirmPassword ? <i className="pi pi-eyeslash" ></i> : <i className="pi pi-eye" ></i>}
+              </button>
+            </div>
+          </div>
+          <hr className="no-spacing" />
+          <div className="d-flex flex-row justify-content-end">
             <button
               type="submit"
-              style={{ backgroundColor: navy }}
-              className="btn w-100 text-light"
+              className="btn btn-primary mt-2"
               disabled={loading}
             >
-              {loading ? "Changing..." : "Change Password"}
+              {loading ? "processing" : "Update"}
             </button>
-          </form>
-        </div>
+          </div>
+
+        </form>
       </div>
-    </div>
+
+    </>
   );
 }
 

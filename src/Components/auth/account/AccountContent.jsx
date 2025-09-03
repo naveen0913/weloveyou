@@ -3,11 +3,8 @@ import AddressBook from './AddressBook';
 import OrdersSection from './OrdersSection';
 import './accountstyles.css';
 import AccountProfile from './AccountProfile';
-import ViewOrder from './ViewOrder';
 
 const AccountContent = ({ activeSection }) => {
-
-
 
   const renderContent = () => {
     switch (activeSection) {

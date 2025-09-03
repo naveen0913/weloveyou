@@ -85,6 +85,7 @@ const Register = () => {
 
     return (
 
+        
         // <!-- Main Content -->
         <div className="mn-main-content">
             <div className="mn-breadcrumb m-b-30">
@@ -193,8 +194,8 @@ const Register = () => {
                     </div>
                 </div>
             </section>
+            <ToastContainer/>
         </div>
-
 
     )
 

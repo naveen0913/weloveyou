@@ -1,5 +1,5 @@
 import React from 'react';
-import { Package, Wallet,Truck, UserPlus, Gift, HelpCircle, User, MapPin, CreditCard } from 'lucide-react';
+import { Package, Wallet,Truck, UserPlus, Gift, HelpCircle, User, MapPin, CreditCard, KeyRound } from 'lucide-react';
 
 const AccountSidebar = ({ activeSection, onSectionChange }) => {
   const menuItems = [
@@ -9,7 +9,6 @@ const AccountSidebar = ({ activeSection, onSectionChange }) => {
         { id: 'orders', label: 'Orders', icon: Package },
         // { id: 'wallet', label: 'Wallet', icon: Wallet, badge: 'New' },
         // { id: 'tracking', label: 'Tracking', icon: Truck },
-
       ]
     },
 
@@ -19,6 +18,7 @@ const AccountSidebar = ({ activeSection, onSectionChange }) => {
         { id: 'personal-info', label: 'My profile', icon: User },
         { id: 'address-book', label: 'Address Book', icon: MapPin },
         // { id: 'payments', label: 'Payments', icon: CreditCard }
+        // { id: 'change-password', label: 'Update Password', icon: KeyRound },
       ]
     }
   ];

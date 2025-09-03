@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Plus, Edit, Trash2, Home, Building } from "lucide-react";
+import { Plus, Edit, Trash2, Home, Building, ShoppingBag } from "lucide-react";
 import { API_METHODS, BaseUrl } from "../../Constants";
 import axios from "axios";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { ToastContainer } from "react-toastify";
 
 
 const AddressBook = () => {
   const { user } = useSelector((state) => state.auth);
   const accountId = user?.accountDetails?.id;
-  const [defaultChecked,setDefaultChecked] = useState(false);
+  const [defaultChecked, setDefaultChecked] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
@@ -26,17 +28,21 @@ const AddressBook = () => {
     pincode: "",
     isDefault: false,
   });
+  const [processing, setProcessing] = useState(false);
 
   const fetchAddresses = async () => {
+    setProcessing(true);
     try {
       const response = await axios.get(`${BaseUrl}account/user/${user?.id}`);
       if (response.data.code === 200) {
         const addressList = response.data.data.addresses;
         setAddresses(addressList);
+        setProcessing(false);
       } else {
         setAddresses([]);
       }
     } catch (error) {
+      setProcessing(false);
       console.error("Error loading addresses", error);
       toast.error("Failed to load addresses");
     }
@@ -55,7 +61,7 @@ const AddressBook = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    console.log("checked",checked);
+    console.log("checked", checked);
   };
 
   // Add Address
@@ -85,9 +91,9 @@ const AddressBook = () => {
     setShowForm(true);
   };
 
-  // Delete Address
   const handleDeleteAddress = async (addressId) => {
     const updated = addresses.filter((addr) => addr.addressId !== addressId);
+    setProcessing(true);
     try {
       const res = await fetch(`${BaseUrl}user-address/${addressId}`, {
         method: API_METHODS.delete,
@@ -96,6 +102,7 @@ const AddressBook = () => {
       console.log("res", res);
       if (res.status === 200) {
         setAddresses(updated);
+        setProcessing(false);
       } else {
         alert("Failed to delete address!")
       }
@@ -128,7 +135,7 @@ const AddressBook = () => {
 
       } else {
         const newAddress = { ...formData, isDefault: false };
-
+        setProcessing(true);
         const res = await fetch(`${BaseUrl}user-address/${accountId}`, {
           method: API_METHODS.post,
           credentials: "include",
@@ -137,7 +144,7 @@ const AddressBook = () => {
         });
 
         if (res.status === 201) {
-          alert("Address Added");
+          setProcessing(false);
           setShowForm(false);
           fetchAddresses();
         } else {
@@ -147,6 +154,7 @@ const AddressBook = () => {
     } catch (error) {
       console.error("Error:", error);
       toast.error("Something went wrong");
+      setProcessing(false);
     }
   };
 
@@ -156,281 +164,287 @@ const AddressBook = () => {
   };
 
   return (
-    <div className="address-container">
-      <div className="address-wrapper">
-        <div className="address-header">
-          <h3>Address Book</h3>
-          {!showForm && (
-            <button onClick={handleAddAddress} className="add-address-btn">
-              <Plus size={16} />
-              <span>Add new address</span>
-            </button>
-          )
-          }
-        </div>
 
-        {/* Address Form */}
-        {showForm ? (
-          <div className="form-card">
-            <form className="form" onSubmit={handleSaveAddress}>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>First Name*</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                    placeholder="enter first name"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    placeholder="enter last name"
-                  />
-                </div>
-              </div>
-
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Phone*</label>
-                  <input
-                    type="number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    placeholder="enter phone number"
-                  />
-                </div>
-
-
-                <div className="form-group">
-                  <label>Alternate Phone</label>
-                  <input
-                    type="number"
-                    name="alterPhone"
-                    value={formData.alterPhone}
-                    onChange={handleChange}
-                    placeholder="enter alternate phone number"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Address Line 1*</label>
-                <input
-                  type="text"
-                  name="addressLine1"
-                  value={formData.addressLine1}
-                  onChange={handleChange}
-                  required
-                  placeholder="enter address line 1"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Address Line 2</label>
-                <input
-                  type="text"
-                  name="addressLine2"
-                  value={formData.addressLine2}
-                  onChange={handleChange}
-                  placeholder="enter address line 2"
-                />
-              </div>
-
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>City</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    required
-                    placeholder="enter city"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>State</label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleChange}
-                    required
-                    placeholder="enter state"
-                  />
-                </div>
-              </div>
-
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Country</label>
-                  <input
-                    type="text"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                    placeholder="enter country"
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Pincode</label>
-                  <input
-                    type="number"
-                    name="pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    required
-                    placeholder="enter pincode"
-                  />
-                </div>
-              </div>
-              <div>
-                <label>Address Type*</label>
-                <div className="d-flex flex-row gap-3 align-items-center mt-2">
-                  <label className="d-flex flex-row align-items-center gap-1">
-                    <input
-                      type="radio"
-                      id="home"
-                      name="addressType"
-                      value="Home"
-                      checked={formData.addressType === "Home"}
-                      onChange={handleChange}
-                    />
-                    Home
-                  </label>
-
-                  <label className="d-flex flex-row align-items-center gap-1">
-                    <input
-                      type="radio"
-                      id="work"
-                      name="addressType"
-                      value="Work"
-                      checked={formData.addressType === "Work"}
-                      onChange={handleChange}
-                    />
-                    Work
-                  </label>
-
-                  <label className="d-flex flex-row align-items-center gap-1">
-                    <input
-                      type="radio"
-                      id="other"
-                      name="addressType"
-                      value="Other"
-                      checked={formData.addressType === "Other"}
-                      onChange={handleChange}
-                    />
-                    Other
-                  </label>
-                </div>
-              </div>
-
-              {/* <div className="no-spacing">
-                <div className="d-flex flex-row gap-2 justify-content-start">
-                  <div className="d-flex flex-row  justify-content-start align-items-center">
-                    <input
-                      type="checkbox"
-                      name="isDefault"
-                      id="isDefault"
-                      checked={formData.isDefault}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <label htmlFor="isDefault">
-                    Set as Default Address
-                  </label>
-                </div>
-              </div> */}
-
-              <div className="form-actions">
-                <button type="button" onClick={handleCancel} className="btn btn-outline-danger">
-                  Cancel
-                </button>
-                <button type="submit" className="submit-btn">
-                  {editingAddress ? "Update Address" : "Add Address"}
-                </button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          // Address Cards
-          <div className="address-grid">
-            {addresses.map((address) => (
-              <div key={address.addressId} className="address-card">
-                <div className="address-card-header">
-                  <div className="address-card-title">
-                    <h3>
-                      {address.firstName} {address.lastName}
-                    </h3>
-                    <span className="address-type">
-                      {address.addressType === "Home" ? <Home size={12} /> : <Building size={12} />}
-                      <span>{address.addressType}</span>
-                    </span>
-                  </div>
-                </div>
-
-                {address.default && <div className="default-badge">Default</div>}
-
-                <div className="address-details">
-                  <p>{address.addressLine1}</p>
-                  <p>{address.addressLine2}</p>
-                  <p>
-                    {address.city}, {address.state}
-                  </p>
-                  <p>
-                    {address.country} - {address.pincode}
-                  </p>
-                </div>
-
-                <div className="address-phone">
-                  <p>Phone: {address.phone}</p>
-                </div>
-
-                <div className="address-actions">
-                  <div className="action-buttons">
-                    <button
-                      onClick={() => handleEditAddress(address)}
-                      className="edit-btn"
-                    >
-                      <Edit size={14} />
-                      <span>Edit</span>
-                    </button>
-                    <button
-                      onClick={() => handleDeleteAddress(address.addressId)}
-                      className="delete-btn"
-                    >
-                      <Trash2 size={14} />
-                      <span>Delete</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+    <>
+      <div>
+        {processing && (
+          <div className="overlay-screen">
+            <ProgressSpinner style={{ width: '60px', height: '60px' }} strokeWidth="3" />
           </div>
         )}
-        {
-          !showForm && (
+      </div>
+
+      <div className="address-container">
+        <div className="address-wrapper">
+          <div className="address-header">
+            <h3>Address Book</h3>
+            {!showForm && (
+              <button onClick={handleAddAddress} className="add-address-btn">
+                <Plus size={16} />
+                <span>Add new address</span>
+              </button>
+            )}
+          </div>
+
+          {/* Address Form */}
+          {showForm ? (
+            <div className="form-card">
+              <form className="form" onSubmit={handleSaveAddress}>
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>First Name*</label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      placeholder="enter first name" />
+                  </div>
+                  <div className="form-group">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      placeholder="enter last name" />
+                  </div>
+                </div>
+
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>Phone*</label>
+                    <input
+                      type="number"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      placeholder="enter phone number" />
+                  </div>
+
+
+                  <div className="form-group">
+                    <label>Alternate Phone</label>
+                    <input
+                      type="number"
+                      name="alterPhone"
+                      value={formData.alterPhone}
+                      onChange={handleChange}
+                      placeholder="enter alternate phone number" />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Address Line 1*</label>
+                  <input
+                    type="text"
+                    name="addressLine1"
+                    value={formData.addressLine1}
+                    onChange={handleChange}
+                    required
+                    placeholder="enter address line 1" />
+                </div>
+
+                <div className="form-group">
+                  <label>Address Line 2</label>
+                  <input
+                    type="text"
+                    name="addressLine2"
+                    value={formData.addressLine2}
+                    onChange={handleChange}
+                    placeholder="enter address line 2" />
+                </div>
+
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>City</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      required
+                      placeholder="enter city" />
+                  </div>
+                  <div className="form-group">
+                    <label>State</label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      required
+                      placeholder="enter state" />
+                  </div>
+                </div>
+
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>Country</label>
+                    <input
+                      type="text"
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      required
+                      placeholder="enter country" />
+                  </div>
+                  <div className="form-group">
+                    <label>Pincode</label>
+                    <input
+                      type="number"
+                      name="pincode"
+                      value={formData.pincode}
+                      onChange={handleChange}
+                      required
+                      placeholder="enter pincode" />
+                  </div>
+                </div>
+                <div>
+                  <label>Address Type*</label>
+                  <div className="d-flex flex-row gap-3 align-items-center mt-2">
+                    <label className="d-flex flex-row align-items-center gap-1">
+                      <input
+                        type="radio"
+                        id="home"
+                        name="addressType"
+                        value="Home"
+                        checked={formData.addressType === "Home"}
+                        onChange={handleChange} />
+                      Home
+                    </label>
+
+                    <label className="d-flex flex-row align-items-center gap-1">
+                      <input
+                        type="radio"
+                        id="work"
+                        name="addressType"
+                        value="Work"
+                        checked={formData.addressType === "Work"}
+                        onChange={handleChange} />
+                      Work
+                    </label>
+
+                    <label className="d-flex flex-row align-items-center gap-1">
+                      <input
+                        type="radio"
+                        id="other"
+                        name="addressType"
+                        value="Other"
+                        checked={formData.addressType === "Other"}
+                        onChange={handleChange} />
+                      Other
+                    </label>
+                  </div>
+                </div>
+
+                {/* <div className="no-spacing">
+              <div className="d-flex flex-row gap-2 justify-content-start">
+                <div className="d-flex flex-row  justify-content-start align-items-center">
+                  <input
+                    type="checkbox"
+                    name="isDefault"
+                    id="isDefault"
+                    checked={formData.isDefault}
+                    onChange={handleChange}
+                  />
+                </div>
+                <label htmlFor="isDefault">
+                  Set as Default Address
+                </label>
+              </div>
+            </div> */}
+
+                <div className="form-actions">
+                  <button type="button" onClick={handleCancel} className="btn btn-outline-danger">
+                    Cancel
+                  </button>
+                  <button type="submit" className="submit-btn">
+                    {editingAddress ? "Update Address" : "Add Address"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            // Address Cards
+            <div className="address-grid">
+              {addresses.map((address) => (
+                <div key={address.addressId} className="address-card">
+                  <div className="address-card-header">
+                    <div className="address-card-title">
+                      <h3>
+                        {address.firstName} {address.lastName}
+                      </h3>
+                      <span className="address-type">
+                        {address.addressType === "Home" ? <Home size={12} /> : <Building size={12} />}
+                        <span>{address.addressType}</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {address.default && <div className="default-badge">Default</div>}
+
+                  <div className="address-details">
+                    <p>{address.addressLine1}</p>
+                    <p>{address.addressLine2}</p>
+                    <p>
+                      {address.city}, {address.state}
+                    </p>
+                    <p>
+                      {address.country} - {address.pincode}
+                    </p>
+                  </div>
+
+                  <div className="address-phone">
+                    <p>Phone: {address.phone}</p>
+                  </div>
+
+                  <div className="address-actions">
+                    <div className="action-buttons">
+                      <button
+                        onClick={() => handleEditAddress(address)}
+                        className="edit-btn"
+                      >
+                        <Edit size={14} />
+                        <span>Edit</span>
+                      </button>
+                      <button
+                        onClick={() => handleDeleteAddress(address.addressId)}
+                        className="delete-btn"
+                      >
+                        <Trash2 size={14} />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {!showForm && (
             <div className="mobile-add">
               <button onClick={handleAddAddress} className="mobile-add-btn"> <Plus size={16} />
                 <span>Add new address</span>
               </button>
             </div>
-          )
-        }
-
+          )}
+          <ToastContainer />
+        </div>
       </div>
-    </div>
+
+      {!showForm && addresses.length == 0 && (
+          <div className="empty-state">
+            <div className="empty-icon-box">
+              <ShoppingBag size={64} className="empty-icon" />
+              <h2 className="empty-title">No Address added yet!</h2>
+            </div>
+                      
+          </div>
+        )}
+
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 export const BaseUrl = "http://localhost:8081/api/"
 export const serverPort = "http://localhost:8081"
+export const cartImageUrlPort = "http://localhost:8081/uploads/"
 
 export const API_METHODS = {
   get: "GET",
@@ -58,7 +59,6 @@ export const calculateCartItemTotals = (item, gstRate = 18) => {
 
 export const menuItems = [
   { name: "Home", path: "/", icon: "pi pi-home" },
-  // { name: "Categories", icon: "pi pi-th-large" },
   { name: "Products", path: "/products", icon: "pi pi-shopping-bag" },
   { name: "My Account", path: "/account-details", icon: "pi pi-user" },
   {
@@ -72,19 +72,11 @@ export const menuItems = [
       { name: "FAQs", path: "/frequently-asked-questions" },
     ],
   },
-  // { name: "Blog", path: "/blog", icon: "pi pi-book" },
   { name: "Logout", path: "/", icon: "pi pi-sign-out" },
   { name: "Login", path: "/login", icon: "pi pi-sign-in" },
 ];
 
 
-export const isUserLoggedIn = () => {
-  const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-
-  return !!(userId && token && role);
-};
 
 export const RAZORPAY_KEY = "rzp_test_4OZcnUQlJc16Lu";
 
@@ -97,7 +89,7 @@ export const validateEmail = (email) => {
   if (!regex.test(email)) {
     return "Please enter a valid email address";
   }
-  return ""; 
+  return "";
 };
 
 export const validatePassword = (password) => {
@@ -115,6 +107,20 @@ export const isVideo = (url) => {
   return url.match(/\.(mp4|webm|ogg)$/i);
 };
 
-export const addNavigation = (url) => {
-   navigation(url)
+export const TrackingStatus = {
+  placed: "ORDER_PLACED",
+  packed: "PACKED",
+  shipped: "SHIPPED",
+  out_for_delivery: "OUT_FOR_DELIVERY",
+  delivered: "DELIVERED"
 }
+
+export const ProductCategories = ["All", "Stickers", "Tables Book", "Pencils"];
+
+export const TrackingSteps = [
+  { index: 1, label: <>Order<br />confirmed</>, icon: "ri-shield-check-line" },
+  { index: 2, label: <>Processing<br />order</>, icon: "ri-settings-5-line" },
+  { index: 3, label: <>Quality<br />check</>, icon: "ri-gift-line" },
+  { index: 4, label: <>Product<br />dispatched</>, icon: "ri-truck-line" },
+  { index: 5, label: <>Product<br />delivered</>, icon: "ri-home-4-line" },
+];

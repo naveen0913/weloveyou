@@ -34,7 +34,7 @@ function App() {
       dispatch(fetchCartItems());
     }
   }, [isAuthenticated, user?.id, dispatch]);
-  
+
   return (
     <>
       <Header />
@@ -49,10 +49,18 @@ function App() {
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/check-out/items" element={<Checkout />} />
-        <Route path="/account-details" element={<AccountLayout />} />
+
+        {isAuthenticated && (
+          <Route path="/account-details" element={<AccountLayout />} />
+        )}
+
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
-
+        <Route
+          path="*"
+          element={
+            <div className="text-center p-5">404 - Page Not Found</div>
+          }
+        />
       </Routes>
       <Footer />
     </>
