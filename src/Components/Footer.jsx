@@ -18,8 +18,8 @@ function Footer() {
   const [openSections, setOpenSections] = useState({
     category: false,
     company: false,
-    contact:false,
-    account:false
+    contact: false,
+    account: false
   });
 
   const toggleSection = (key) => {
@@ -52,20 +52,24 @@ function Footer() {
                 <div className="col-sm-12 col-lg-3 mn-footer-cat">
                   <div className="mn-footer-widget mn-footer-company">
                     <img
-                      src="img/logo/logo.png"
+                      src="/images/wly-logo-edited.png"
                       className="mn-footer-logo"
                       alt="footer logo"
+                      loading="lazy"
                     />
                     <img
-                      src="img/logo/logo-dark.png"
+                      src="/images/wly-logo-edited.png"
                       className="mn-footer-dark-logo"
                       alt="footer logo"
+                      loading="lazy"
                     />
+                    
                     <p className="mn-footer-detail">
-                      The Mantu is the biggest market of grocery products. Get
-                      your daily needs from our store.
+                      The Greatest Collection of Lovable Products for Children! Surprise your little one with every customized, love-wrapped product made just for them!
                     </p>
-                    <div className="mn-app-store">
+                    
+                    {/* get-it-block */}
+                    {/* <div className="mn-app-store">
                       <a href="javascript:void(0)" className="app-img">
                         <img
                           src="/src/assets/img/footer/android.png"
@@ -80,7 +84,8 @@ function Footer() {
                           alt="apple"
                         />
                       </a>
-                    </div>
+                    </div> */}
+
                   </div>
                 </div>
                 <div className="col-sm-12 col-lg-2 mn-footer-info">
@@ -330,17 +335,12 @@ function Footer() {
               </svg>
             </Link>
           </li>
-          <li>
+          
+          {/* wishlist item */}
+          {/* <li>
             <Link
-              // onClick={() => {
-              //   setHeading("My Wishlist");
-              //   setShowSidebar(true);
-              //   setPosition("right");
-              //   setSidebarType(SidebarType.WISHLIST)
-              // }}
-
               className="mn-main-wishlist mn-wishlist-toggle">
-              {/* <span className="label lbl-1">3</span> */}
+              <span className="label lbl-1">3</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -359,10 +359,11 @@ function Footer() {
                     data-original="#000000"></path>
                 </g>
               </svg>
-              {/* wishlist count */}
-              {/* <span>3</span> */}
+            
+               <span>3</span> 
             </Link>
-          </li>
+          </li> */}
+
           <li>
             <a
               onClick={() => {

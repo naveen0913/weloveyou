@@ -43,7 +43,7 @@ const Header = () => {
               <Link
                 to="/"
                 className="logo">
-                <img src="/img/LOGO1.png" alt="logo" />
+                <img src="/images/wly-logo-edited.png" alt="logo" loading="lazy" />
               </Link>
               <a
                 onClick={() => {
@@ -492,20 +492,13 @@ const Header = () => {
 
                   </ul>
                 </div>
-                <div className="mn-tool-wish">
-                  <a
 
-                    // onClick={() => {
-                    //   setHeading("My Wishlist");
-                    //   setShowSidebar(true);
-                    //   setPosition("right");
-                    //   setSidebarType(SidebarType.WISHLIST);
-                    // }}
+                {/* <div className="mn-tool-wish">
+                  <a
                     className="mn-main-wishlist mn-wishlist-toggle">
-                    {/* items count */}
-                    {/* <span className="label lbl-1">
+                    <span className="label lbl-1">
                       {cartCount}
-                    </span> */}
+                    </span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       version="1.1"
@@ -526,6 +519,7 @@ const Header = () => {
                     </svg>
                   </a>
                 </div>
+                 */}
                 <div className="mn-tool-cart">
                   <a
                     onClick={() => {

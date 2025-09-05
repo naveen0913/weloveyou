@@ -7,45 +7,45 @@ const Contact = () => {
     const [formErrors, setFormErrors] = useState({});
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
-  
+
     const handleChange = (e) => {
-      setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
 
-    
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const payload = {
-      contactName: form.name,
-      email: form.email,
-      contactMessage: form.message,
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            contactName: form.name,
+            email: form.email,
+            contactMessage: form.message,
+        };
+
+        try {
+            const response = await fetch(
+                "http://localhost:8081/api/contact/message",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                },
+            );
+
+            if (response.status === 201) {
+                setSuccess("Your message has been sent successfully!");
+                setForm({ name: "", email: "", message: "" });
+                setError("");
+                setFormErrors({});
+            } else {
+                setError("Failed to send your message. Please try again.");
+            }
+        } catch (err) {
+            console.error("Contact form submission error:", err);
+            setError("An error occurred while sending your message.");
+        }
     };
-
-    try {
-      const response = await fetch(
-        "http://localhost:8081/api/contact/message",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      if (response.status===201) {
-        setSuccess("Your message has been sent successfully!");
-        setForm({ name: "", email: "", message: "" });
-        setError("");
-        setFormErrors({});
-      } else {
-        setError("Failed to send your message. Please try again.");
-      }
-    } catch (err) {
-      console.error("Contact form submission error:", err);
-      setError("An error occurred while sending your message.");
-    }
-  };
 
     return (
         <>
@@ -83,27 +83,44 @@ const Contact = () => {
                             fint what you need, fill out our contact form.
                         </p>
                     </div>
+
+                    <div className="content-container">
+                        <div className="first-content">
+                            Have love-filled questions? Want to know more about our love-driven, love-inspired, and love-wrapped world? We’d love, love, and absolutely love to hear from you! Your thoughts, feedback, and messages are always lovable, love-worthy, and loved by us. So don’t hesitate, reach out with love, for love, and in the name of love!
+                        </div>
+                        <div className="sec-content">
+                        Because at We Love You, every connection is built on love, love, and more love!
+                        </div>
+                        <div className="third-content">
+                        "We’d Love to Hear from You!"
+                        </div>
+                    </div>
+
                     <div className="row p-t-80">
                         <div className="col-md-6 mn-contact-detail m-b-m-30">
                             <div className="mn-box m-b-30">
                                 <div className="detail">
                                     <div className="icon">
-                                        <i className="ri-mail-send-line"></i>
+                                        <i className="pi pi-envelope"></i>
                                     </div>
                                     <div className="info">
                                         <h3 className="title">Contact Mail</h3>
-                                        <p>info@weloveyou.in</p>
+                                        <a href="mailto:info@weloveyou.in">
+                                            <p>info@weloveyou.in</p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                             <div className="mn-box m-b-30">
                                 <div className="detail">
                                     <div className="icon">
-                                        <i className="ri-customer-service-2-line"></i>
+                                        <i className="pi pi-phone"></i>
                                     </div>
                                     <div className="info">
                                         <h3 className="title">Contact Phone</h3>
-                                        <p>+91 7013220781</p>
+                                        <a href="tel:+917013220781">
+                                            <p>+91 7013220781</p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

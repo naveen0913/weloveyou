@@ -14,52 +14,52 @@ function BottomSlider() {
     {
       id: 1,
       href: "#",
-      src: "img/instagram/1.jpg",
-      alt: "image-1"
+      src: "images/btm-slider-1.jpeg",
+      alt: "btm-image-1"
     },
     {
       id: 2,
       href: "#",
-      src: "img/instagram/2.jpg",
-      alt: "image-2"
+      src: "images/btm-slider-2.jpeg",
+      alt: "btm-image-2"
     },
     {
       id: 3,
       href: "#",
-      src: "img/instagram/3.jpg",
-      alt: "image-3"
+      src: "images/btm-slider-3.jpeg",
+      alt: "btm-image-3"
     },
     {
       id: 4,
-      href: "#", src: "img/instagram/4.jpg",
-      alt: "image-4"
+      href: "#",
+      src: "images/btm-slider-4.jpeg",
+      alt: "btm-image-4"
     },
     {
       id: 5,
-      href: "#", src: "img/instagram/5.jpg",
-      alt: "image-5"
-    },
-    {
-      id: 6,
-      href: "#", src: "img/instagram/6.jpg",
-      alt: "image-6"
-    },
-    {
-      id: 7,
-      href: "#", src: "img/instagram/7.jpg",
-      alt: "image-7"
+      href: "#",
+      src: "images/btm-slider-5.jpeg",
+      alt: "btm-image-5"
     }
+
   ]
 
-  const allSlides = [...movieStills, ...movieStills]
+  const allSlides = [...movieStills, ...movieStills, ...movieStills];
+  const slideWidth = 258
+  const totalSlides = allSlides.length
+  const totalWidth = slideWidth * totalSlides
+
 
   const translate = () => {
-    const offsetIncrementor = isMouseIn ? 0.0 : 2;
-    if (xOffsetRef.current >= 258 * 7) xOffsetRef.current = 0
-    else xOffsetRef.current = xOffsetRef.current + offsetIncrementor
+    const offsetIncrementor = isMouseIn ? 0.0 : 2
+    xOffsetRef.current = xOffsetRef.current + offsetIncrementor
+
+    if (xOffsetRef.current >= slideWidth * movieStills.length) {
+      xOffsetRef.current = 0
+    }
 
     if (slidesRef.current) {
-      slidesRef.current.style.transform = "translateX(-" + xOffsetRef.current + "px)"
+      slidesRef.current.style.transform = `translateX(-${xOffsetRef.current}px)`
     }
 
     animationRef.current = requestAnimationFrame(translate)
@@ -83,7 +83,7 @@ function BottomSlider() {
 
   return (
     <div className="app">
-      <div className="container">
+      <div className="w-100">
         <div className="slid-er">
           <div
             className="slides"

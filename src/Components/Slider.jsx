@@ -4,90 +4,95 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import OwlCarousel from "./OwlCarousel";
+import { Link } from "react-router-dom";
 
 const Slider = () => {
     const slides = [
         {
             id: 1,
-            discount: "50%",
-            title: "Fashion sale <br>for Women's",
-            desc: "Elevate your every day. Style that speaks volumes.",
-            image: "img/hero/1.jpg",
+            discount: "75%",
+            title: "Learn With Your <br>Own Picture",
+            desc: "Where Numbers Journey with You",
+            image: "images/N2.jpg",
         },
         {
             id: 2,
-            discount: "35%",
-            title: "Fashion sale <br>for Men's",
-            desc: "Wear the change. Fashion that feels good.",
-            image: "img/hero/1.jpg",
+            discount: "75%",
+            title: "Fun Labels, <br>Your Own Books",
+            desc: "Your Name, Your Book, Your Story",
+            image: "images/N3.jpg",
         },
         {
             id: 3,
-            discount: "44%",
-            title: "Fashion sale <br>for Children's",
-            desc: "Wear the change. Fashion that feels good.",
-            image: "img/hero/1.jpg",
+            discount: "75%",
+            title: "Your Pencil, <br>Your Power",
+            desc: "Engraved with your name, ready to turn ideas into magic!",
+            image: "images/N4.jpg",
         },
-        {
-            id: 4,
-            discount: "22%",
-            title: "Cosmetics sale <br>for Women's",
-            desc: "Glow with confidence. Discover your beauty essentials.",
-            image: "img/hero/1.jpg",
-        },
-        {
-          id: 5,
-          discount: "40%",
-          title: "Cosmetics sale <br>for Women's",
-          desc: "Glow with confidence. Discover your beauty essentials.",
-          image: "/img/hero/1.jpg",
-      },
+        // {
+        //     id: 4,
+        //     discount: "22%",
+        //     title: "Cosmetics sale <br>for Women's",
+        //     desc: "Glow with confidence. Discover your beauty essentials.",
+        //     image: "img/hero/1.jpg",
+        // },
+        // {
+        //   id: 5,
+        //   discount: "40%",
+        //   title: "Cosmetics sale <br>for Women's",
+        //   desc: "Glow with confidence. Discover your beauty essentials.",
+        //   image: "/img/hero/1.jpg",
+        // },
     ];
 
     return (
         <>
-                <Swiper
-                    modules={[Navigation, Pagination, Autoplay]}
-                    navigation={true}
-                    pagination={{ clickable: true }}
-                    autoplay={{ delay: 3000, disableOnInteraction: false }}
-                    loop={true}
-                    className="mn-hero-slider owl-carousel"
-                >
-                    {slides.map((slide) => (
-                        <SwiperSlide key={slide.id}>
-                            <div
-                                className="mn-hero-slide"
-                                style={{
-                                    backgroundImage: `url(${slide.image})`,
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    borderRadius: "20px"
-                                }}
-                            >
-                                <div className="mn-hero-slide swiper-slide">
-                                    <div className="mn-hero-detail">
-                                        <p className="label">
-                                            <span>
-                                                {slide.discount}
-                                                <br />
-                                                Off
-                                            </span>
-                                        </p>
-                                        <h2 dangerouslySetInnerHTML={{ __html: slide.title }} />
-                                        <p>{slide.desc}</p>
-                                        <a href="/shop" className="mn-btn-2">
-                                            <span>Shop Now</span>
-                                        </a>
-                                    </div>
+            <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                navigation={true}
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                loop={true}
+                className="mn-hero-slider owl-carousel"
+            >
+                {slides.map((slide) => (
+                    <SwiperSlide key={slide.id}>
+                        <div
+                            className="mn-hero-slide"
+                            style={{
+                                backgroundImage: `url(${slide.image})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                borderRadius: "20px"
+                            }}
+                        >
+                            <div className="mn-hero-slide swiper-slide">
+                                <div className="mn-hero-detail">
+                                    <p className="label">
+                                        <span>
+                                            {slide.discount}
+                                            <br />
+                                            Off
+                                        </span>
+                                    </p>
+                                    <h2 dangerouslySetInnerHTML={{ __html: slide.title }} />
+                                    <p>{slide.desc}</p>
+
+                                    <Link to="/products" className="mn-btn-2">
+                                        <span>
+                                            Shop Now
+                                        </span>
+                                    </Link>
+
                                 </div>
-
                             </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
 
-                {/* <OwlCarousel/> */}
+                        </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+
+            {/* <OwlCarousel/> */}
 
             {/* testimonials */}
             {/* <section className="mn-testimonials p-tb-15">

@@ -1,0 +1,90 @@
+.home-caption-container{
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 40px 0 0 0;
+}
+.long-content{
+    text-align: center;
+    font-size: 17px;
+    padding: 0 !important;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+.btm-caption{
+    text-align: center;
+    font-size: 20px;
+    padding: 0 !important;
+    margin-bottom: 10px;
+}
+
+.content-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    margin: 0 0 20px 0;
+}
+
+.first-content{
+    font-size: 16px;
+    text-align: center;
+    margin: 8px 0;
+}
+
+.sec-content{
+    font-size: 18px;
+    text-align: center;
+    margin: 8px 0;
+
+}
+
+.third-content{
+    font-size: 19px;
+    text-align: center;  
+    margin-bottom: 15px;
+ 
+}
+
+@media (max-width:767px){
+    .content-container{
+        padding: 0 10px;
+        margin: 0 0 20px 0;
+    }
+    
+    .first-content{
+        font-size: 14px;
+        text-align: center;
+    }
+    
+    .sec-content{
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    .third-content{
+        font-size: 18px;
+        text-align: center;   
+    }
+}
+
+.p-c-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.long-caption{
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.short-caption{
+    text-align: center;
+    font-size: 17px;
+    margin-bottom: 30px;
+}

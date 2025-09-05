@@ -2219,8 +2219,8 @@ textarea {
   transition: all 0.1s ease-in-out;
   width: 100%;
   min-height: calc(100vh - 485px);
-  padding: 30px;
-  margin: 30px auto 0 auto;
+  padding: 20px;
+  margin: 7px auto 0 auto;
 }
 
 /* Responsive css */
@@ -2314,7 +2314,7 @@ header {
 }
 
 .mn-header .mn-header-items .left-header .logo img {
-  width: 110px;
+  width: 200px;
 }
 
 .mn-header .mn-header-items .left-header .mn-toggle-menu {
@@ -3181,7 +3181,7 @@ header {
   }
 
   .mn-header .mn-header-items .left-header .logo img {
-    width: 100px;
+    width: 150px;
   }
 
   .mn-header .mn-toggle-sidebar {
@@ -3868,7 +3868,7 @@ footer {
 
   .mn-footer .footer-top .mn-footer-widget .mn-footer-dark-logo,
   .mn-footer .footer-top .mn-footer-widget .mn-footer-logo {
-    width: 140px;
+    width: 170px;
   }
 
   .mn-footer .footer-top .mn-footer-widget .mn-footer-heading {
@@ -3968,7 +3968,7 @@ footer {
 
   .mn-footer .footer-top .mn-footer-widget .mn-footer-dark-logo,
   .mn-footer .footer-top .mn-footer-widget .mn-footer-logo {
-    max-width: 130px;
+    max-width: 150px;
   }
 }
 
@@ -3976,7 +3976,7 @@ footer {
 
   .mn-footer .footer-top .mn-footer-widget .mn-footer-dark-logo,
   .mn-footer .footer-top .mn-footer-widget .mn-footer-logo {
-    max-width: 120px;
+    max-width: 150px;
   }
 }
 
@@ -6322,13 +6322,11 @@ button.btn-close.qty_close {
   background-color: #fff;
   border-radius: 15px;
   border: 1px solid #e5e5e5;
+  /* change height based on content */
+  min-height: 220px;
 }
 
-.mn-ser-inner .mn-service-image {
-  margin-bottom: 15px;
-}
-
-.mn-ser-inner .mn-service-image svg {
+/* .mn-ser-inner .mn-service-image svg {
   width: 50px;
   height: 50px;
   line-height: 0;
@@ -6336,7 +6334,7 @@ button.btn-close.qty_close {
 
 .mn-ser-inner .mn-service-image svg path {
   fill: #3a4ee5;
-}
+} */
 
 .mn-service-desc h3 {
   font-family: "Quicksand";
@@ -7587,11 +7585,8 @@ button.btn-close.qty_close {
 .mn-about .mn-about-img {
   position: sticky;
   top: 30px;
-  display: -ms-grid;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, calc(50% - 12px));
-  grid-row-gap: 24px;
-  grid-column-gap: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .mn-about .mn-about-img img {
@@ -7611,6 +7606,7 @@ button.btn-close.qty_close {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding: 0 20px;
 }
 
 .mn-about .mn-about-detail .section-title {
@@ -13302,6 +13298,7 @@ input::-webkit-inner-spin-button {
   color: #fff !important;
   border-radius: 10px;
 }
+
 .p-progress-spinner-circle {
   stroke: navy !important;
 }
@@ -13311,7 +13308,7 @@ input::-webkit-inner-spin-button {
   justify-content: center;
   align-items: center;
   margin: auto;
-  min-height: 250px; 
+  min-height: 250px;
 }
 
 .empty-products-image {

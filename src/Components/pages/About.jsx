@@ -5,6 +5,7 @@ const About = () => {
     return (
         <>
             <div className="mn-main-content">
+
                 <div className="mn-breadcrumb m-b-30">
                     <div className="row">
                         <div className="col-12">
@@ -29,15 +30,15 @@ const About = () => {
                 {/* <!-- About section --> */}
                 <section className="mn-about p-b-15">
                     <div className="row">
-                        <div className="col-lg-6 col-md-12">
+                        <div className="col-lg-3 col-md-12">
                             <div className="mn-about-img">
                                 <img src="/img/common/about-1.png" alt="about 1" className="v-img" />
                                 <img src="/img/common/about-2.png" alt="about 2" className="h-img" />
-                                <img src="/img/common/about-3.png" alt="about 3" className="h-img" />
-                                <img src="/img/common/about-4.png" alt="about 4" className="h-img" />
+                                {/* <img src="/img/common/about-3.png" alt="about 3" className="h-img" /> */}
+                                {/* <img src="/img/common/about-4.png" alt="about 4" className="h-img" /> */}
                             </div>
                         </div>
-                        <div className="col-lg-6 col-md-12">
+                        <div className="col-lg-9 col-md-12">
                             <div className="mn-about-detail">
                                 <div className="section-title m-t-991">
                                     <h2>
@@ -49,26 +50,15 @@ const About = () => {
                                     </p>
                                 </div>
                                 <p>
-                                    Lorem Ipsum is simply dummy text of the printing and
-                                    typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown
-                                    printer took a galley of type and scrambled it to make a type
-                                    specimen book. It has survived not only five centuries, but
-                                    also the leap into electronic typesetting, remaining
-                                    essentially unchanged.
+                                    At We Love You, we believe in creating a world filled with love, lovable moments, and loving care, where children thrive with love, love-filled happiness, and love-inspired creativity. Our journey began with a simple yet powerful love-driven vision – to provide lovingly curated, love-infused products and services that enhance childhood experiences. With a focus on love, love-filled quality, love-wrapped safety, and love-driven innovation, we bring the most lovable choices for your little ones because their love-filled joy is our greatest reward.Join us in making childhood magical!
                                 </p>
                                 <p>
-                                    Lorem Ipsum has survived not only five centuries, but also the
-                                    leap into electronic typesetting, remaining essentially
-                                    unchanged.
+                                Because nothing matters more than love, love, and more love for every child! 
                                 </p>
                                 <p>
-                                    Lorem Ipsum is simply dummy text of the printing and
-                                    typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown
-                                    printer took a galley of type and scrambled it to make a type
-                                    specimen book.
+                                Join us in making childhood magical!
                                 </p>
+                                
                             </div>
                         </div>
                     </div>

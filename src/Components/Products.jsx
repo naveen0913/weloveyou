@@ -37,7 +37,7 @@ const Products = () => {
         } catch (err) {
             console.error("API Error:", err);
             setProcessing(false);
-            toast.error("Something went Wrong!");
+            // toast.error("Something went Wrong!");
         }
     }
 
@@ -53,15 +53,15 @@ const Products = () => {
     return (
 
         <>
-        <div>
-            {processing && (
-                <div className="overlay-screen">
-                    <ProgressSpinner style={{ width: '60px', height: '60px' }} strokeWidth="3" />
-                </div>
-            )}
-        </div>
-        <ToastContainer/>
-        <div className="mn-main-content">
+            <div>
+                {processing && (
+                    <div className="overlay-screen">
+                        <ProgressSpinner style={{ width: '60px', height: '60px' }} strokeWidth="3" />
+                    </div>
+                )}
+            </div>
+            <ToastContainer />
+            <div className="mn-main-content">
                 <div className="row">
                     <div className="col-xxl-12">
                         {/* slider */}
@@ -69,6 +69,21 @@ const Products = () => {
                             <Slider />
                         </section>
 
+                        <section className="home-c">
+                            <div className="home-caption-container">
+                                <h3>
+                                    Welcome to We Love You!
+                                </h3>
+                                <div className="long-content">
+                                    Because kids deserve love, love, and more love! At We Love You, we are overflowing with love to bring you the most lovable products and services, crafted with pure love and endless loving care for children. Whether it’s love-filled essentials, love-wrapped toys, or experiences made with love, we make sure every product spread love, radiates love, and fills young hearts with love.
+                                </div>
+                                <div className="btm-caption">
+                                Because love is the greatest gift we can give to every child, every day!
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* products category */}
                         <section className="mn-banner p-tb-15">
                             <div className="row">
                                 <div
@@ -148,7 +163,7 @@ const Products = () => {
                                     <div className="mn-ser-box">
                                         <div className="mn-ser-inner">
                                             <div className="mn-service-image">
-                                                <svg
+                                                {/* <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     version="1.1"
                                                     width="512"
@@ -173,11 +188,12 @@ const Products = () => {
                                                             data-original="#000000"
                                                         ></path>
                                                     </g>
-                                                </svg>
+                                                </svg> */}
+                                                <img src="/images/FREE SHIPPING.png" className="free-shipping" alt="shipping-logo" loading="lazy"/>
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>Free Shipping</h3>
-                                                <p>Free shipping on all US order or order above $200</p>
+                                                <h3>Love Travels Free!</h3>
+                                                <p>Free love-filled shipping on all orders.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -191,7 +207,8 @@ const Products = () => {
                                     <div className="mn-ser-box">
                                         <div className="mn-ser-inner">
                                             <div className="mn-service-image">
-                                                <svg
+                                                
+                                                {/* <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     version="1.1"
                                                     width="512"
@@ -217,11 +234,13 @@ const Products = () => {
                                                         ></path>
                                                     </g>
                                                 </svg>
+                                                 */}
+                                                <img src="/images/24-7 SUPPORT.png" alt="support-logo" loading="lazy" className="support-logo" />
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>24X7 Support</h3>
+                                                <h3>24x7 Love Support!</h3>
                                                 <p>
-                                                    Contact us 24 hours live support, 7 days in a week
+                                                    To surround you with endless love and loving care!
                                                 </p>
                                             </div>
                                         </div>
@@ -236,7 +255,8 @@ const Products = () => {
                                     <div className="mn-ser-box">
                                         <div className="mn-ser-inner">
                                             <div className="mn-service-image">
-                                                <svg
+                                               
+                                                {/* <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     version="1.1"
                                                     width="512"
@@ -261,11 +281,15 @@ const Products = () => {
                                                             data-original="#000000"
                                                         ></path>
                                                     </g>
-                                                </svg>
+                                               
+                                                </svg> */}
+
+                                                <img src="/images/NO RETURN.png" alt="no-return" loading="lazy" />
+
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>30 Days Return</h3>
-                                                <p>Simply return it within 30 days for an exchange</p>
+                                                <h3>Love Knows No Return (Policy)</h3>
+                                                <p>Once love is shared, it stays forever with love!</p>
                                             </div>
                                         </div>
                                     </div>
@@ -279,7 +303,8 @@ const Products = () => {
                                     <div className="mn-ser-box">
                                         <div className="mn-ser-inner">
                                             <div className="mn-service-image">
-                                                <svg
+
+                                                {/* <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     version="1.1"
                                                     width="512"
@@ -303,12 +328,14 @@ const Products = () => {
                                                             data-original="#000000"
                                                         ></path>
                                                     </g>
-                                                </svg>
+                                                </svg> */}
+
+                                                <img src="/images/PAYMENT SECURE.png" alt="payment-secure" loading="lazy" />
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>Payment Secure</h3>
+                                                <h3>Love-Secure Payments!</h3>
                                                 <p>
-                                                    Contact us 24 hours live support, 7 days in a week
+                                                    Safe, Protected, and Wrapped in Love!
                                                 </p>
                                             </div>
                                         </div>

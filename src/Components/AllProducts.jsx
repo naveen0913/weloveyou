@@ -34,7 +34,7 @@ const AllProducts = () => {
         } catch (err) {
             setProcessing(false);
             console.error("API Error:", err);
-            toast.error("Something went Wrong!")
+            // toast.error("Something went Wrong!")
         }
     }
 
@@ -62,7 +62,7 @@ const AllProducts = () => {
                     </div>
                 )}
             </div>
-            <ToastContainer/>
+            <ToastContainer />
 
             <div className="mn-main-content">
                 <div className="mn-breadcrumb m-b-30">
@@ -80,6 +80,14 @@ const AllProducts = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="p-c-container">
+                    <div className="long-caption">
+                        Discover a range of love-filled, love-wrapped, and love-crafted products made for kids’ love-filled well-being and love-filled happiness. From love-inspired toys that spark love-driven imagination to love-infused essentials that ensure love-filled comfort, our lovable collection is designed with love, endless love, and nothing but love!
+                    </div>
+                    <div className="short-caption">
+                    Because every child deserves a world full of love, love, and more love! 
                     </div>
                 </div>
                 <div className="row">
@@ -533,7 +541,7 @@ const AllProducts = () => {
                                     {
                                         filteredProducts.length === 0 && (
                                             <div className="empty-product-container">
-                                                <img src="img/EmptyProducts.avif" alt="empty-image" className="empty-products-image" />
+                                                <img src="images/EmptyProducts.png" alt="empty-image" className="empty-products-image" />
                                             </div>
                                         )
                                     }
