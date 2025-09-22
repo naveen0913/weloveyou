@@ -108,10 +108,8 @@ const ShowPreview = ({ visible, onHide, selectedDesign, previewSheets, inputs, s
               if (textInputs.length === 0) {
                 text = "";
               } else if (textInputs.length === 1) {
-                // ✅ Only one value → use same text everywhere
                 text = textInputs[0];
               } else {
-                // ✅ If 2 or more → cycle through inputs only (not blank)
                 text = textInputs[textCounter % textInputs.length];
               }
 
@@ -172,7 +170,7 @@ const ShowPreview = ({ visible, onHide, selectedDesign, previewSheets, inputs, s
 
 
   return (
-    <Modal show={visible} onHide={onHide} centered>
+    <Modal show={visible} onHide={onHide} fullscreen centered>
       <Modal.Header closeButton>
         <Modal.Title> {selectedDesign?.name} Sheet Preview</Modal.Title>
       </Modal.Header>

@@ -46,119 +46,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
         }
     }, [productId]);
 
-    // const handleFileChange = (realId, displayId, hotspotIndex, e) => {
-    //     const file = e.target.files[0];
-    //     if (!file) return;
-    //     if (uploadedImage) uploadedImage(file);
-
-    //     const reader = new FileReader();
-    //     reader.onload = (ev) => {
-    //         const uploadImg = new Image();
-    //         uploadImg.crossOrigin = "anonymous";
-    //         uploadImg.onload = () => {
-    //             const imgEl = imgRefs.current[displayId];
-    //             const canvasEl = canvasRefs.current[`${displayId}-${hotspotIndex}`];
-    //             const ctx = canvasEl.getContext("2d");
-
-    //             canvasEl.width = imgEl.clientWidth;
-    //             canvasEl.height = imgEl.clientHeight;
-
-    //             ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-
-    //             const hotspotGroup = product.find((img) => img.id === realId)?.hotspots[
-    //                 hotspotIndex
-    //             ];
-
-    //             if (!hotspotGroup || hotspotGroup.length === 0) return;
-
-    //             const shape = hotspotGroup[0].shape;
-
-    //             const coordsPx = hotspotGroup.map((p) => ({
-    //                 x: (p.x / 100) * imgEl.clientWidth,
-    //                 y: (p.y / 100) * imgEl.clientHeight,
-    //             }));
-
-    //             ctx.beginPath();
-
-    //             if (shape === "circle") {
-    //                 const [p1, p2] = coordsPx;
-    //                 const radius =
-    //                     Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2) / 2;
-    //                 ctx.arc(
-    //                     (p1.x + p2.x) / 2,
-    //                     (p1.y + p2.y) / 2,
-    //                     radius,
-    //                     0,
-    //                     Math.PI * 2
-    //                 );
-    //             } else if (shape === "oval") {
-    //                 const [p1, p2] = coordsPx;
-    //                 const rx = Math.abs(p2.x - p1.x) / 2;
-    //                 const ry = Math.abs(p2.y - p1.y) / 2;
-    //                 ctx.ellipse(
-    //                     (p1.x + p2.x) / 2,
-    //                     (p1.y + p2.y) / 2,
-    //                     rx,
-    //                     ry,
-    //                     0,
-    //                     0,
-    //                     Math.PI * 2
-    //                 );
-    //             } else if (shape === "square") {
-    //                 const [p1, p2] = coordsPx;
-    //                 const size = Math.max(
-    //                     Math.abs(p2.x - p1.x),
-    //                     Math.abs(p2.y - p1.y)
-    //                 );
-    //                 ctx.rect(
-    //                     p1.x,
-    //                     p1.y,
-    //                     Math.sign(p2.x - p1.x) * size,
-    //                     Math.sign(p2.y - p1.y) * size
-    //                 );
-    //             } else if (shape === "rectangle") {
-    //                 const [p1, p2] = coordsPx;
-    //                 ctx.rect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
-    //             } else if (shape === "pencil") {
-    //                 ctx.moveTo(coordsPx[0].x, coordsPx[0].y);
-    //                 for (let i = 1; i < coordsPx.length; i++) {
-    //                     ctx.lineTo(coordsPx[i].x, coordsPx[i].y);
-    //                 }
-    //                 ctx.closePath();
-    //             } else if (shape === "triangle") {
-    //                 const [p1, p2, p3] = coordsPx;
-    //                 ctx.moveTo(p1.x, p1.y);
-    //                 ctx.lineTo(p2.x, p2.y);
-    //                 ctx.lineTo(p3.x, p3.y);
-    //                 ctx.closePath();
-    //             }
-
-    //             ctx.clip();
-
-    //             const minX = Math.min(...coordsPx.map((p) => p.x));
-    //             const maxX = Math.max(...coordsPx.map((p) => p.x));
-    //             const minY = Math.min(...coordsPx.map((p) => p.y));
-    //             const maxY = Math.max(...coordsPx.map((p) => p.y));
-
-    //             const boxWidth = maxX - minX;
-    //             const boxHeight = maxY - minY;
-
-    //             const scale = Math.max(
-    //                 boxWidth / uploadImg.width,
-    //                 boxHeight / uploadImg.height
-    //             );
-    //             const newWidth = uploadImg.width * scale;
-    //             const newHeight = uploadImg.height * scale;
-
-    //             const offsetX = minX + (boxWidth - newWidth) / 2;
-    //             const offsetY = minY + (boxHeight - newHeight) / 2;
-
-    //             ctx.drawImage(uploadImg, offsetX, offsetY, newWidth, newHeight);
-    //         };
-    //         uploadImg.src = ev.target.result;
-    //     };
-    //     reader.readAsDataURL(file);
-    // };
+   
 
     const handleFileChange = (realId, displayId, hotspotIndex, e) => {
         const file = e.target.files[0];
@@ -261,6 +149,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                     <div key={img.displayId} className="position-relative d-inline-block">
                         
                         <img
+                         onContextMenu={(e)=>e.preventDefault()}
                             ref={(el) => {
                                 if (el) {
                                     el.crossOrigin = "anonymous";

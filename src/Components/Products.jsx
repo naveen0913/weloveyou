@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import BottomSlider from "./BottomSlider";
 import { isVideo, serverPort } from "./Constants";
 import { ProgressSpinner } from "primereact/progressspinner";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 
 const Products = () => {
@@ -30,23 +30,16 @@ const Products = () => {
                 ).filter(Boolean);
                 setProducts(filteredProducts);
 
-            } else {
+            } else if (data.code === 404) {
                 console.error("No Products Found");
                 setProducts([]);
+                setProcessing(false);
             }
         } catch (err) {
             console.error("API Error:", err);
             setProcessing(false);
-
-            const sorted = DummyProducts.sort(
-                (a, b) => new Date(b.created) - new Date(a.created)
-            );
-
-            const categories = ["Stickers", "Tables Book", "Pencils"];
-            const filteredProducts = categories.map(cat =>
-                sorted.find(p => p.pCategory === cat)
-            ).filter(Boolean);
-            setProducts(DummyProducts);
+        } finally {
+            setProcessing(false);
         }
     }
 

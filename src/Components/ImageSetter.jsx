@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { RadioButton } from "primereact/radiobutton";
 import { serverPort } from "./Constants";
 import ShowPreview from "./ShowPreview";
@@ -52,6 +52,118 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
     };
 
 
+    // useEffect(() => {
+    //     if (!selectedDesign) return;
+    //     const canvas = canvasRef.current;
+    //     if (!canvas) return;
+
+    //     const ctx = canvas.getContext("2d");
+    //     const baseImg = new Image();
+    //     baseImg.crossOrigin = "anonymous";
+    //     baseImg.src = serverPort + selectedDesign.imageUrl;
+
+    //     baseImg.onload = () => {
+    //         canvas.width = baseImg.width;
+    //         canvas.height = baseImg.height;
+
+    //         ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //         ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
+
+    //         const hotspots = categoryHotspots[selectedDesign.category] || [];
+
+    //         hotspots.forEach((group, gIndex) => {
+    //             const coordsPx = group.map((p) => ({
+    //                 x: (p.x / 100) * canvas.width,
+    //                 y: (p.y / 100) * canvas.height,
+    //             }));
+
+    //             const minX = Math.min(...coordsPx.map((p) => p.x));
+    //             const maxX = Math.max(...coordsPx.map((p) => p.x));
+    //             const minY = Math.min(...coordsPx.map((p) => p.y));
+    //             const maxY = Math.max(...coordsPx.map((p) => p.y));
+
+    //             const boxWidth = maxX - minX;
+    //             const boxHeight = maxY - minY;
+
+    //             const key = `${selectedDesign.category}-${gIndex}`;
+    //             const value = inputs[key];
+
+    //             if (!value) return;
+
+
+    //             if (group[0].dataType === "image" && value?.url) {
+    //                 const img = new Image();
+    //                 img.crossOrigin = "anonymous";
+    //                 img.src = value.url;
+
+    //                 img.onload = () => {
+    //                     ctx.save();
+    //                     ctx.beginPath();
+    //                     ctx.rect(minX, minY, boxWidth, boxHeight);
+    //                     ctx.clip();
+
+    //                     const imgRatio = img.width / img.height;
+    //                     const boxRatio = boxWidth / boxHeight;
+
+    //                     let drawWidth, drawHeight, offsetX, offsetY;
+
+    //                     if (imgRatio > boxRatio) {
+    //                         drawHeight = boxHeight;
+    //                         drawWidth = img.width * (boxHeight / img.height);
+    //                         offsetX = minX + (boxWidth - drawWidth) / 2;
+    //                         offsetY = minY;
+    //                     } else {
+    //                         drawWidth = boxWidth;
+    //                         drawHeight = img.height * (boxWidth / img.width);
+    //                         offsetX = minX;
+    //                         offsetY = minY + (boxHeight - drawHeight) / 2;
+    //                     }
+
+    //                     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    //                     ctx.restore();
+    //                     // ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
+    //                 };
+    //             }
+
+
+    //             if (group[0].dataType === "text" && typeof value === "string") {
+    //                 ctx.save();
+    //                 ctx.fillStyle = "black";
+    //                 ctx.font = "bold 30px Cambria";
+    //                 ctx.textAlign = "left";
+    //                 ctx.textBaseline = "top";
+
+    //                 const words = value.split(" ");
+    //                 let line = "";
+    //                 const lineHeight = 40;
+    //                 let y = minY;
+
+    //                 for (let i = 0; i < words.length; i++) {
+    //                     const testLine = line + words[i] + " ";
+    //                     const metrics = ctx.measureText(testLine);
+
+    //                     if (metrics.width > boxWidth && i > 0) {
+    //                         ctx.fillText(line, minX, y);
+    //                         line = words[i] + " ";
+    //                         y += lineHeight;
+
+    //                         if (y > maxY) break;
+    //                     } else {
+    //                         line = testLine;
+    //                     }
+    //                 }
+
+    //                 if (y <= maxY) {
+    //                     ctx.fillText(line, minX, y);
+    //                 }
+    //                 ctx.restore();
+    //             }
+
+
+    //         });
+    //     };
+    // }, [selectedDesign, inputs, categoryHotspots, serverPort]);
+
     useEffect(() => {
         if (!selectedDesign) return;
         const canvas = canvasRef.current;
@@ -70,6 +182,7 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
             ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
 
             const hotspots = categoryHotspots[selectedDesign.category] || [];
+            let imageLoadPromises = [];
 
             hotspots.forEach((group, gIndex) => {
                 const coordsPx = group.map((p) => ({
@@ -90,77 +203,95 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
 
                 if (!value) return;
 
-
                 if (group[0].dataType === "image" && value?.url) {
-                    const img = new Image();
-                    img.crossOrigin = "anonymous";
-                    img.src = value.url;
+                    imageLoadPromises.push(
+                        new Promise((resolve) => {
+                            const img = new Image();
+                            img.crossOrigin = "anonymous";
+                            img.src = value.url;
 
-                    img.onload = () => {
+                            img.onload = () => {
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.rect(minX, minY, boxWidth, boxHeight);
+                                ctx.clip();
+
+                                const imgRatio = img.width / img.height;
+                                const boxRatio = boxWidth / boxHeight;
+
+                                let sx, sy, sWidth, sHeight;
+
+                                if (imgRatio > boxRatio) {
+                                    sHeight = img.height;
+                                    sWidth = boxRatio * img.height;
+                                    sx = (img.width - sWidth) / 2;
+                                    sy = 0;
+                                } else {
+                                    sWidth = img.width;
+                                    sHeight = img.width / boxRatio;
+                                    sx = 0;
+                                    sy = (img.height - sHeight) / 2;
+                                }
+
+                                ctx.drawImage(img, sx, sy, sWidth, sHeight, minX, minY, boxWidth, boxHeight);
+
+                                ctx.restore();
+                                resolve();
+                            };
+                        })
+                    );
+                }
+            });
+
+            // After all images are drawn → draw text
+            Promise.all(imageLoadPromises).then(() => {
+                hotspots.forEach((group, gIndex) => {
+                    const coordsPx = group.map((p) => ({
+                        x: (p.x / 100) * canvas.width,
+                        y: (p.y / 100) * canvas.height,
+                    }));
+
+                    const minX = Math.min(...coordsPx.map((p) => p.x));
+                    const maxX = Math.max(...coordsPx.map((p) => p.x));
+                    const minY = Math.min(...coordsPx.map((p) => p.y));
+                    const maxY = Math.max(...coordsPx.map((p) => p.y));
+
+                    const boxWidth = maxX - minX;
+
+                    const key = `${selectedDesign.category}-${gIndex}`;
+                    const value = inputs[key];
+
+                    if (group[0].dataType === "text" && typeof value === "string") {
                         ctx.save();
-                        ctx.beginPath();
-                        ctx.rect(minX, minY, boxWidth, boxHeight);
-                        ctx.clip();
+                        ctx.fillStyle = "black";
+                        ctx.font = "bold 30px Cambria";
+                        ctx.textAlign = "left";
+                        ctx.textBaseline = "top";
 
-                        const imgRatio = img.width / img.height;
-                        const boxRatio = boxWidth / boxHeight;
+                        const words = value.split(" ");
+                        let line = "";
+                        const lineHeight = 40;
+                        let y = minY;
 
-                        let drawWidth, drawHeight, offsetX, offsetY;
+                        for (let i = 0; i < words.length; i++) {
+                            const testLine = line + words[i] + " ";
+                            const metrics = ctx.measureText(testLine);
 
-                        if (imgRatio > boxRatio) {
-                            // Image is wider than box → fit height, crop width
-                            drawHeight = boxHeight;
-                            drawWidth = img.width * (boxHeight / img.height);
-                            offsetX = minX - (drawWidth - boxWidth) / 2;
-                            offsetY = minY;
-                        } else {
-                            // Image is taller than box → fit width, crop height
-                            drawWidth = boxWidth;
-                            drawHeight = img.height * (boxWidth / img.width);
-                            offsetX = minX;
-                            offsetY = minY - (drawHeight - boxHeight) / 2;
+                            if (metrics.width > boxWidth && i > 0) {
+                                ctx.fillText(line, minX, y);
+                                line = words[i] + " ";
+                                y += lineHeight;
+                                if (y > maxY) break;
+                            } else {
+                                line = testLine;
+                            }
                         }
-
-                        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-                        ctx.restore();
-                    };
-                }
-
-
-                if (group[0].dataType === "text" && typeof value === "string") {
-                    ctx.save();
-                    ctx.fillStyle = "black";
-                    ctx.font = "bold 30px Cambria";
-                    ctx.textAlign = "left";
-                    ctx.textBaseline = "top";
-
-                    const words = value.split(" ");
-                    let line = "";
-                    const lineHeight = 40;
-                    let y = minY;
-
-                    for (let i = 0; i < words.length; i++) {
-                        const testLine = line + words[i] + " ";
-                        const metrics = ctx.measureText(testLine);
-
-                        if (metrics.width > boxWidth && i > 0) {
+                        if (y <= maxY) {
                             ctx.fillText(line, minX, y);
-                            line = words[i] + " ";
-                            y += lineHeight;
-
-                            if (y > maxY) break;
-                        } else {
-                            line = testLine;
                         }
+                        ctx.restore();
                     }
-
-                    if (y <= maxY) {
-                        ctx.fillText(line, minX, y);
-                    }
-                    ctx.restore();
-                }
-
-
+                });
             });
         };
     }, [selectedDesign, inputs, categoryHotspots, serverPort]);
@@ -214,7 +345,7 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
                             Show More
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu style={{ maxHeight: "300px", overflowY: "auto" }}>
+                        <Dropdown.Menu style={{ maxHeight: "300px", overflowY: "auto", padding: 0 }}>
                             {restBatch.map((design) => (
                                 <Dropdown.Item as="div" key={design.id}>
                                     <label

@@ -9,7 +9,7 @@ export default function ImageGallery({
   circular = true,
   autoPlay = true,
   transitionInterval = 3000,
-  maxWidth = "700px",
+  maxWidth = "auto",
   style = {},
   selected = null,
   onItemSelect = () => { },
