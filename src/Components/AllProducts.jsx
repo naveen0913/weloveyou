@@ -35,6 +35,8 @@ const AllProducts = () => {
             setProcessing(false);
             console.error("API Error:", err);
             // toast.error("Something went Wrong!")
+            setProducts(DummyProducts);
+            setFilteredProducts(DummyProducts)
         }
     }
 
@@ -87,7 +89,7 @@ const AllProducts = () => {
                         Discover a range of love-filled, love-wrapped, and love-crafted products made for kids’ love-filled well-being and love-filled happiness. From love-inspired toys that spark love-driven imagination to love-infused essentials that ensure love-filled comfort, our lovable collection is designed with love, endless love, and nothing but love!
                     </div>
                     <div className="short-caption">
-                    Because every child deserves a world full of love, love, and more love! 
+                        Because every child deserves a world full of love, love, and more love!
                     </div>
                 </div>
                 <div className="row">
@@ -538,13 +540,13 @@ const AllProducts = () => {
                                         )
                                     }
 
-                                    {
+                                    {/* {
                                         filteredProducts.length === 0 && (
                                             <div className="empty-product-container">
                                                 <img src="images/EmptyProducts.png" alt="empty-image" className="empty-products-image" />
                                             </div>
                                         )
-                                    }
+                                    } */}
 
                                     {/* <!-- Shop content Start --> */}
                                     <div className="shop-pro-content">
@@ -556,10 +558,10 @@ const AllProducts = () => {
                                                             <div
                                                                 key={p.productId}
                                                                 className={`${viewMode === "grid"
-                                                                    ? "col-lg-3 col-md-4 col-sm-6 col-12"
-                                                                    : "col-md-6"} m-b-24 mn-product-box pro-gl-content`}
+                                                                    ? "col-lg-4 col-md-6 col-sm-6 col-12 mb-4 px-4"
+                                                                    : "col-md-6 mb-4 px-2"} mn-product-box pro-gl-content`}
                                                             >
-                                                                <div className={`mn-product-card ${viewMode === "list" ? "d-flex flex-row gap-3" : ""}`}>
+                                                                <div onClick={() => navigate(`/product-details/${p.productId}`)} className={`mn-product-card ${viewMode === "list" ? "d-flex flex-row gap-3" : ""}`}>
                                                                     <div className="mn-product-img">
                                                                         {/* <div className="lbl">
                         <span className="new">new</span>
@@ -594,10 +596,11 @@ const AllProducts = () => {
                         title="Compare" className="mn-compare"><i
                             className="ri-repeat-line"></i></a></li> */}
 
-                                                                                    <li><a href="javascript:void(0)" data-tooltip
+                                                                                    {/* <li>
+                                                                                        <a href="javascript:void(0)" data-tooltip
                                                                                         title="Add To Cart" className="mn-add-cart"><i
                                                                                             className="ri-shopping-cart-line"></i></a>
-                                                                                    </li>
+                                                                                    </li> */}
                                                                                 </ul>
                                                                             </div>
                                                                         </div>

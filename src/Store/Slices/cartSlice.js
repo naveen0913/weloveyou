@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { BaseUrl } from "../../Components/Constants";
 
 const API_BASE = "http://localhost:8081/api/cart";
 
@@ -101,9 +102,9 @@ export const addToCart = createAsyncThunk(
       }
 
       if (Array.isArray(uploadedPhotos) && uploadedPhotos.length > 0) {
-        uploadedPhotos.forEach((file) => {
-          if (file instanceof File) {
-            formData.append("customImages", file);
+        uploadedPhotos.forEach((photoObj) => {
+          if (photoObj instanceof File) {
+            formData.append("customImages", photoObj);
           }
         });
       }
@@ -122,6 +123,7 @@ export const addToCart = createAsyncThunk(
       );
 
       if (res.data.code === 201) {
+        await dispatch(uploadCustomerPreview(res.data.data));
         const updatedCart = await dispatch(fetchCartItems()).unwrap();
         return updatedCart;
       } else {
@@ -135,6 +137,38 @@ export const addToCart = createAsyncThunk(
     }
   }
 );
+
+export const uploadCustomerPreview = createAsyncThunk(
+  "cart/uploadCustomerPreview",
+  async (cartId, { rejectWithValue }) => {
+    try {
+      for (const item of JSON.parse(localStorage.getItem("previewData"))) {
+        const formData = new FormData();
+        formData.append("imageName", item.imageName);
+        formData.append("imageType", item.imageType);
+
+        if (item.imageFile) {
+          const blob = await (await fetch(item.imageFile)).blob();
+          formData.append("files", blob, item.imageName);
+        }
+
+        const response = await axios.post(
+          `${BaseUrl}cart/add/cart/preview-data/${cartId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        if (response.data.code === 201) {
+          localStorage.removeItem("previewData");
+        }
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 const initialState = {
   items: [],
@@ -158,7 +192,6 @@ const cartSlice = createSlice({
       state.isOpen = !state.isOpen;
     },
     setCartItems: (state, action) => {
-      console.log("cart", action);
       const items = Array.isArray(action.payload) ? action.payload : [];
       state.items = items;
       state.itemCount = items.length;

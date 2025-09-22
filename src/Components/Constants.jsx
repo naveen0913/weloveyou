@@ -124,3 +124,75 @@ export const TrackingSteps = [
   { index: 4, label: <>Product<br />dispatched</>, icon: "ri-truck-line" },
   { index: 5, label: <>Product<br />delivered</>, icon: "ri-home-4-line" },
 ];
+
+export const convertToWebP = (file, maxWidth = 1920, maxHeight = 1080, quality = 0.7) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let { width, height } = img;
+
+        // ✅ Resize if image is larger than max
+        if (width > maxWidth || height > maxHeight) {
+          const aspectRatio = width / height;
+          if (width > height) {
+            width = maxWidth;
+            height = Math.round(maxWidth / aspectRatio);
+          } else {
+            height = maxHeight;
+            width = Math.round(maxHeight * aspectRatio);
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const webpFile = new File(
+                [blob],
+                file.name.replace(/\.[^.]+$/, ".webp"),
+                { type: "image/webp" }
+              );
+              resolve(webpFile);
+            } else {
+              reject(new Error("WebP conversion failed"));
+            }
+          },
+          "image/webp",
+          quality 
+        );
+      };
+
+      img.onerror = (err) => reject(err);
+    };
+
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(file);
+  });
+};
+
+export const convertMultipleToWebP = async (files) => {
+  return Promise.all(files.map((file) => convertToWebP(file)));
+};
+
+
+export const getDesignUrlFromThumbnail = (selectedThumbnail, designs) => {
+  if (!selectedThumbnail || !designs) return null;
+
+  const match = designs.find(
+    (d) => d.designName.toLowerCase() === selectedThumbnail.thumbnailName.toLowerCase()
+  );
+
+  return match?.designImages?.[0]?.designUrl;
+}

@@ -122,7 +122,7 @@ const CartItems = () => {
                                                                                     />
                                                                                 )
                                                                             }
-                                                                            <span style={{ marginLeft: '10px',cursor:'pointer' }}
+                                                                            <span style={{ marginLeft: '10px', cursor: 'pointer' }}
                                                                                 onClick={() => navigate(`/product-details/${item.product.productId}`)}
                                                                             >
                                                                                 {item.product.productName}
@@ -132,9 +132,14 @@ const CartItems = () => {
                                                                     <td className="mn-cart-pro-price">
                                                                         Rs {" "}
                                                                         {/* {item?.cartAddedOption[0]?.optionPrice} */}
+                                                                        {/* {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                                                            ? item.cartAddedOption[0].optionPrice
+                                                                            : ""} */}
                                                                         {item?.cartAddedOption && item.cartAddedOption.length > 0
                                                                             ? item.cartAddedOption[0].optionPrice
-                                                                            : ""}
+                                                                            : item.product?.productCustomization?.customizationOptions?.[0]
+                                                                                ?.originalPrice}
+                                                                        .00 × {item.cartQuantity}
                                                                     </td>
                                                                     <td className="mn-cart-pro-qty" style={{ alignItems: "center" }}>
                                                                         <div className="d-flex flex-row justify-content-between gap-2 align-items-center padding">
@@ -159,10 +164,15 @@ const CartItems = () => {
                                                                     </td>
                                                                     <td className="mn-cart-pro-subtotal">Rs
                                                                         {" "}
-                                                                        {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                                                        {/* {item?.cartAddedOption && item.cartAddedOption.length > 0
                                                                             ? item.cartAddedOption[0].optionPrice * item.cartQuantity
-                                                                            : ""}
+                                                                            : ""} */}
                                                                         {/* {item?.cartAddedOption[0]?.optionPrice * item.cartQuantity} */}
+                                                                        {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                                                            ? item.cartAddedOption[0].optionPrice
+                                                                            : item.product?.productCustomization?.customizationOptions?.[0]
+                                                                                ?.originalPrice}
+                                                                        .00 × {item.cartQuantity}
                                                                     </td>
                                                                     <td className="mn-cart-pro-remove">
                                                                         <a onClick={() => handleDeleteItem(item.cartItemId)}>

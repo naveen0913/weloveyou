@@ -30,14 +30,14 @@ const About = () => {
                 {/* <!-- About section --> */}
                 <section className="mn-about p-b-15">
                     <div className="row">
+                        <div className="main-sub-container">
                         <div className="col-lg-3 col-md-12">
                             <div className="mn-about-img">
                                 <img src="/img/common/about-1.png" alt="about 1" className="v-img" />
                                 <img src="/img/common/about-2.png" alt="about 2" className="h-img" />
-                                {/* <img src="/img/common/about-3.png" alt="about 3" className="h-img" /> */}
-                                {/* <img src="/img/common/about-4.png" alt="about 4" className="h-img" /> */}
                             </div>
                         </div>
+
                         <div className="col-lg-9 col-md-12">
                             <div className="mn-about-detail">
                                 <div className="section-title m-t-991">
@@ -45,22 +45,26 @@ const About = () => {
                                         Who We <span>Are?</span>
                                     </h2>
                                     <p>
-                                        We’re here to serve only the best products for you.
-                                        Enriching your homes with the best essentials.
+                                        We’re here to spread endless love through every product
                                     </p>
                                 </div>
-                                <p>
+                                <div className="long-content">
                                     At We Love You, we believe in creating a world filled with love, lovable moments, and loving care, where children thrive with love, love-filled happiness, and love-inspired creativity. Our journey began with a simple yet powerful love-driven vision – to provide lovingly curated, love-infused products and services that enhance childhood experiences. With a focus on love, love-filled quality, love-wrapped safety, and love-driven innovation, we bring the most lovable choices for your little ones because their love-filled joy is our greatest reward.Join us in making childhood magical!
-                                </p>
-                                <p>
-                                Because nothing matters more than love, love, and more love for every child! 
-                                </p>
-                                <p>
-                                Join us in making childhood magical!
-                                </p>
-                                
+
+                                </div>
+                                <div className="long-content">
+                                    Because nothing matters more than love, love, and more love for every child!
+
+                                </div>
+
+                                <div className="long-content">
+                                    Join us in making childhood magical!
+                                </div>
                             </div>
                         </div>
+                        </div>
+                       
+
                     </div>
                 </section>
 
@@ -345,12 +349,14 @@ const About = () => {
                         <div className="mn-facts-content col-sm-6 col-xl-3 m-b-24">
                             <div className="mn-facts-inner">
                                 <div className="mn-count">
-                                    <span className="counter">65K+</span>
+                                    <span className="counter">
+                                        71K
+                                    </span>
                                 </div>
                                 <div className="mn-facts-desc">
-                                    <h4>Vendors</h4>
+                                    <h4>Schools</h4>
                                     <p>
-                                        Contrary to popular belief, Lorem is not simply random text.
+                                        Choose Us with Love & Trust
                                     </p>
                                 </div>
                             </div>
@@ -358,12 +364,14 @@ const About = () => {
                         <div className="mn-facts-content col-sm-6 col-xl-3 m-b-24">
                             <div className="mn-facts-inner">
                                 <div className="mn-count">
-                                    <span className="counter">$45B+</span>
+                                    <span className="counter">
+                                        90%
+                                    </span>
                                 </div>
                                 <div className="mn-facts-desc">
-                                    <h4>Earnings</h4>
+                                    <h4>Orders</h4>
                                     <p>
-                                        Contrary to popular belief, Lorem is not simply random text.
+                                        Come through client referrals.
                                     </p>
                                 </div>
                             </div>
@@ -371,12 +379,14 @@ const About = () => {
                         <div className="mn-facts-content col-sm-6 col-xl-3 m-b-24">
                             <div className="mn-facts-inner">
                                 <div className="mn-count">
-                                    <span className="counter">25M+</span>
+                                    <span className="counter">
+                                        99.9% Vs 0.1%
+                                    </span>
                                 </div>
                                 <div className="mn-facts-desc">
-                                    <h4>Sold</h4>
+                                    <h4>Customer Happiness</h4>
                                     <p>
-                                        Contrary to popular belief, Lorem is not simply random text.
+                                        99.9% in our hands, 0.1% in third-party hands.
                                     </p>
                                 </div>
                             </div>
@@ -384,12 +394,14 @@ const About = () => {
                         <div className="mn-facts-content col-sm-6 col-xl-3 m-b-24">
                             <div className="mn-facts-inner">
                                 <div className="mn-count">
-                                    <span className="counter">70K+</span>
+                                    <span className="counter">
+                                        3
+                                    </span>
                                 </div>
                                 <div className="mn-facts-desc">
                                     <h4>Products</h4>
                                     <p>
-                                        Contrary to popular belief, Lorem is not simply random text.
+                                        Just 3 Products, Yet Touching Millions with Love.
                                     </p>
                                 </div>
                             </div>

@@ -89,41 +89,45 @@ const Contact = () => {
                             Have love-filled questions? Want to know more about our love-driven, love-inspired, and love-wrapped world? We’d love, love, and absolutely love to hear from you! Your thoughts, feedback, and messages are always lovable, love-worthy, and loved by us. So don’t hesitate, reach out with love, for love, and in the name of love!
                         </div>
                         <div className="sec-content">
-                        Because at We Love You, every connection is built on love, love, and more love!
+                            Because at We Love You, every connection is built on love, love, and more love!
                         </div>
                         <div className="third-content">
-                        "We’d Love to Hear from You!"
+                            "We’d Love to Hear from You!"
                         </div>
                     </div>
 
                     <div className="row p-t-80">
                         <div className="col-md-6 mn-contact-detail m-b-m-30">
-                            <div className="mn-box m-b-30">
-                                <div className="detail">
-                                    <div className="icon">
-                                        <i className="pi pi-envelope"></i>
+                            <div className="first-block-container">
+                                <div className="mn-box mb-2">
+                                    <div className="detail">
+                                        <div className="icon">
+                                            <i className="pi pi-envelope"></i>
+                                        </div>
+                                        <div className="info">
+                                            <h3 className="title">Contact Mail</h3>
+                                            <a href="mailto:info@weloveyou.in">
+                                                <p>info@weloveyou.in</p>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div className="info">
-                                        <h3 className="title">Contact Mail</h3>
-                                        <a href="mailto:info@weloveyou.in">
-                                            <p>info@weloveyou.in</p>
-                                        </a>
+                                </div>
+                                <div className="mn-box mb-2">
+                                    <div className="detail">
+                                        <div className="icon">
+                                            <i className="pi pi-phone"></i>
+                                        </div>
+                                        <div className="info">
+                                            <h3 className="title">Contact Phone</h3>
+                                            <a href="tel:+917013220781">
+                                                <p>+91 7013220781</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="mn-box m-b-30">
-                                <div className="detail">
-                                    <div className="icon">
-                                        <i className="pi pi-phone"></i>
-                                    </div>
-                                    <div className="info">
-                                        <h3 className="title">Contact Phone</h3>
-                                        <a href="tel:+917013220781">
-                                            <p>+91 7013220781</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+
+
                             <div className="mn-box m-b-30">
                                 <div className="detail">
                                     <div className="icon">
@@ -138,6 +142,7 @@ const Contact = () => {
                         </div>
                         <div className="col-md-6 m-t-767">
                             <form onSubmit={handleSubmit}>
+
                                 <div className="form-group">
                                     <label htmlFor="name"></label>
                                     <input
@@ -175,7 +180,7 @@ const Contact = () => {
                                     <textarea
                                         className="form-control"
                                         id="message"
-                                        rows="5"
+                                        rows="2"
                                         name="message"
                                         value={form.message}
                                         onChange={handleChange}

@@ -29,9 +29,9 @@ const Gallery = ({ thumbnailImages }) => {
                 {/* Main Image */}
                 <div className="main-image-wrapper">
 
-
                     <img
                         src={`${serverPort}${thumbnailImages[currentIndex].thumbnailUrl}`}
+                        // src={`${thumbnailImages[currentIndex].thumbnailUrl}`}
                         alt="Main"
                         className="main-image"
                     />
@@ -43,7 +43,8 @@ const Gallery = ({ thumbnailImages }) => {
                     {thumbnailImages.map((img, idx) => (
                         <img
                             key={idx}
-                            src={`${serverPort}${img.thumbnailUrl}`}
+                            // src={`${serverPort}${img.thumbnailUrl}`}
+                            src={`${img.thumbnailUrl}`}
                             alt={`Thumbnail ${idx}`}
                             className={`thumbnail ${idx === currentIndex ? "active" : ""
                                 }`}

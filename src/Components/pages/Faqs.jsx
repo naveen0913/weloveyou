@@ -9,53 +9,52 @@ const Faqs = () => {
 	// Example FAQ data (split into left & right for clarity)
 	const faqsLeft = [
 		{
-			q: "What is the multi vendor services?",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "What is the Customized Times Table Book, and how does it spread love?",
+			a: "Our Customized Times Table Book is a love-filled learning companion where you can upload 24 lovable pictures of your child to create a unique, love-crafted book covering 20 multiplication tables. Every page radiates love, making learning math fun, personal, and filled with love.",
 		},
 		{
-			q: "How to buy many products at a time?",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "How do I upload photos for the Customized Times Table Book?",
+			a: "With love and ease! You simply upload 24 lovable photos of your child through our love-driven upload form while placing your order. Our team lovingly ensures every photo is wrapped with love and placed perfectly in the book.",
 
 		},
 		{
-			q: "Refund policy for customer.",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "Can I preview the Customized Times Table Book before it is printed with love?",
+			a: "Yes! We’ll lovingly share a love-filled preview so you can feel the joy before your child holds their love-crafted math book. After your approval, we lovingly print and deliver it.",
 
 		},
 		{
-			q: "Exchange policy for customer.",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "What makes the Book Labels so special and filled with love?",
+			a: "Our Book Labels are not just labels, they’re love-wrapped identity cards for your child’s school books. You upload one lovable photo and fill in the details like Name, Section, Subject, Roll Number, and School Name, and we lovingly craft labels that shine with love every day.",
 
 		},
 		{
-			q: "Give a way products available.",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "How many Book Labels do I get in one love-filled set?",
+			a: "Every order comes with a lovingly curated sheet of 30 book labels, plus one lovable bag sticker, one love-filled bottle sticker, one snack box sticker, one box sticker, and an extra name sticker to use anywhere you like,  ensuring your child’s school essentials stay beautifully organized with love, love, and more love.",
 
 		},
 	];
 
 	const faqsRight = [
 		{
-			q: "Refund policy for customer.",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "What is the personalized pencil engraving, and why is it a gift of love?",
+			a: "We lovingly engrave your child’s name on pencils, turning everyday writing into a love-filled experience. Each pencil becomes a lovable treasure that inspires children to write, learn, and grow with love.",
 
 		},
 		{
-			q: "Exchange policy for customer.",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "Are the products safe, child-friendly, and wrapped in love?",
+			a: "Absolutely! Every product we create is designed with love-filled safety, love-driven quality, and love-inspired care, making sure your child experiences nothing but pure love.",
 		},
 		{
-			q: "How to buy many products at a time?",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "Can I gift these love-filled products to other children?",
+			a: "Yes! Our products make the most lovable, love-driven gifts for birthdays, school achievements, and special occasions. Each gift spreads happiness and shines with love.",
 		},
 		{
-			q: "Give a way products available.",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-
+			q: "How long does it take to receive my love-crafted order?",
+			a: "Each product is made with patience, care, and love. Usually, it takes 7–10 love-filled working days for your personalized order to be lovingly delivered to your doorstep."
 		},
 		{
-			q: "What is the multi vendor services?",
-			a: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+			q: "Why choose “We Love You” for my child’s products?",
+			a: "Because at We Love You, every product is more than an item,  it’s a love-wrapped memory, a love-driven keepsake, and a lovable way to make your child feel special every single day. We believe nothing matters more than love, love, and more love!",
 
 		},
 	];
@@ -102,7 +101,9 @@ const Faqs = () => {
 										className={`mn-accordion-body ${openLeft === i ? "show" : ""
 											}`}
 									>
-										{faq.a}
+										<span className="faq-a">
+											{faq.a}
+										</span>
 									</div>
 								</div>
 							))}
@@ -125,7 +126,9 @@ const Faqs = () => {
 										className={`mn-accordion-body ${openRight === i ? "show" : ""
 											}`}
 									>
-										{faq.a}
+										<span className="faq-a">
+											{faq.a}
+										</span>
 									</div>
 								</div>
 							))}

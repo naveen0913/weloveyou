@@ -195,10 +195,17 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
                                     <div>{item.product.productName}</div>
 
                                     <span className="text-sm">
-                                        Rs {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                        Rs
+                                        {/* {item?.cartAddedOption && item.cartAddedOption.length > 0
                                             ? item.cartAddedOption[0].optionPrice
-                                            : ""}.00 × {item.cartQuantity}
-                                        {/* Rs {item.optionPrice}.00 × {item.cartQuantity} */}
+                                            : ""}.00 × {item.cartQuantity} */}
+                                            {" "}
+                                        {item?.cartAddedOption && item.cartAddedOption.length > 0
+                                            ? item.cartAddedOption[0].optionPrice
+                                            : item.product?.productCustomization?.customizationOptions?.[0]
+                                                ?.originalPrice}
+                                        .00 × {item.cartQuantity}
+
                                     </span>
 
                                     <div className=" d-flex flex-row align-items-center gap-3 qty-container">

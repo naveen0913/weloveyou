@@ -51,7 +51,7 @@ function BottomSlider() {
 
 
   const translate = () => {
-    const offsetIncrementor = isMouseIn ? 0.0 : 2
+    const offsetIncrementor = isMouseIn ? 0.0 : 0.4
     xOffsetRef.current = xOffsetRef.current + offsetIncrementor
 
     if (xOffsetRef.current >= slideWidth * movieStills.length) {

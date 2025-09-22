@@ -49,7 +49,7 @@ function Footer() {
           <div className="footer-container">
             <div className="footer-top p-tb-30">
               <div className="row m-minus-991">
-                <div className="col-sm-12 col-lg-3 mn-footer-cat">
+                <div className="col-sm-12 col-lg-4 mn-footer-cat">
                   <div className="mn-footer-widget mn-footer-company">
                     <img
                       src="/images/wly-logo-edited.png"
@@ -63,11 +63,11 @@ function Footer() {
                       alt="footer logo"
                       loading="lazy"
                     />
-                    
+
                     <p className="mn-footer-detail">
                       The Greatest Collection of Lovable Products for Children! Surprise your little one with every customized, love-wrapped product made just for them!
                     </p>
-                    
+
                     {/* get-it-block */}
                     {/* <div className="mn-app-store">
                       <a href="javascript:void(0)" className="app-img">
@@ -88,65 +88,13 @@ function Footer() {
 
                   </div>
                 </div>
-                <div className="col-sm-12 col-lg-2 mn-footer-info">
-                  <div className="mn-footer-widget">
-                    <h4 className="mn-footer-heading">Category</h4>
-                    <div className="mn-footer-links mn-footer-dropdown">
-                      <ul className="align-items-center">
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Fashion</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Cosmetics</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Bags & Purse</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Shoes</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Belts</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Perfumes</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-12 col-lg-2 mn-footer-account">
-                  <div className="mn-footer-widget">
-                    <h4 className="mn-footer-heading">Company</h4>
-                    <div className="mn-footer-links mn-footer-dropdown">
-                      <ul className="align-items-center">
-                        <li className="mn-footer-link">
-                          <Link to="/about-us">About us</Link>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="track-order.html">Delivery</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="faq.html">Legal Notice</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="terms.html">Terms of use</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="checkout.html">Secure payment</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <Link to="/contact-us">Contact us</Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+
                 <div className="col-sm-12 col-lg-2 mn-footer-service">
                   <div className="mn-footer-widget">
                     <h4 className="mn-footer-heading">Account</h4>
-                    <div className="mn-footer-links mn-footer-dropdown">
+                    <div className="mn-footer-links">
                       <ul className="align-items-center">
+
                         {
                           !isAuthenticated && (
                             <li className="mn-footer-link">
@@ -159,27 +107,44 @@ function Footer() {
                           <a href="cart.html"></a>
                           <Link to="/cart-items">View Cart</Link>
                         </li>
-                        <li className="mn-footer-link">
-                          <a href="faq.html">Return Policy</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="shop-right-sidebar.html">Become a Vendor</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="product-detail.html">Affiliate Program</a>
-                        </li>
-                        <li className="mn-footer-link">
-                          <a href="checkout.html">Payments</a>
-                        </li>
+
                       </ul>
                     </div>
                   </div>
                 </div>
+
+                <div className="col-sm-12 col-lg-2 mn-footer-service">
+                  <div className="mn-footer-widget">
+                    <h4 className="mn-footer-heading">Pages</h4>
+                    <div className="mn-footer-links">
+                      <ul className="align-items-center">
+
+                        <li className="mn-footer-link">
+                          <a href="cart.html"></a>
+                          <Link to="/about-us">About Us</Link>
+                        </li>
+
+                        <li className="mn-footer-link">
+                          <a href="cart.html"></a>
+                          <Link to="/about-us">Contact Us</Link>
+                        </li>
+
+
+                        <li className="mn-footer-link">
+                          <a href="cart.html"></a>
+                          <Link to="/frequently-asked-questions">FAQs</Link>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="col-sm-12 col-lg-3 mn-footer-cont-social">
                   <div className="mn-footer-contact">
                     <div className="mn-footer-widget">
                       <h4 className="mn-footer-heading">Contact</h4>
-                      <div className="mn-footer-links mn-footer-dropdown">
+                      <div className="mn-footer-links">
                         <ul className="align-items-center">
                           <li className="mn-footer-link mn-foo-location">
                             <span className="mt-15px">
@@ -335,7 +300,7 @@ function Footer() {
               </svg>
             </Link>
           </li>
-          
+
           {/* wishlist item */}
           {/* <li>
             <Link

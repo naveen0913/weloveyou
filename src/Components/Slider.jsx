@@ -3,7 +3,6 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import OwlCarousel from "./OwlCarousel";
 import { Link } from "react-router-dom";
 
 const Slider = () => {
@@ -20,14 +19,14 @@ const Slider = () => {
             discount: "75%",
             title: "Fun Labels, <br>Your Own Books",
             desc: "Your Name, Your Book, Your Story",
-            image: "images/N3.jpg",
+            image: "images/N3-updated.jpg",
         },
         {
             id: 3,
             discount: "75%",
-            title: "Your Pencil, <br>Your Power",
+            title: "Your Pencil, Your Power",
             desc: "Engraved with your name, ready to turn ideas into magic!",
-            image: "images/N4.jpg",
+            image: "images/N4-updated.jpg",
         },
         // {
         //     id: 4,
