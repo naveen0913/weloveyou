@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { API_METHODS, BaseUrl } from "../../Constants";
+import { API_METHODS, BaseUrl, prodUrl } from "../../Constants";
 import { toast, ToastContainer } from "react-toastify";
 import { ProgressSpinner } from "primereact/progressspinner";
 import ChangePassword from '../ChangePassword';
@@ -48,7 +48,7 @@ const AccountProfile = () => {
     e.preventDefault();
     setProcessing(true);
     try {
-      const res = await fetch(`${BaseUrl}account/account/${accountId}`, {
+      const res = await fetch(`${prodUrl}account/account/${accountId}`, {
         method: API_METHODS.put,
         headers: {
           "Content-Type": "application/json",

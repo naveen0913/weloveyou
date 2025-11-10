@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Slider from "./Slider";
 import { Link, useNavigate } from "react-router-dom";
 import BottomSlider from "./BottomSlider";
-import { isVideo, serverPort } from "./Constants";
+import { isVideo, prodUrl, serverPort } from "./Constants";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { ToastContainer } from "react-toastify";
 
@@ -15,7 +15,7 @@ const Products = () => {
     const getProducts = async () => {
         setProcessing(true)
         try {
-            const res = await fetch("http://localhost:8081/api/products");
+            const res = await fetch(prodUrl+"products");
             const data = await res.json();
 
             if (data.code === 200) {
@@ -160,7 +160,7 @@ const Products = () => {
                                                     className="mn-banner-img"
                                                     loading="lazy"
                                                     style={{
-                                                        background: `url(${serverPort + p.productCustomization.bannerImageUrl})`,
+                                                        background: `url(${  p.productCustomization.bannerImageUrl})`,
                                                     }}
                                                     onClick={() => navigateToProductDetail(p.productId)}
                                                 >
@@ -177,7 +177,7 @@ const Products = () => {
                                                             className="w-100 h-100"
                                                             style={{
                                                                 // background: `url(${serverPort + p.productCustomization.bannerImageUrl} )`,
-                                                                background: `url(${encodeURI(serverPort + p.productCustomization.bannerImageUrl)})`,
+                                                                background: `url(${encodeURI( p.productCustomization.bannerImageUrl)})`,
                                                                 backgroundPosition: "center",
                                                                 backgroundSize: "cover",
                                                                 borderRadius: "15px",

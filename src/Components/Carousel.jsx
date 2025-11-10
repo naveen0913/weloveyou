@@ -28,7 +28,7 @@ export default function ImageGallery({
     <img
       onContextMenu={(e) => e.preventDefault()}
       loading='lazy'
-      src={serverPort + item.thumbnailUrl}
+      src={ item.thumbnailUrl}
       alt="thumbnail-preview-image"
       style={{
         width: "100%",
@@ -41,7 +41,7 @@ export default function ImageGallery({
     <img
       onContextMenu={(e) => e.preventDefault()}
       loading='lazy'
-      src={serverPort + item.thumbnailUrl}
+      src={item.thumbnailUrl}
       alt={item.thumbnailImageName || "thumbnail"}
       style={{
         width: "60px",

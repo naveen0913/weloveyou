@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { validateEmail } from "../Constants";
+import { prodUrl, validateEmail } from "../Constants";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 
@@ -20,7 +20,7 @@ function ForgotPassword() {
     const [disabled, setDisabled] = useState(false);
     const [timer, setTimer] = useState(0);
     const [emailError, setEmailError] = useState("");
-    const [processing,setProcessing] = useState(false);
+    const [processing, setProcessing] = useState(false);
 
 
     useEffect(() => {
@@ -40,7 +40,7 @@ function ForgotPassword() {
         setProcessing(true);
         try {
             const res = await axios.post(
-                "http://localhost:8081/api/user/forgot-password",
+                prodUrl + "user/forgot-password",
                 {
                     email: email,
                 },
@@ -129,7 +129,7 @@ function ForgotPassword() {
                 navigate("/login");
                 toast.success("Password Update Successful!");
                 setProcessing(false);
-            }else{
+            } else {
                 toast.error(
                     "Failed to reset password. Check OTP.",
                 );
@@ -152,7 +152,7 @@ function ForgotPassword() {
                 </div>
             )}
         </div>
-        <div className="backg">
+            <div className="backg">
                 <div className="container-fluid d-flex align-items-center justify-content-center mt-3 mb-3">
                     <ToastContainer />
                     <div
@@ -213,7 +213,7 @@ function ForgotPassword() {
                                                 // Focus next input
                                                 const next = document.getElementById(`otp-${idx + 1}`);
                                                 if (next) next.focus();
-                                            } }
+                                            }}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Backspace") {
                                                     const otpArray = otp.split("");
@@ -226,7 +226,7 @@ function ForgotPassword() {
                                                         if (prev) prev.focus();
                                                     }
                                                 }
-                                            } }
+                                            }}
                                             id={`otp-${idx}`} />
                                     ))}
                                 </div>

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../Store/Slices/cartSlice";
 import ImageGallery from "./Carousel";
-import { BaseUrl, convertMultipleToWebP, convertToWebP, serverPort } from "./Constants"
+import { BaseUrl, convertMultipleToWebP, convertToWebP, prodUrl, serverPort } from "./Constants"
 import ProductDesignSelector from "./ImageSetter";
 
 
@@ -76,7 +76,7 @@ const ProductDetails = () => {
 
         const ctx = canvas.getContext("2d");
         const baseImg = new Image();
-        baseImg.src = serverPort + selectedDesign.imageUrl;
+        baseImg.src =   selectedDesign.imageUrl;
 
         baseImg.onload = () => {
             canvas.width = baseImg.width;
@@ -132,7 +132,7 @@ const ProductDetails = () => {
     const getDesignData = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:8081/api/designs/product/${id}`,
+                `${prodUrl}designs/product/${id}`,
             );
             if (response.status === 200) {
                 setProductDesigns(response.data);
@@ -149,7 +149,7 @@ const ProductDetails = () => {
     const fetchData = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:8081/api/products/${id}`,
+                `${prodUrl}products/${id}`,
             );
             if (response.data.code === 200) {
                 const data = response.data.data;
@@ -198,7 +198,7 @@ const ProductDetails = () => {
 
     const getRelatedProducts = async (category, currentProductId) => {
         try {
-            const res = await fetch(`http://localhost:8081/api/products`);
+            const res = await fetch(`${prodUrl}products`);
             const data = await res.json();
 
             if (data.code === 200) {
@@ -475,7 +475,7 @@ const ProductDetails = () => {
                                                                         {selectedDesigns[index].designImages.map((img) => (
                                                                             <div key={img.imageId}>
 
-                                                                                <img src={`http://localhost:8081${img.designUrl}`} alt=""
+                                                                                <img src={`${img.designUrl}`} alt=""
                                                                                     width="500"
                                                                                     imageStyle={{
                                                                                         objectFit: "cover",

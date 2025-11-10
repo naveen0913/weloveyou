@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './styles.css';
-import { ProductCategories } from "./Constants";
+import { ProductCategories, prodUrl } from "./Constants";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -19,7 +19,7 @@ const AllProducts = () => {
     const getProducts = async () => {
         setProcessing(true)
         try {
-            const res = await fetch("http://localhost:8081/api/products");
+            const res = await fetch(prodUrl+"products");
             const data = await res.json();
             if (data.code === 200) {
                 setProcessing(false);

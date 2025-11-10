@@ -3,11 +3,12 @@ import {
   checkAuthFailure,
   checkAuthSuccess,
 } from "../../Store/Slices/authSlice";
+import { prodUrl } from "../Constants";
 
 export const getAuthUser = () => async (dispatch) => {
   dispatch(checkAuthStart());
   try {
-    const response = await fetch("http://localhost:8081/api/user/authorized", {
+    const response = await fetch(prodUrl+"user/authorized", {
       method: "GET",
       credentials: "include",
     });

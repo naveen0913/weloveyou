@@ -165,6 +165,8 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
     // }, [selectedDesign, inputs, categoryHotspots, serverPort]);
 
     useEffect(() => {
+        console.log("product designs",productDesigns);
+        
         if (!selectedDesign) return;
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -172,7 +174,7 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
         const ctx = canvas.getContext("2d");
         const baseImg = new Image();
         baseImg.crossOrigin = "anonymous";
-        baseImg.src = serverPort + selectedDesign.imageUrl;
+        baseImg.src = selectedDesign.imageUrl;
 
         baseImg.onload = () => {
             canvas.width = baseImg.width;
@@ -447,7 +449,7 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
                                             if (selectedDesign) {
                                                 const baseImg = new Image();
                                                 baseImg.crossOrigin = "anonymous";
-                                                baseImg.src = serverPort + selectedDesign.imageUrl;
+                                                baseImg.src =  selectedDesign.imageUrl;
                                                 baseImg.onload = () => {
                                                     ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
                                                 };
@@ -477,7 +479,7 @@ const ProductDesignSelector = ({ productDesigns, onInputsChange, onChangeDesign 
                     selectedDesign={selectedDesign}
                     previewSheets={filteredPreview}
                     inputs={inputs}
-                    serverPort={serverPort}
+                    serverPort={""}
                 />
             )}
 

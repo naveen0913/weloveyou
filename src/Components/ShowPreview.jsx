@@ -25,7 +25,7 @@ const ShowPreview = ({ visible, onHide, selectedDesign, previewSheets, inputs, s
       const ctx = canvas.getContext("2d");
       const baseImg = new Image();
       baseImg.crossOrigin = "anonymous";
-      baseImg.src = serverPort + preview.imageUrl;
+      baseImg.src = preview.imageUrl;
 
       baseImg.onload = () => {
         canvas.width = baseImg.width;

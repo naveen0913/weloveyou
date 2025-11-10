@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Plus, Edit, Trash2, Home, Building, ShoppingBag } from "lucide-react";
-import { API_METHODS, BaseUrl } from "../../Constants";
+import { API_METHODS, BaseUrl, prodUrl } from "../../Constants";
 import axios from "axios";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { ToastContainer } from "react-toastify";
@@ -33,7 +33,7 @@ const AddressBook = () => {
   const fetchAddresses = async () => {
     setProcessing(true);
     try {
-      const response = await axios.get(`${BaseUrl}account/user/${user?.id}`);
+      const response = await axios.get(`${prodUrl}account/user/${user?.id}`);
       if (response.data.code === 200) {
         const addressList = response.data.data.addresses;
         setAddresses(addressList);
@@ -95,7 +95,7 @@ const AddressBook = () => {
     const updated = addresses.filter((addr) => addr.addressId !== addressId);
     setProcessing(true);
     try {
-      const res = await fetch(`${BaseUrl}user-address/${addressId}`, {
+      const res = await fetch(`${prodUrl}user-address/${addressId}`, {
         method: API_METHODS.delete,
         credentials: "include",
       });
@@ -118,7 +118,7 @@ const AddressBook = () => {
     try {
       if (editingAddress) {
         let updatedAddress = { ...formData, addressId: editingAddress };
-        const res = await fetch(`${BaseUrl}user-address/${editingAddress}`, {
+        const res = await fetch(`${prodUrl}user-address/${editingAddress}`, {
           method: API_METHODS.put,
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -136,7 +136,7 @@ const AddressBook = () => {
       } else {
         const newAddress = { ...formData, isDefault: false };
         setProcessing(true);
-        const res = await fetch(`${BaseUrl}user-address/${accountId}`, {
+        const res = await fetch(`${prodUrl}user-address/${accountId}`, {
           method: API_METHODS.post,
           credentials: "include",
           headers: { "Content-Type": "application/json" },

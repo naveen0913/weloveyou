@@ -54,7 +54,7 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8081/api/user/signup", {
+            const response = await fetch(prodUrl + "user/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const Register = () => {
             }
         } catch (error) {
             toast.error("Server error. Please try again later.");
-        } finally{
+        } finally {
             setProcessing(false);
         }
 

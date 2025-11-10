@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { RAZORPAY_KEY, calculateCartItemTotals, initialAddressState, isVideo, serverPort } from "../Constants";
+import { RAZORPAY_KEY, calculateCartItemTotals, initialAddressState, isVideo, prodUrl, serverPort } from "../Constants";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,7 +49,7 @@ const Checkout = () => {
     const fetchAddresses = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:8081/api/account/user/${user?.id}`);
+                `${prodUrl}account/user/${user?.id}`);
 
             const accountData = response.data?.data;
             const addressList = accountData?.addresses;

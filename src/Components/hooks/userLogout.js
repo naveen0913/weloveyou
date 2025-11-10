@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../Store/Slices/authSlice";
 import { clearCart } from "../../Store/Slices/cartSlice";
+import { prodUrl } from "../Constants";
 
 export const userLogout = () => {
   const dispatch = useDispatch();
   const logout = async () => {
     try {
-      await fetch("http://localhost:8081/api/user/logout", {
+      await fetch(prodUrl+"user/logout", {
         method: "POST",
         credentials: "include",
       });

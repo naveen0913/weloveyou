@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure, setUser } from "../../Store/Slices/authSlice";
-import { validateEmail } from "../Constants";
+import { prodUrl, validateEmail } from "../Constants";
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 
@@ -31,7 +31,6 @@ const Login = () => {
 
 
     const handleSubmit = async (e) => {
-        setProcessing(true);
         e.preventDefault();
         const emailError = validateEmail(form.email);
         setErrors({
@@ -44,7 +43,7 @@ const Login = () => {
         dispatch(loginStart());
         setProcessing(true);
         try {
-            const response = await fetch("http://localhost:8081/api/user/login", {
+            const response = await fetch(prodUrl+"user/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),

@@ -25,7 +25,7 @@ const Contact = () => {
 
         try {
             const response = await fetch(
-                "http://localhost:8081/api/contact/message",
+                prodUrl + "contact/message",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

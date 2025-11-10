@@ -1,6 +1,7 @@
 export const BaseUrl = "http://localhost:8081/api/"
 export const serverPort = "http://localhost:8081"
 export const cartImageUrlPort = "http://localhost:8081/uploads/"
+export const prodUrl = "https://centering-cable-477806-s9.el.r.appspot.com/api/";
 
 export const API_METHODS = {
   get: "GET",

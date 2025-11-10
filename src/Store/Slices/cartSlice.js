@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { BaseUrl } from "../../Components/Constants";
+import { BaseUrl, prodUrl } from "../../Components/Constants";
 
 const API_BASE = "http://localhost:8081/api/cart";
 
@@ -15,9 +15,11 @@ export const fetchCartItems = createAsyncThunk(
         return rejectWithValue("User not authenticated");
       }
 
-      const res = await axios.get(
-        `http://localhost:8081/api/cart/user/${userId}`
-      );
+      // const res = await axios.get(
+      //   `http://localhost:8081/api/cart/user/${userId}`
+      // );
+
+      const res = await axios.get(prodUrl+"cart/user/"+userId)
 
       if (res.data.code === 200) {
         return { items: res.data.data };
@@ -42,7 +44,7 @@ export const updateCartQuantity = createAsyncThunk(
       formData.append("cartPayload", JSON.stringify(cartPayload));
 
       const res = await axios.put(
-        `${API_BASE}/update/${cartItemId}`,
+        `${prodUrl}cart/update/${cartItemId}`,
         formData,
         {
           headers: {
@@ -117,7 +119,7 @@ export const addToCart = createAsyncThunk(
       }
 
       const res = await axios.post(
-        `${API_BASE}/add/${selectedOption.id}/${userId}/${productId}`,
+        `${prodUrl}cart/add/${selectedOption.id}/${userId}/${productId}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -153,7 +155,7 @@ export const uploadCustomerPreview = createAsyncThunk(
         }
 
         const response = await axios.post(
-          `${BaseUrl}cart/add/cart/preview-data/${cartId}`,
+          `${prodUrl}cart/add/cart/preview-data/${cartId}`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },

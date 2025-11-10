@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { convertToWebP } from "./Constants";
+import { convertToWebP, prodUrl } from "./Constants";
 
 const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
     const [product, setProduct] = useState([]);
@@ -13,7 +13,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
     const getProductData = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:8081/api/products/${productId}`
+                `${prodUrl}products/${productId}`
             );
             if (response.data.code === 200) {
                 let images = response.data.data.customImageResponse;
@@ -156,7 +156,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                                     imgRefs.current[img.displayId] = el;
                                 }
                             }}
-                            src={`http://localhost:8081${img.imageUrl}`}
+                            src={`${img.imageUrl}`}
                             alt={img.imageName}
                             className="img-fluid"
                             style={{ width: "100%", maxWidth: "800px",margin:"10px 0" }}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { prodUrl } from "../Constants";
 // import "react-toastify/dist/ReactToastify.css";
 // import { BsEye, BsEyeSlash } from "react-icons/bs";
 // import "./Style.css";
@@ -39,7 +40,7 @@ const ChangePassword = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:8081/api/user/${userId}/change-password`,
+        `${prodUrl}user/${userId}/change-password`,
         {
           currentPassword,
           newPassword,
