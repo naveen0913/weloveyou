@@ -1021,7 +1021,7 @@ body {
   margin: 0;
   font-family: "Poppins, sans-serif";
   letter-spacing: 0.03rem;
-  background-color: #f1f4f7;
+  background-color: white;
   overflow-x: hidden;
 }
 
@@ -1052,51 +1052,7 @@ p {
   background-image: url("../img/bg/bg.html");
 }
 
-.mn-btn-1 {
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-  padding: 7px 12px;
-  background-color: #ffd783;
-  color: #313b50;
-  border-radius: 10px;
-  border: 0;
-  position: relative;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  overflow: hidden;
-}
-.mn-btn-1 span {
-  position: relative;
-  z-index: 2;
-  font-size: 14px;
-}
-.mn-btn-1:after {
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-  content: "";
-  width: 200px;
-  height: 200px;
-  background-color: #3a4ee5;
-  position: absolute;
-  left: -240px;
-  top: -75px;
-  -webkit-transform: rotate(145deg);
-          transform: rotate(145deg);
-}
-.mn-btn-1:hover {
-  color: #fff;
-  background-color: #3a4ee5;
-}
-.mn-btn-1:hover:after {
-  left: -25px;
-  top: -75px;
-}
-.mn-btn-1:focus {
-  outline: none;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
-}
+
 
 .mn-btn-2 {
   -webkit-transition: all 0.3s ease-in-out;
@@ -5546,18 +5502,13 @@ button.btn-close.qty_close {
   position: relative;
 }
 .mn-modern-banner .modern-banner .mn-banner-img {
-  width: calc(100% - 400px);
-  height: 500px;
+  width: calc(100% - 500px);
+  height: 700px;
   border-radius: 15px;
   background-size: cover;
   background-position: center;
 }
-.mn-modern-banner .modern-banner .mn-banner-img.img-1 {
-  background-image: url("../img/banner/1.jpg");
-}
-.mn-modern-banner .modern-banner .mn-banner-img.img-2 {
-  background-image: url("../img/banner/2.jpg");
-}
+
 .mn-modern-banner .modern-banner .mn-banner-contact {
   width: 370px;
   position: absolute;
@@ -5615,12 +5566,7 @@ button.btn-close.qty_close {
       -ms-flex-pack: center;
           justify-content: center;
 }
-.mn-banner-contact .inner-banner {
-  margin-bottom: 16px;
-  position: relative;
-  left: -100px;
-  width: calc(100% + 100px);
-}
+
 .mn-banner-contact .inner-banner h4 {
   margin: 0;
   font-size: 68px;
@@ -5805,9 +5751,9 @@ button.btn-close.qty_close {
   .mn-modern-banner .modern-banner .mn-banner-contact {
     width: 270px;
   }
-  .mn-modern-banner .modern-banner .mn-banner-img {
+  /* .mn-modern-banner .modern-banner .mn-banner-img {
     width: calc(100% - 300px);
-  }
+  } */
   .mn-ofr-banners .mn-bnr-body .mn-bnr-detail {
     max-width: 230px;
   }
