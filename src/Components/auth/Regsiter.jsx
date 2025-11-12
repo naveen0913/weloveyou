@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
-import { validateEmail, validatePassword, validateUsername } from "../Constants";
+import { prodUrl, validateEmail, validatePassword, validateUsername } from "../Constants";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 
@@ -36,53 +36,50 @@ const Register = () => {
     };
 
     const handleSubmit = async (e) => {
-        setProcessing(true);
         e.preventDefault();
+        setProcessing(true);
 
         const usernameError = validateUsername(form.username);
         const emailError = validateEmail(form.email);
         const passwordError = validatePassword(form.password);
 
-        setErrors({
+        const newErrors = {
             username: usernameError,
             email: emailError,
             password: passwordError,
-        });
+        };
+        setErrors(newErrors);
 
         if (usernameError || emailError || passwordError) {
+            setProcessing(false);
             return;
         }
 
         try {
             const response = await fetch(prodUrl + "user/signup", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
             });
 
             const data = await response.json();
-            if (response.status === 200) {
-                setProcessing(false);
-                setSubmitted(true);
-                setForm({ username: "", email: "", password: "" });
 
+            if (response.ok) {
                 toast.success("Signup successful!", {
                     autoClose: 100,
-                    onClose: () => {
-                        navigate("/login");
-                    },
+                    onClose: () => navigate("/login"),
                 });
+                setForm({ username: "", email: "", password: "" });
+                setSubmitted(true);
             } else {
-                toast.error("Signup failed.");
+                toast.error(data.message || "Signup failed.");
             }
         } catch (error) {
             toast.error("Server error. Please try again later.");
+            console.error("Signup error:", error);
         } finally {
             setProcessing(false);
         }
-
     };
 
     return (
@@ -183,9 +180,9 @@ const Register = () => {
                                                 <button
                                                     className="mn-btn-1 btn"
                                                     type="submit"
-                                                    disabled={errors.username || errors.email || errors.password}
+                                                    disabled={processing}
                                                 >
-                                                    <span>Register</span>
+                                                    {processing ? "Registering..." : "Register"}
                                                 </button>
                                             </span>
                                         </form>

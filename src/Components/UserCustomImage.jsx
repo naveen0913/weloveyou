@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { convertToWebP, prodUrl } from "./Constants";
+import { Info } from "lucide-react"
 
-const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
+const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange, coverpagevalue }) => {
     const [product, setProduct] = useState([]);
     const [tableItemsCount, setTableItemsCount] = useState(1);
     const imgRefs = useRef({});
     const canvasRefs = useRef({});
-
     const [hotspotInputs, setHotspotInputs] = useState({});
 
     const getProductData = async () => {
@@ -46,13 +46,13 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
         }
     }, [productId]);
 
-   
+
 
     const handleFileChange = (realId, displayId, hotspotIndex, e) => {
         const file = e.target.files[0];
         if (!file) return;
         if (uploadedImage) uploadedImage(file);
-    
+
         const reader = new FileReader();
         reader.onload = (ev) => {
             const uploadImg = new Image();
@@ -61,33 +61,31 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                 const imgEl = imgRefs.current[displayId];
                 const canvasEl = canvasRefs.current[`${displayId}-${hotspotIndex}`];
                 const ctx = canvasEl.getContext("2d");
-    
+
                 canvasEl.width = imgEl.clientWidth;
                 canvasEl.height = imgEl.clientHeight;
-    
+
                 ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    
+
                 const hotspotGroup = product.find((img) => img.id === realId)?.hotspots[hotspotIndex];
                 if (!hotspotGroup || hotspotGroup.length === 0) return;
-    
-                // convert hotspot % → px
+
                 const coordsPx = hotspotGroup.map((p) => ({
                     x: (p.x / 100) * imgEl.clientWidth,
                     y: (p.y / 100) * imgEl.clientHeight,
                 }));
-    
+
                 let minX = Math.min(...coordsPx.map((p) => p.x));
                 let maxX = Math.max(...coordsPx.map((p) => p.x));
                 let minY = Math.min(...coordsPx.map((p) => p.y));
                 let maxY = Math.max(...coordsPx.map((p) => p.y));
-    
+
                 const boxWidth = Math.max(1, Math.round(maxX - minX));
                 const boxHeight = Math.max(1, Math.round(maxY - minY));
-    
-                // cover-fit logic
+
                 const imgRatio = uploadImg.width / uploadImg.height;
                 const boxRatio = boxWidth / boxHeight;
-    
+
                 let drawW, drawH, offsetX, offsetY;
                 if (imgRatio > boxRatio) {
                     drawH = boxHeight;
@@ -100,18 +98,78 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                     offsetX = minX;
                     offsetY = minY + (boxHeight - drawH) / 2;
                 }
-    
-                // 1. Draw uploaded image first (behind)
+
                 ctx.drawImage(uploadImg, offsetX, offsetY, drawW, drawH);
-    
-                // 2. Then draw the base background image (in front)
                 ctx.drawImage(imgEl, 0, 0, canvasEl.width, canvasEl.height);
             };
             uploadImg.src = ev.target.result;
         };
         reader.readAsDataURL(file);
     };
-    
+
+    const handleTextChange = (displayId, hotspotIndex, hotspotGroup, value) => {
+        setHotspotInputs((prev) => ({
+            ...prev,
+            [`${displayId}-${hotspotIndex}`]: value,
+        }));
+        
+        if (onCustomDataChange) {
+            onCustomDataChange(value);
+        }
+
+
+        const imgEl = imgRefs.current[displayId];
+        const canvasEl = canvasRefs.current[`${displayId}-${hotspotIndex}`];
+        if (!imgEl || !canvasEl) return;
+
+        const ctx = canvasEl.getContext("2d");
+        canvasEl.width = imgEl.clientWidth;
+        canvasEl.height = imgEl.clientHeight;
+
+        ctx.drawImage(imgEl, 0, 0, canvasEl.width, canvasEl.height);
+
+        const coordsPx = hotspotGroup.map((p) => ({
+            x: (p.x / 100) * imgEl.clientWidth,
+            y: (p.y / 100) * imgEl.clientHeight,
+        }));
+
+        const minX = Math.min(...coordsPx.map((p) => p.x));
+        const maxX = Math.max(...coordsPx.map((p) => p.x));
+        const minY = Math.min(...coordsPx.map((p) => p.y));
+        const maxY = Math.max(...coordsPx.map((p) => p.y));
+
+        const boxWidth = maxX - minX;
+        const boxHeight = maxY - minY;
+
+        ctx.font = "bold 18pt Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+
+        const upperText = value.toUpperCase();
+
+        const wrapText = (text, x, y, maxWidth, lineHeight) => {
+            const words = text.split(" ");
+            let line = "";
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + " ";
+                const testWidth = ctx.measureText(testLine).width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, y);
+                    line = words[n] + " ";
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, y);
+        };
+
+        const lineHeight = 28;
+
+        wrapText(upperText, minX, minY - 1, boxWidth, lineHeight);
+    };
+
 
     const getUserImageData = async (name, type, e) => {
         const convertedFile = await convertToWebP(e.target.files[0]);
@@ -122,7 +180,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
             imageName: name,
             imageType: type,
         };
-        
+
         if (onCustomDataChange) {
             onCustomDataChange(payload);
         }
@@ -147,9 +205,8 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                 })
                 .map((img) => (
                     <div key={img.displayId} className="position-relative d-inline-block">
-                        
                         <img
-                         onContextMenu={(e)=>e.preventDefault()}
+                            onContextMenu={(e) => e.preventDefault()}
                             ref={(el) => {
                                 if (el) {
                                     el.crossOrigin = "anonymous";
@@ -159,7 +216,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                             src={`${img.imageUrl}`}
                             alt={img.imageName}
                             className="img-fluid"
-                            style={{ width: "100%", maxWidth: "800px",margin:"10px 0" }}
+                            style={{ width: "100%", maxWidth: "800px", margin: "10px 0" }}
                         />
 
                         {img.hotspots.map((_, hotspotIndex) => (
@@ -173,41 +230,83 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange }) => {
                             ></canvas>
                         ))}
 
-                        {img.hotspots.map((hotspotGroup, hotspotIndex) => (
-                            <div key={hotspotIndex}>
-                                <label className="fw-semibold mb-1">
-                                    {img.imageType === "tablesPage"
-                                        ? `Upload Image for ${img.name}`
-                                        : `Upload Image for ${img.name}`}
-                                </label>
-                                <div
-                                    className="p-2 border rounded text-center position-relative"
-                                    style={{ borderStyle: "dashed", color: "#aaa" }}
-                                >
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="w-100"
-                                        style={{ display: "none", }}
-                                        onChange={(e) => {
-                                            handleFileChange(img.realId, img.displayId, hotspotIndex, e);
-                                            getUserImageData(img.name, img.imageType, e);
-                                        }}
-                                        id={`file-${img.displayId}-${hotspotIndex}`}
-                                    />
-                                    <label
-                                        htmlFor={`file-${img.displayId}-${hotspotIndex}`}
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        <div style={{ fontSize: 20 }}>📤</div>
-                                        Drop your file here, or{" "}
-                                        <span className="text-primary">Browse</span>
-                                        <div className="small mt-1">Maximum file size 5MB</div>
-                                    </label>
-                                </div>
-                            </div>
-                        ))}
 
+                        {img.hotspots.map((hotspotGroup, hotspotIndex) => {
+                            const dataType = hotspotGroup[0]?.dataType;
+
+                            return (
+                                <div key={hotspotIndex}>
+
+                                    {
+                                        dataType === "image" && (
+
+                                            <>
+                                                <label className="fw-semibold mb-1">
+                                                    Upload Image for {img.name}
+                                                </label>
+                                                <div
+                                                    className="p-2 border rounded text-center position-relative mb-3"
+                                                    style={{ borderStyle: "dashed", color: "#aaa" }}>
+
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        className="w-100"
+                                                        style={{ display: "none" }}
+                                                        
+                                                        onChange={(e) => {
+                                                            handleFileChange(img.realId, img.displayId, hotspotIndex, e);
+                                                            getUserImageData(img.name, img.imageType, e);
+                                                        }}
+                                                        id={`file-${img.displayId}-${hotspotIndex}`} 
+                                                        />
+                                                    <label
+                                                        htmlFor={`file-${img.displayId}-${hotspotIndex}`}
+                                                        style={{ cursor: "pointer" }}
+                                                    >
+                                                        <div style={{ fontSize: 20 }}>📤</div>
+                                                        Drop your file here, or{" "}
+                                                        <span className="text-primary">Browse</span>
+                                                        <div className="small mt-1">Maximum file size 5MB</div>
+                                                    </label>
+                                                </div>
+                                            </>
+                                        )
+                                    }
+
+
+                                    {dataType === "text" && (
+                                        <div className="mb-3">
+                                            <label className="fw-semibold mb-1">
+                                                Enter Text for {img.name}
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Enter text here..."
+                                                maxLength={8}
+                                                value={hotspotInputs[`${img.displayId}-${hotspotIndex}`] || ""}
+                                                onChange={(e) =>
+                                                    handleTextChange(
+                                                        img.displayId,
+                                                        hotspotIndex,
+                                                        hotspotGroup,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                            <div className="note-container">
+                                                <Info size={18} color="#007bff" />
+                                                <span style={{ fontSize: "12px" }}>
+                                                    <strong>Note:</strong> Enter text like <em>Harry</em>, <em>Vivek</em>, etc.
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 ))}
         </div>

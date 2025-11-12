@@ -102,7 +102,7 @@ const CartItems = () => {
                                                                             {
                                                                                 isVideo(item.product.productUrl) ? (
                                                                                     <video
-                                                                                        src={serverPort + `${item.product.productUrl}`}
+                                                                                        src={ `${item.product.productUrl}`}
                                                                                         width="65"
                                                                                         height="50"
                                                                                         style={{
@@ -115,7 +115,7 @@ const CartItems = () => {
                                                                                 ) : (
                                                                                     <img
                                                                                         className="mn-cart-pro-img"
-                                                                                        src={`http://localhost:8081${item.product.productUrl}`}
+                                                                                        src={`${item.product.productUrl}`}
                                                                                         alt={item.product.productName}
                                                                                         onClick={() => navigate(`/product-details/${item.product.productId}`)}
 
@@ -214,7 +214,7 @@ const CartItems = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Sidebar Area (optional) */}
+
 
                     {
                         items.length >= 1 && (
@@ -226,47 +226,7 @@ const CartItems = () => {
                                             <h3 className="mn-sidebar-title">Summary</h3>
                                         </div>
 
-                                        {/* <div className="mn-sb-block-content">
-                                    <div className="mn-cart-form">
-                                        <p>Enter your destination to get a shipping estimate</p>
-                                        <form action="#" method="post">
-                                            <span className="mn-cart-wrap">
-                                                <label>Country *</label>
-                                                    <span className="mn-cart-select-inner">
-                                                        <select name="gi_cart_country" id="mn-cart-select-country"
-                                                            className="mn-cart-select">
-                                                            <option selected="" disabled="">United States</option>
-                                                            <option value="1">Country 1</option>
-                                                            <option value="2">Country 2</option>
-                                                            <option value="3">Country 3</option>
-                                                            <option value="4">Country 4</option>
-                                                            <option value="5">Country 5</option>
-                                                        </select>
-                                                    </span>
-                                            </span>
-                                            <span className="mn-cart-wrap">
-                                                <label>State/Province</label>
-                                                <span className="mn-cart-select-inner">
-                                                    <select name="gi_cart_state" id="mn-cart-select-state"
-                                                        className="mn-cart-select">
-                                                        <option selected="" disabled="">Please Select a region,
-                                                            state
-                                                        </option>
-                                                        <option value="1">Region/State 1</option>
-                                                        <option value="2">Region/State 2</option>
-                                                        <option value="3">Region/State 3</option>
-                                                        <option value="4">Region/State 4</option>
-                                                        <option value="5">Region/State 5</option>
-                                                    </select>
-                                                </span>
-                                            </span>
-                                            <span className="mn-cart-wrap">
-                                                <label>Zip/Postal Code</label>
-                                                <input type="text" name="postalcode" placeholder="Zip/Postal Code" />
-                                            </span>
-                                        </form>
-                                    </div>
-                                </div> */}
+                                        
 
                                         <div className="mn-sb-block-content">
                                             <div className="mn-cart-summary-bottom">

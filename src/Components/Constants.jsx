@@ -140,7 +140,7 @@ export const convertToWebP = (file, maxWidth = 1920, maxHeight = 1080, quality =
 
         let { width, height } = img;
 
-        // ✅ Resize if image is larger than max
+        
         if (width > maxWidth || height > maxHeight) {
           const aspectRatio = width / height;
           if (width > height) {

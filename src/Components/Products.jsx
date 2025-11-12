@@ -104,6 +104,7 @@ const Products = () => {
                                                     src={product.productUrl}
                                                     alt={product.productName}
                                                     className="p-img"
+                                                    onClick={()=>navigateToProductDetail(product.productId)}
                                                 />
                                             </div>
 
@@ -113,6 +114,7 @@ const Products = () => {
                                                     src={product.productUrl}
                                                     alt={product.productName}
                                                     className="mobile-view"
+                                                    onClick={()=>navigateToProductDetail(product.productId)}
                                                 />
                                             </div>
 

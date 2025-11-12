@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { cartImageUrlPort, isVideo, serverPort } from "../../Constants"
+import { cartImageUrlPort, isVideo, prodUrl, serverPort } from "../../Constants"
 import './accountstyles.css';
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
@@ -18,7 +18,7 @@ const ViewOrder = ({ data, onBack }) => {
 
     const fetchOrderDetails = async () => {
         try {
-            const res = await axios.get(`http://localhost:8081/api/order/${data}`);
+            const res = await axios.get(`${prodUrl}order/${data}`);
             if (res.data.code === 200) {
                 setOrder(res.data.data);
                 console.log("order", res.data.data);
@@ -202,7 +202,7 @@ const ViewOrder = ({ data, onBack }) => {
                                         <td data-label="Product">
                                             {isVideo(item.product.productUrl) ? (
                                                 <video
-                                                    src={serverPort + `${item.product.productUrl}`}
+                                                    src={`${item.product.productUrl}`}
                                                     className="product-media"
                                                     onClick={() =>
                                                         navigate(`/product-details/${item.product.productId}`)
@@ -210,7 +210,7 @@ const ViewOrder = ({ data, onBack }) => {
                                                 />
                                             ) : (
                                                 <img
-                                                    src={serverPort + item.product.productUrl}
+                                                    src={item.product.productUrl}
                                                     alt={item.dishName}
                                                     className="product-media"
                                                     onClick={() =>

@@ -10,6 +10,7 @@ import { addToCart } from "../Store/Slices/cartSlice";
 import ImageGallery from "./Carousel";
 import { BaseUrl, convertMultipleToWebP, convertToWebP, prodUrl, serverPort } from "./Constants"
 import ProductDesignSelector from "./ImageSetter";
+import { Info } from "lucide-react";
 
 
 const ProductDetails = () => {
@@ -51,7 +52,8 @@ const ProductDetails = () => {
     const canvasRef = useRef(null);
     const [childInputs, setChildInputs] = useState({});
     const [previews, setPreviews] = useState([]);
-
+    const [coverPageName, setCoverPageName] = useState("");
+    const [childCoverPageName, setChildCoverPageName] = useState("");
 
     const categoryHotspots = {};
     productDesigns.forEach((design) => {
@@ -76,7 +78,7 @@ const ProductDetails = () => {
 
         const ctx = canvas.getContext("2d");
         const baseImg = new Image();
-        baseImg.src =   selectedDesign.imageUrl;
+        baseImg.src = selectedDesign.imageUrl;
 
         baseImg.onload = () => {
             canvas.width = baseImg.width;
@@ -261,8 +263,6 @@ const ProductDetails = () => {
         setSelectedDesigns(updated);
     };
 
-
-
     const handleMultiUpload = async (e) => {
         const files = Array.from(e.target.files);
         // Converting all to webp
@@ -297,8 +297,12 @@ const ProductDetails = () => {
     };
 
     const handleCustomDataChange = (customData) => {
-        console.log("customer preview image files", customData);
-        setTablePreviewData((pre) => [...pre, customData]);
+        console.log("customer preview data", customData);
+        if (customData?.imageFile) {
+            setTablePreviewData((pre) => [...pre, customData]);
+        } else if (typeof customData === "string") {
+            setChildCoverPageName(customData);
+        }
 
     };
 
@@ -324,7 +328,7 @@ const ProductDetails = () => {
     };
 
     const addCart = async (selectedOption, userId, id) => {
-        
+
         if (!isAuthenticated) {
             toast.error("User not identified. Please log in again.");
             navigate('/login');
@@ -366,6 +370,12 @@ const ProductDetails = () => {
             }
         })
 
+        tablePreviewData.forEach((item) => {
+            if (item instanceof File) {
+                formData.append("customImages", item);
+            }
+        });
+
         if (!hasImage) {
             formData.append("customImages", new File([], "empty.jpg"));
         }
@@ -390,7 +400,8 @@ const ProductDetails = () => {
             totalPrice: totalPrice,
             cartItemDesigns: cartItemDesigns,
             mainPhoto: effectiveMainPhoto || null,
-            uploadedPhotos: uploadedPhotos || []
+            uploadedPhotos: uploadedPhotos || tablePreviewData,
+            coverPageName: coverPageName || childCoverPageName
         };
 
         formData.append("cartPayload", JSON.stringify(payload));
@@ -624,6 +635,27 @@ const ProductDetails = () => {
                                                             </div>
                                                         ))}
                                                     </div>
+
+                                                    <div className="mt-4">
+                                                        <label className="mb-1" htmlFor="coverPagename">
+                                                            Enter Text for Cover Page
+                                                        </label>
+                                                        <input
+                                                            id="coverPagename"
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Enter text here..."
+                                                            value={coverPageName}
+                                                            maxLength={8}
+                                                            onChange={(e) => setCoverPageName(e.target.value)}
+                                                        />
+                                                        <div className="note-container">
+                                                            <Info size={18} color="#007bff" />
+                                                            <span style={{ fontSize: "12px" }}>
+                                                                <strong>Note:</strong> Enter text like <em>Harry</em>, <em>Vivek</em>, etc.
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -652,6 +684,7 @@ const ProductDetails = () => {
                                                 productId={id}
                                                 uploadedImage={null}
                                                 onCustomDataChange={handleCustomDataChange}
+                                                coverpagevalue={childCoverPageName}
                                             />
                                         </div>
 
@@ -673,9 +706,6 @@ const ProductDetails = () => {
                                             />
                                         </div>
                                     )}
-
-
-
 
                                     <div className="d-flex flex-row  gap-2 mb-3">
                                         <Checkbox id="giftWrap" onChange={() => setGiftWrap((prev) => !prev)} checked={giftWrap}></Checkbox>
@@ -711,36 +741,7 @@ const ProductDetails = () => {
                                         </div>
                                     </div>
 
-                                    {/* <div className="mn-single-pro-tab r">
-                                        <div className="mn-single-pro-tab-wrapper">
-                                            <div className="mn-single-pro-tab-nav">
-                                                <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                                    <li className="nav-item" role="presentation">
-                                                        <button className="nav-link active" id="details-tab"
-                                                            data-bs-toggle="tab" data-bs-target="#mn-spt-nav-details"
-                                                            type="button" role="tab" aria-controls="mn-spt-nav-details"
-                                                            aria-selected="true">Detail</button>
-                                                    </li>
-                                                </ul>
-
-                                            </div>
-                                            <div className="tab-content  mn-single-pro-tab-content">
-                                                <div id="mn-spt-nav-details" className="tab-pane fade show active">
-                                                    <div className="mn-single-pro-tab-desc">
-                                                        <p>
-                                                            {product.productdescription}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div> */}
-
-
                                 </div>
-
-
 
                             </div>
                         </div>

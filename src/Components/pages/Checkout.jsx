@@ -53,6 +53,8 @@ const Checkout = () => {
 
             const accountData = response.data?.data;
             const addressList = accountData?.addresses;
+            console.log("address", addressList);
+
 
             setAccountId(accountData.id);
             setAddresses(addressList);
@@ -90,7 +92,7 @@ const Checkout = () => {
     const addNewAddress = async () => {
         try {
             const res = await axios.post(
-                `http://localhost:8081/api/user-address/${accountId}`,
+                `${prodUrl}user-address/${accountId}`,
                 newAddress,
             );
             if (res.data.code === 201) {
@@ -137,7 +139,7 @@ const Checkout = () => {
         }
 
         try {
-            const res = await axios.put(`http://localhost:8081/api/user-address/${selectedAddressId}`, mergedPayload);
+            const res = await axios.put(`${prodUrl}user-address/${selectedAddressId}`, mergedPayload);
             if (res.data.code === 200) {
                 toast.success("Address Updated successfully!")
                 setIsEditing(false);
@@ -216,7 +218,7 @@ const Checkout = () => {
 
         try {
             const razorpayRes = await axios.post(
-                `http://localhost:8081/api/payment/create/${accountId}/${selectedAddressId}`,
+                `${prodUrl}payment/create/${accountId}/${selectedAddressId}`,
                 paymentPayload,
             );
 
@@ -244,7 +246,7 @@ const Checkout = () => {
                             status: "SUCCESS",
                         };
                         const verifyRes = await axios.post(
-                            "http://localhost:8081/api/payment/verify-payment",
+                            prodUrl + "payment/verify-payment",
                             verifyPayload,
                         );
 
@@ -320,33 +322,39 @@ const Checkout = () => {
 
                                     <div className="mn-checkout-wrap m-b-30 padding-bottom-3">
                                         <div className="mn-checkout-block mn-check-bill">
-                                            <h3 className="mn-checkout-title">Billing Details</h3>
+                                            <h3 className="mn-checkout-title">Checkout Options</h3>
+                                            <hr />
                                             <div className="mn-bl-block-content">
-                                                <div className="mn-check-subtitle">Checkout Options</div>
-                                                <span className="mn-bill-option">
-                                                    <span className="m-b-15">
-                                                        <input type="radio" id="bill1" name="radio-group" checked={mode === "existing"}
-                                                            onChange={() => {
-                                                                setMode("existing");
-                                                                setIsEditing(false);
-                                                            }} />
-                                                        <label htmlFor="bill1">I want to use an existing address</label>
-                                                    </span>
-                                                    <span className="">
-                                                        <input type="radio" id="bill2" name="radio-group"
-                                                            checked={mode === "new"}
+                                                {/* <div className="mn-check-subtitle">Checkout Options</div> */}
+                                                {
+                                                    addresses.length > 0 && (
+                                                        <span className="mn-bill-option">
+                                                            <span className="m-b-15">
+                                                                <input type="radio" id="bill1" name="radio-group" checked={mode === "existing"}
+                                                                    onChange={() => {
+                                                                        setMode("existing");
+                                                                        setIsEditing(false);
+                                                                    }} />
+                                                                <label htmlFor="bill1">I want to use an existing address</label>
+                                                            </span>
+                                                            <span className="">
+                                                                <input type="radio" id="bill2" name="radio-group"
+                                                                    checked={mode === "new"}
 
-                                                            onChange={() => {
-                                                                setIsEditing(true);
-                                                                setEditingAddressId(null);
-                                                                setEditingAddressData({});
-                                                                setNewAddress(initialAddressState);
-                                                                setFormErrors({});
-                                                                setMode("new");
-                                                            }} />
-                                                        <label htmlFor="bill2">I want to use new address</label>
-                                                    </span>
-                                                </span>
+                                                                    onChange={() => {
+                                                                        setIsEditing(true);
+                                                                        setEditingAddressId(null);
+                                                                        setEditingAddressData({});
+                                                                        setNewAddress(initialAddressState);
+                                                                        setFormErrors({});
+                                                                        setMode("new");
+                                                                    }} />
+                                                                <label htmlFor="bill2">I want to use new address</label>
+                                                            </span>
+                                                        </span>
+
+                                                    )
+                                                }
 
 
 
@@ -391,7 +399,7 @@ const Checkout = () => {
                                                                                 className={`form-control ${formErrors.lastName ? "is-invalid" : ""}`}
                                                                                 placeholder="Enter last name"
                                                                                 value={newAddress.lastName}
-                                                                                required
+                                                                                
                                                                                 onChange={(e) => setNewAddress({ ...newAddress, lastName: e.target.value })} />
                                                                             {formErrors.lastName && (
                                                                                 <div className="invalid-feedback d-block">{formErrors.lastName}</div>
@@ -680,10 +688,7 @@ const Checkout = () => {
                                                             value=""><span>Apply</span></button>
                                                     </form>
                                                 </div>
-                                                {/* <div className="mn-checkout-summary-total">
-            <span className="text-left">Total Amount</span>
-            <span className="text-right">$375.00</span>
-        </div> */}
+
                                             </div>
                                             <div className="mn-checkout-pro">
 
@@ -696,7 +701,7 @@ const Checkout = () => {
                                                                         className="image">
                                                                         {isVideo(item.product.productUrl) ? (
                                                                             <video
-                                                                                src={serverPort + `${item.product.productUrl}`}
+                                                                                src={`${item.product.productUrl}`}
                                                                                 width="75"
                                                                                 height="75"
                                                                                 style={{
@@ -712,11 +717,11 @@ const Checkout = () => {
                                                                             <>
                                                                                 <img
                                                                                     className="main-image"
-                                                                                    src={serverPort + item.product.productUrl}
+                                                                                    src={item.product.productUrl}
                                                                                     alt={item.product.productName}
                                                                                     onClick={() => navigate(`/product-details/${item.product.productId}`)} /><img
                                                                                     className="hover-image main-image"
-                                                                                    src={serverPort + item.product.productUrl}
+                                                                                    src={item.product.productUrl}
                                                                                     alt={item.product.productName}
                                                                                     onClick={() => navigate(`/product-details/${item.product.productId}`)} />
                                                                             </>

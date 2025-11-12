@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ViewOrder from './ViewOrder';
 import ViewTracking from './ViewTracking';
+import { prodUrl } from '../../Constants';
 
 const OrdersSection = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('Last 6 months');
@@ -19,7 +20,7 @@ const OrdersSection = () => {
     try {
 
       const ordersRes = await axios.get(
-        `http://localhost:8081/api/order/account/${accountId}`,
+        `${prodUrl}order/account/${accountId}`,
       );
       if (ordersRes.data.code === 200) {
         const sortedOrders = ordersRes.data.data.sort(

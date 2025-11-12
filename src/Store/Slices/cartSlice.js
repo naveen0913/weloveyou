@@ -71,7 +71,7 @@ export const deleteCartItem = createAsyncThunk(
   "cart/deleteItem",
   async (cartItemId, { rejectWithValue }) => {
     try {
-      const res = await axios.delete(`${API_BASE}/${cartItemId}`);
+      const res = await axios.delete(`${prodUrl}cart/${cartItemId}`);
       if (res.data.code === 200) {
         toast.success("Item Removed from the cart!", { autoClose: 1000 });
         return cartItemId;

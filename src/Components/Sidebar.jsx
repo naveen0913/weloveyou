@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Sidebar } from "primereact/sidebar";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { SidebarType, calculateCartItemTotals, isVideo, menuItems, serverPort } from "./Constants";
+import { SidebarType, calculateCartItemTotals, isVideo, menuItems, prodUrl, serverPort } from "./Constants";
 import { updateCartQuantity, deleteCartItem, fetchCartItems } from "../Store/Slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -47,7 +47,7 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
         formData.append("cartPayload", JSON.stringify(cartPayload));
 
         try {
-            const res = await axios.update(`http://localhost:8081/api/cart/update/${cartId}`);
+            const res = await axios.update(`${prodUrl}cart/update/${cartId}`);
             if (res.data.code === 200) {
                 const updatedCart = cartList.filter((item) => item.cartItemId !== cartId);
                 // setCartItems(updatedCart);
@@ -160,7 +160,7 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
 
                                 {isVideo(item.product.productUrl) ? (
                                     <video
-                                        src={serverPort + `${item.product.productUrl}`}
+                                        src={`${item.product.productUrl}`}
                                         width="80"
                                         height="80"
                                         style={{
@@ -175,7 +175,7 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
                                     />
                                 ) : (
                                     <img
-                                        src={serverPort + `${item.product.productUrl}`}
+                                        src={`${item.product.productUrl}`}
                                         alt={item.product.productName}
                                         style={{
                                             width: "80px",
