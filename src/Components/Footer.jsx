@@ -52,13 +52,13 @@ function Footer() {
                 <div className="col-sm-12 col-lg-4 mn-footer-cat">
                   <div className="mn-footer-widget mn-footer-company">
                     <img
-                      src="/images/wly-logo-edited.png"
+                      src="/images/wly-footer.png"
                       className="mn-footer-logo"
                       alt="footer logo"
                       loading="lazy"
                     />
                     <img
-                      src="/images/wly-logo-edited.png"
+                      src="/images/wly-footer.png"
                       className="mn-footer-dark-logo"
                       alt="footer logo"
                       loading="lazy"

@@ -41,16 +41,19 @@ const Header = () => {
           <div className="mn-header-items">
             <div className="left-header">
 
-              <Link
-                to="/"
-                className="smalllogo">
-                <img src="/images/love_logo.png" alt="logo" loading="lazy" />
-              </Link>
-              <Link
-                to="/"
-                className="logo">
-                <img src="/images/logo1.png" alt="logo" loading="lazy" />
-              </Link>
+              <div className="logo-c">
+                <Link
+                  to="/"
+                  className="smalllogo">
+                  <img src="/images/love_logo.png" alt="logo" loading="lazy" />
+                </Link>
+                <Link
+                  to="/"
+                  className="logo">
+                  <img src="/images/logo1.png" alt="logo" loading="lazy" />
+                </Link>
+              </div>
+
               <a
                 onClick={() => {
                   setHeading("My Menu");

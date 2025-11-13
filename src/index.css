@@ -2365,7 +2365,6 @@ header {
 
 .mn-header .mn-header-items .left-header .logo img {
   width: 200px;
-  margin-left: 25px;
 }
 
 .mn-header .mn-header-items .left-header .smalllogo img {
@@ -2374,21 +2373,17 @@ header {
 }
 
 @media (max-width:470px) {
-  .mn-header .mn-header-items .left-header .logo img {
-    margin-left: 0 !important;
-  }
 
   .mn-header .mn-header-items .left-header .smalllogo img {
     width: 60px;
     padding: 0 !important;
   }
-
-  .mn-header .mn-header-items .left-header {
-
+  .logo-c{
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    gap: 8px;
   }
+
 }
 
 .mn-header .mn-header-items .left-header .mn-toggle-menu {
@@ -6180,7 +6175,8 @@ button.btn-close.qty_close {
 }
 
 .main-video {
-  height: 400px !important;
+  height: auto;
+  object-fit: contain;
 }
 
 .mn-product-card .mn-product-img .hover-img {

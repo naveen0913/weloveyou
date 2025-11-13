@@ -19,7 +19,7 @@ const AllProducts = () => {
     const getProducts = async () => {
         setProcessing(true)
         try {
-            const res = await fetch(prodUrl+"products");
+            const res = await fetch(prodUrl + "products");
             const data = await res.json();
             if (data.code === 200) {
                 setProcessing(false);
@@ -97,10 +97,10 @@ const AllProducts = () => {
                         {/* <!-- Shop section --> */}
                         <section className="mn-shop">
                             <div className="row">
-                               
+
 
                                 <div className="mn-shop-rightside col-md-12 m-t-991">
-                                 {/* {
+                                    {/* {
                                         filteredProducts.length !== 0 && (
                                             <div className="mn-pro-list-top d-flex">
                                                 <div className="col-md-6 mn-grid-list">
@@ -165,22 +165,27 @@ const AllProducts = () => {
                                                             >
                                                                 <div onClick={() => navigate(`/product-details/${p.productId}`)} className={`mn-product-card ${viewMode === "list" ? "d-flex flex-row gap-3" : ""}`}>
                                                                     <div className="mn-product-img">
-                                                                    
+
                                                                         <div className="mn-img">
-                                                                            <a onClick={() => navigate(`/product-details/${p.productId}`)} className="image">
-                                                                                {p.productUrl?.endsWith(".mp4") ? (
-                                                                                    <video
-                                                                                        className="main-video"
-                                                                                        src={p.productUrl}
-                                                                                        controls
-                                                                                        loop />
-                                                                                ) : (
-                                                                                    <>
-                                                                                        <img className="main-img" src={p.productUrl} alt="product" />
-                                                                                        <img className="hover-img" src={p.productUrl} alt="product" />
-                                                                                    </>
-                                                                                )}
-                                                                            </a>
+
+                                                                            {p.productUrl?.endsWith(".mp4") ? (
+                                                                                <video
+                                                                                    className="main-video"
+                                                                                    src={p.productUrl}
+                                                                                    controls={true}   
+                                                                                    muted
+                                                                                    playsInline
+                                                                                    preload="metadata"
+                                                                                    autoPlay={false} 
+                                                                                    style={{ width: "100%", height: "auto" }}
+                                                                                />
+                                                                            ) : (
+                                                                                <>
+                                                                                    <img className="main-img" src={p.productUrl} alt="product" />
+                                                                                    <img className="hover-img" src={p.productUrl} alt="product" />
+                                                                                </>
+                                                                            )}
+
 
                                                                             <div className="mn-pro-loader"></div>
                                                                             <div className="mn-options">
@@ -218,7 +223,7 @@ const AllProducts = () => {
                                                                         </div>
 
                                                                         <p className="mn-info">{p.productdescription}</p>
-                                                                       
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -228,12 +233,12 @@ const AllProducts = () => {
 
                                             </div>
                                         </div>
-                                        
+
                                         {
                                             filteredProducts.length !== 0 && (
                                                 <div className="mn-pro-pagination m-b-15">
                                                     <span>Showing {filteredProducts.length} out of {products.length} item(s)</span>
-                                                   
+
                                                 </div>
                                             )
                                         }

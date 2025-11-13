@@ -16,14 +16,14 @@ const Slider = () => {
         },
         {
             id: 2,
-            discount: "75%",
+            discount: "",
             title: "Fun Labels, <br>Your Own Books",
             desc: "Your Name, Your Book, Your Story",
             image: "images/N3-updated.jpg",
         },
         {
             id: 3,
-            discount: "75%",
+            discount: "",
             title: "Your Pencil, Your Power",
             desc: "Engraved with your name, ready to turn ideas into magic!",
             image: "images/N4-updated.jpg",
@@ -67,17 +67,17 @@ const Slider = () => {
                         >
                             <div className="mn-hero-slide swiper-slide">
                                 <div className="mn-hero-detail">
-                                    <p className="label">
+                                    {/* <p className="label">
                                         <span>
                                             {slide.discount}
                                             <br />
-                                            Off
+                                            
                                         </span>
-                                    </p>
+                                    </p> */}
                                     <h2 dangerouslySetInnerHTML={{ __html: slide.title }} />
                                     <p>{slide.desc}</p>
 
-                                    <Link to="/products" className="mn-btn-2">
+                                    <Link to="/products" className="shop-now-btn">
                                         <span>
                                             Shop Now
                                         </span>
