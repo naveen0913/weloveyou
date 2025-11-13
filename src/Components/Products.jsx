@@ -144,16 +144,14 @@ const Products = () => {
                                             className={`product-section ${isReversed ? "reverse" : ""}`}
                                         >
                                             <div className="img-container">
-                                                {product.productUrl ? (
+                                                {isVideo(product.productUrl) ? (
                                                     <video
                                                         src={product.productUrl}
                                                         className="p-img"
-                                                        // onClick={() => navigateToProductDetail(product.productId)}
                                                         controls
                                                         muted
                                                         playsInline
                                                         preload="metadata"
-                                                        poster={product.productUrl}
                                                         autoPlay
                                                     />
                                                 ) : (
@@ -167,16 +165,14 @@ const Products = () => {
                                             </div>
 
                                             <div className="">
-                                                {product.productUrl ? (
+                                                {isVideo(product.productUrl) ? (
                                                     <video
                                                         src={product.productUrl}
                                                         className="mobile-view"
-                                                        // onClick={() => navigateToProductDetail(product.productId)}
                                                         controls
                                                         muted
                                                         playsInline
                                                         preload="metadata"
-                                                        poster={product.productUrl}
                                                         autoPlay
                                                     />
                                                 ) : (

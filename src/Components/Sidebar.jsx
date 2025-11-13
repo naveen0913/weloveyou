@@ -93,7 +93,7 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
         .map((menu) => {
             let newChildren = menu.children
                 ? menu.children.filter((child) => {
-                    if (child.name === "Check Out") {
+                    if (child.name === "Check Out" && child.name === "Cart") {
                         return isAuthenticated;
                     }
                     return true;
@@ -199,7 +199,7 @@ const CustomSidebar = ({ visible, onHide, heading, position, sidebarType }) => {
                                         {/* {item?.cartAddedOption && item.cartAddedOption.length > 0
                                             ? item.cartAddedOption[0].optionPrice
                                             : ""}.00 × {item.cartQuantity} */}
-                                            {" "}
+                                        {" "}
                                         {item?.cartAddedOption && item.cartAddedOption.length > 0
                                             ? item.cartAddedOption[0].optionPrice
                                             : item.product?.productCustomization?.customizationOptions?.[0]

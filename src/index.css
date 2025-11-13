@@ -1205,8 +1205,8 @@ p {
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   padding: 7px 12px;
-  background-color: orange;
-  color: #313b50;
+  background-color: rgb(19, 19, 240);
+  color: #fff;
   border-radius: 10px;
   border: 0;
   position: relative;
@@ -1222,7 +1222,7 @@ p {
   content: "";
   width: 200px;
   height: 200px;
-  background-color: skyblue;
+  background-color: rgb(110, 197, 231);
   position: absolute;
   left: -240px;
   top: -75px;
@@ -2354,6 +2354,9 @@ header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .mn-header .mn-header-items .left-header .logo {
@@ -2362,6 +2365,30 @@ header {
 
 .mn-header .mn-header-items .left-header .logo img {
   width: 200px;
+  margin-left: 25px;
+}
+
+.mn-header .mn-header-items .left-header .smalllogo img {
+  width: 100px;
+  padding: 10px;
+}
+
+@media (max-width:470px) {
+  .mn-header .mn-header-items .left-header .logo img {
+    margin-left: 0 !important;
+  }
+
+  .mn-header .mn-header-items .left-header .smalllogo img {
+    width: 60px;
+    padding: 0 !important;
+  }
+
+  .mn-header .mn-header-items .left-header {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
 }
 
 .mn-header .mn-header-items .left-header .mn-toggle-menu {
