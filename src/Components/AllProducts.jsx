@@ -86,10 +86,10 @@ const AllProducts = () => {
                 </div>
                 <div className="p-c-container">
                     <div className="long-caption">
-                        Discover a range of love-filled, love-wrapped, and love-crafted products made for kids’ love-filled well-being and love-filled happiness. From love-inspired toys that spark love-driven imagination to love-infused essentials that ensure love-filled comfort, our lovable collection is designed with love, endless love, and nothing but love!
+                        Discover a range of love-filled, ❤️love-wrapped, and love-crafted products made for kids’ ❤️love-filled well-being and ❤️love-filled happiness. From ❤️love-inspired toys that spark ❤️love-driven imagination to ❤️love-infused essentials that ensure ❤️love-filled comfort, our lovable collection is designed with love❤️, endless love❤️, and nothing but love❤️!
                     </div>
                     <div className="short-caption">
-                        Because every child deserves a world full of love, love, and more love!
+                        Because every child deserves a world full of love❤️, love❤️, and more love❤️!
                     </div>
                 </div>
                 <div className="row">

@@ -284,7 +284,7 @@ const UserCustomImage = ({ productId, uploadedImage, onCustomDataChange, coverpa
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Enter text here..."
-                                                maxLength={8}
+                                                maxLength={9}
                                                 value={hotspotInputs[`${img.displayId}-${hotspotIndex}`] || ""}
                                                 onChange={(e) =>
                                                     handleTextChange(

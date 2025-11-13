@@ -6,7 +6,7 @@ const About = () => {
         <>
             <div className="mn-main-content">
 
-                <div className="mn-breadcrumb m-b-30">
+                <div className="mn-breadcrumb m-b-30 mt-4">
                     <div className="row">
                         <div className="col-12">
                             <div className="row gi_breadcrumb_inner">
@@ -31,39 +31,49 @@ const About = () => {
                 <section className="mn-about p-b-15">
                     <div className="row">
                         <div className="main-sub-container">
-                        <div className="col-lg-3 col-md-12">
-                            <div className="mn-about-img">
-                                <img src="/img/common/about-1.png" alt="about 1" className="v-img" />
-                                <img src="/img/common/about-2.png" alt="about 2" className="h-img" />
+                            <div className="col-lg-3 col-md-12">
+                                <div className="mn-about-img">
+                                    <img src="/images/about.jpg" alt="about 1" className="v-img" />
+                                    <span className="span-text"> ❤️ Dr. Pavani Jalamuru
+                                        <br />
+                                        Founder | The Heart Behind We Love You ❤️
+                                    </span>
+                                   
+                                </div>
+                            </div>
+
+                            <div className="col-lg-9 col-md-12">
+                                <div className="mn-about-detail">
+                                    <div className="section-title m-t-991">
+                                        <h2>
+                                            Who We <span>Are?</span>
+                                        </h2>
+                                        <p>
+                                            We’re here to spread endless love through every product
+                                        </p>
+                                    </div>
+                                    <div className="long-content">
+                                        At We Love❤️ You, we believe in creating a world overflowing with love❤️, lovable moments, and loving care, a world where every child grows, glows, and thrives in the magic of love❤️. Our journey began with a simple yet powerful ❤️love-driven vision, to bring lovingly curated, ❤️love-infused products and services that fill childhood with ❤️love-filled happiness, ❤️love-inspired creativity, and ❤️love-wrapped safety.
+                                    </div>
+                                    <div className="long-content">
+                                        At the heart of this ❤️love-filled mission is ❤️ Dr. Jalumuru Pavani, a loving mother of two, whose motherhood journey was filled with both love❤️ and the longing to find customized, ❤️love-created products for her children. Being a mother who understood exactly what kids truly love❤️ and need, she poured her heart into building We Love❤️ You, born from her ❤️love-filled efforts, ❤️love-driven dreams, and the pain of not finding personalized, ❤️love-designed essentials for her little ones.
+
+
+                                    </div>
+
+                                    <div className="long-content">
+                                        Through her ❤️love-inspired determination, We Love❤️ You came to life, a brand that celebrates love❤️ in every product, love❤️ in every design, and love❤️ in every tiny detail that touches a child’s world. With an endless focus on ❤️love-filled quality, ❤️love-driven innovation, and lovable customization, we bring you the most lovingly chosen, ❤️love-wrapped, and ❤️love-approved products for children, because their ❤️love-filled joy is our greatest reward.
+                                    </div>
+
+                                    <div className="long-content">
+                                        Join us in making childhood truly magical, memorable, and filled with love❤️, love❤️, and even more love❤️, because nothing matters more than love❤️ for every child, every smile, and every beautiful moment.
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
 
-                        <div className="col-lg-9 col-md-12">
-                            <div className="mn-about-detail">
-                                <div className="section-title m-t-991">
-                                    <h2>
-                                        Who We <span>Are?</span>
-                                    </h2>
-                                    <p>
-                                        We’re here to spread endless love through every product
-                                    </p>
-                                </div>
-                                <div className="long-content">
-                                    At We Love You, we believe in creating a world filled with love, lovable moments, and loving care, where children thrive with love, love-filled happiness, and love-inspired creativity. Our journey began with a simple yet powerful love-driven vision – to provide lovingly curated, love-infused products and services that enhance childhood experiences. With a focus on love, love-filled quality, love-wrapped safety, and love-driven innovation, we bring the most lovable choices for your little ones because their love-filled joy is our greatest reward.Join us in making childhood magical!
-
-                                </div>
-                                <div className="long-content">
-                                    Because nothing matters more than love, love, and more love for every child!
-
-                                </div>
-
-                                <div className="long-content">
-                                    Join us in making childhood magical!
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                       
 
                     </div>
                 </section>

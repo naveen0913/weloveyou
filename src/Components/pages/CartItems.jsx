@@ -49,7 +49,7 @@ const CartItems = () => {
 
     return (
         <div className="mn-main-content">
-            <div className="mn-breadcrumb m-b-30">
+            <div className="mn-breadcrumb m-b-30 mt-4">
                 <div className="row">
                     <div className="col-12">
                         <div className="row gi_breadcrumb_inner">

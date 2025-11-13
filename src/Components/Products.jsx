@@ -15,7 +15,7 @@ const Products = () => {
     const getProducts = async () => {
         setProcessing(true)
         try {
-            const res = await fetch(prodUrl+"products");
+            const res = await fetch(prodUrl + "products");
             const data = await res.json();
 
             if (data.code === 200) {
@@ -77,10 +77,10 @@ const Products = () => {
                                     Welcome to We Love You!
                                 </h3>
                                 <div className="long-content">
-                                    Because kids deserve love, love, and more love! At We Love You, we are overflowing with love to bring you the most lovable products and services, crafted with pure love and endless loving care for children. Whether it’s love-filled essentials, love-wrapped toys, or experiences made with love, we make sure every product spread love, radiates love, and fills young hearts with love.
+                                    Because kids deserve love❤️, love❤️, and more love❤️! At We Love❤️ You, we are overflowing with love❤️ to bring you the most lovable products and services, crafted with pure love❤️ and endless loving care for children. Whether it’s ❤️love-filled essentials, ❤️love-wrapped toys, or experiences made with love❤️, we make sure every product spread love❤️, radiates love❤️, and fills young hearts with love❤️.
                                 </div>
                                 <div className="btm-caption">
-                                    Because love is the greatest gift we can give to every child, every day!
+                                    Because love❤️ is the greatest gift we can give to every child, every day!
                                 </div>
                             </div>
                         </section>
@@ -94,38 +94,105 @@ const Products = () => {
 
                                     const isReversed = index % 2 === 1;
 
+                                    // return (
+                                    //     <section
+                                    //         key={product.productId}
+                                    //         className={`product-section ${isReversed ? "reverse" : ""}`}
+                                    //     >
+                                    //         <div className="img-container">
+                                    //             <img
+                                    //                 src={product.productUrl}
+                                    //                 alt={product.productName}
+                                    //                 className="p-img"
+                                    //                 onClick={() => navigateToProductDetail(product.productId)}
+                                    //             />
+                                    //         </div>
+
+
+                                    //         <div className="">
+                                    //             <img
+                                    //                 src={product.productUrl}
+                                    //                 alt={product.productName}
+                                    //                 className="mobile-view"
+                                    //                 onClick={() => navigateToProductDetail(product.productId)}
+                                    //             />
+                                    //         </div>
+
+
+
+                                    //         <div className={`product-content ${isReversed ? "right" : ""}`}>
+                                    //             <p className="top-line">{product.productTopTitle}</p>
+                                    //             <h2 className="title">{product.productName}</h2>
+                                    //             <p className="description-text">
+                                    //                 {product.productdescription}
+                                    //             </p>
+                                    //             <div className="banner-btn">
+                                    //                 <Link
+                                    //                     to={`/product-details/${product.productId}`}
+                                    //                     className="shop-now-btn"
+                                    //                 >
+                                    //                     <span>Shop Now</span>
+                                    //                 </Link>
+                                    //             </div>
+                                    //         </div>
+                                    //     </section>
+                                    // );
+
                                     return (
                                         <section
                                             key={product.productId}
                                             className={`product-section ${isReversed ? "reverse" : ""}`}
                                         >
                                             <div className="img-container">
-                                                <img
-                                                    src={product.productUrl}
-                                                    alt={product.productName}
-                                                    className="p-img"
-                                                    onClick={()=>navigateToProductDetail(product.productId)}
-                                                />
+                                                {product.productUrl ? (
+                                                    <video
+                                                        src={product.productUrl}
+                                                        className="p-img"
+                                                        // onClick={() => navigateToProductDetail(product.productId)}
+                                                        controls
+                                                        muted
+                                                        playsInline
+                                                        preload="metadata"
+                                                        poster={product.productUrl}
+                                                        autoPlay
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={product.productUrl}
+                                                        alt={product.productName}
+                                                        className="p-img"
+                                                        onClick={() => navigateToProductDetail(product.productId)}
+                                                    />
+                                                )}
                                             </div>
-
 
                                             <div className="">
-                                                <img
-                                                    src={product.productUrl}
-                                                    alt={product.productName}
-                                                    className="mobile-view"
-                                                    onClick={()=>navigateToProductDetail(product.productId)}
-                                                />
+                                                {product.productUrl ? (
+                                                    <video
+                                                        src={product.productUrl}
+                                                        className="mobile-view"
+                                                        // onClick={() => navigateToProductDetail(product.productId)}
+                                                        controls
+                                                        muted
+                                                        playsInline
+                                                        preload="metadata"
+                                                        poster={product.productUrl}
+                                                        autoPlay
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={product.productUrl}
+                                                        alt={product.productName}
+                                                        className="mobile-view"
+                                                        onClick={() => navigateToProductDetail(product.productId)}
+                                                    />
+                                                )}
                                             </div>
-
-
 
                                             <div className={`product-content ${isReversed ? "right" : ""}`}>
                                                 <p className="top-line">{product.productTopTitle}</p>
                                                 <h2 className="title">{product.productName}</h2>
-                                                <p className="description-text">
-                                                    {product.productdescription}
-                                                </p>
+                                                <p className="description-text">{product.productdescription}</p>
                                                 <div className="banner-btn">
                                                     <Link
                                                         to={`/product-details/${product.productId}`}
@@ -137,6 +204,8 @@ const Products = () => {
                                             </div>
                                         </section>
                                     );
+
+
                                 })}
 
 
@@ -199,8 +268,8 @@ const Products = () => {
                                                 <img src="/images/FREE SHIPPING.png" className="free-shipping" alt="shipping-logo" loading="lazy" />
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>Love Travels Free!</h3>
-                                                <p>Free love-filled shipping on all orders.</p>
+                                                <h3>Love❤️ Travels Free!</h3>
+                                                <p>Free ❤️love-filled shipping on all orders.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -219,9 +288,9 @@ const Products = () => {
                                                 <img src="/images/24-7 SUPPORT.png" alt="support-logo" loading="lazy" className="support-logo" />
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>24x7 Love Support!</h3>
+                                                <h3>24x7 Love❤️ Support!</h3>
                                                 <p>
-                                                    To surround you with endless love and loving care!
+                                                    To surround you with endless love❤️ and loving care!
                                                 </p>
                                             </div>
                                         </div>
@@ -243,8 +312,8 @@ const Products = () => {
 
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>Love Knows No Return (Policy)</h3>
-                                                <p>Once love is shared, it stays forever with love!</p>
+                                                <h3>Love❤️ Knows No Return (Policy)</h3>
+                                                <p>Once love❤️ is shared, it stays forever with love❤️!</p>
                                             </div>
                                         </div>
                                     </div>
@@ -263,9 +332,9 @@ const Products = () => {
                                                 <img src="/images/PAYMENT SECURE.png" alt="payment-secure" loading="lazy" />
                                             </div>
                                             <div className="mn-service-desc">
-                                                <h3>Love-Secure Payments!</h3>
+                                                <h3>❤️Love-Secure Payments!</h3>
                                                 <p>
-                                                    Safe, Protected, and Wrapped in Love!
+                                                    Safe, Protected, and Wrapped in Love❤️!
                                                 </p>
                                             </div>
                                         </div>

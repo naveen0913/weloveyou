@@ -65,7 +65,7 @@ function Footer() {
                     />
 
                     <p className="mn-footer-detail">
-                      The Greatest Collection of Lovable Products for Children! Surprise your little one with every customized, love-wrapped product made just for them!
+                      The Greatest Collection of Lovable Products for Children! Surprise your little one with every customized, ❤️love-wrapped product made just for them!
                     </p>
 
                     {/* get-it-block */}
@@ -210,7 +210,7 @@ function Footer() {
                     <div className="footer-bottom-copy">
                       <div className="mn-copy">
                         Copyright © <span id="copyright_year"></span>
-                        <a className="site-name" href="index.html">
+                        <a className="site-name" href="javascript:void(0)">
                           WeLoveYou
                         </a>{" "}
                         all rights reserved.

@@ -94,7 +94,7 @@ const Register = () => {
             </div>
             {/* <!-- Main Content  */}
             <div className="mn-main-content">
-                <div className="mn-breadcrumb m-b-30">
+                <div className="mn-breadcrumb m-b-30 mt-4">
                     <div className="row">
                         <div className="col-12">
                             <div className="row gi_breadcrumb_inner">
@@ -192,7 +192,7 @@ const Register = () => {
                         </div>
                         <div className="mn-login-box d-n-991">
                             <div className="mn-login-img">
-                                <img src="assets/img/common/about-3.png" alt="login" />
+                                <img src="/images/wly-logo-edited.png" alt="login" />
                             </div>
                         </div>
                     </div>

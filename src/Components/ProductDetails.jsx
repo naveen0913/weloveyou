@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Checkbox } from "primereact/checkbox";
 import { RadioButton } from 'primereact/radiobutton';
 import UserCustomImage from "./UserCustomImage";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../Store/Slices/cartSlice";
 import ImageGallery from "./Carousel";
@@ -297,13 +297,12 @@ const ProductDetails = () => {
     };
 
     const handleCustomDataChange = (customData) => {
-        console.log("customer preview data", customData);
-        if (customData?.imageFile) {
-            setTablePreviewData((pre) => [...pre, customData]);
+        console.log("customer preview data", customData.type);
+        if (customData?.imageFile instanceof File) {
+            setTablePreviewData((prev) => [...prev, { imageFile: customData.imageFile }]);
         } else if (typeof customData === "string") {
             setChildCoverPageName(customData);
         }
-
     };
 
     const fileToBase64 = (file) => {
@@ -369,10 +368,13 @@ const ProductDetails = () => {
                 hasImage = true;
             }
         })
+        console.log("table", tablePreviewData);
+
 
         tablePreviewData.forEach((item) => {
-            if (item instanceof File) {
-                formData.append("customImages", item);
+            if (item.imageFile instanceof File) {
+                formData.append("customImages", item.imageFile);
+                hasImage = true;
             }
         });
 
@@ -400,8 +402,8 @@ const ProductDetails = () => {
             totalPrice: totalPrice,
             cartItemDesigns: cartItemDesigns,
             mainPhoto: effectiveMainPhoto || null,
-            uploadedPhotos: uploadedPhotos || tablePreviewData,
-            coverPageName: coverPageName || childCoverPageName
+            uploadedPhotos: uploadedPhotos.length > 0 ? uploadedPhotos : [...tablePreviewData.map((t) => t.imageFile).filter(Boolean)],
+            coverPageName: coverPageName && coverPageName.trim() !== "" ? coverPageName : childCoverPageName
         };
 
         formData.append("cartPayload", JSON.stringify(payload));
@@ -412,157 +414,155 @@ const ProductDetails = () => {
             dispatch(addToCart({ selectedOption, userId, productId: id, payload }));
         } catch (error) {
             console.error("Error in adding cart", err);
+            toast.error("failed to item to cart");
         }
     };
 
     return (
+        <>
+            <ToastContainer />
+            <div className="mn-main-content">
+                <div className="mn-breadcrumb m-b-30">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="row gi_breadcrumb_inner">
+                                <div className="col-md-6 col-sm-12">
+                                    <h2 className="mn-breadcrumb-title">Product Detail Page</h2>
+                                </div>
+                                <div className="col-md-6 col-sm-12">
 
-        <div className="mn-main-content">
-            <div className="mn-breadcrumb m-b-30">
-                <div className="row">
-                    <div className="col-12">
-                        <div className="row gi_breadcrumb_inner">
-                            <div className="col-md-6 col-sm-12">
-                                <h2 className="mn-breadcrumb-title">Product Detail Page</h2>
-                            </div>
-                            <div className="col-md-6 col-sm-12">
+                                    <ul className="mn-breadcrumb-list">
+                                        <li className="mn-breadcrumb-item" onClick={() => navigate('/')}>Home</li>
+                                        <li className="mn-breadcrumb-item" onClick={() => navigate('/products')}>Products</li>
+                                        <li className="mn-breadcrumb-item active">Product Detail Page</li>
+                                    </ul>
 
-                                <ul className="mn-breadcrumb-list">
-                                    <li className="mn-breadcrumb-item" onClick={() => navigate('/')} >Home</li>
-                                    <li className="mn-breadcrumb-item" onClick={() => navigate('/products')} >Products</li>
-                                    <li className="mn-breadcrumb-item active">Product Detail Page</li>
-                                </ul>
-
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="row">
-                <div className="col-xxl-12">
-                    <section className="">
-                        <div className="">
-                            <div className="main-p-container">
+                <div className="row">
+                    <div className="col-xxl-12">
+                        <section className="">
+                            <div className="">
+                                <div className="main-p-container">
 
-                                <ImageGallery
-                                    images={thumbnailImages}
-                                    selected={selectedThumbnail}
-                                    onItemSelect={handleSelect}
-                                />
+                                    <ImageGallery
+                                        images={thumbnailImages}
+                                        selected={selectedThumbnail}
+                                        onItemSelect={handleSelect} />
 
 
-                                <div className="product-details-container">
-                                    <h3 className="mn-single-title">
-                                        {product.productName}
-                                    </h3>
+                                    <div className="product-details-container">
+                                        <h3 className="mn-single-title">
+                                            {product.productName}
+                                        </h3>
 
-                                    {toggles.showDesign && (
-                                        <div className="mn-single-sales">
-                                            <div className="mn-single-sales-inner">
+                                        {toggles.showDesign && (
+                                            <div className="mn-single-sales">
+                                                <div className="mn-single-sales-inner">
 
-                                                <div>
-                                                    {[...Array(selectedOption?.optionSheetCount)].map(
-                                                        (_, index) => (
-                                                            <div key={index}>
-                                                                <h6 className="mt-3">
-                                                                    Choose Design Option{" "} for label Sheet {" "}
-                                                                    {selectedOption?.optionSheetCount > 1
-                                                                        ? index + 1
-                                                                        : ""}
-                                                                </h6>
-                                                                <hr />
-
-
-                                                                <div>
-                                                                    <ProductDesignSelector
-                                                                        productDesigns={productDesigns}
-                                                                        onInputsChange={handleInputsUpdate}
-                                                                        onChangeDesign={handleDesignSelect}
-                                                                    />                                                                </div>
-
-                                                                {selectedDesigns[index]?.designImages?.length > 0 && (
-                                                                    <div className="design-preview fade-in d-flex flex-wrap gap-3 mb-2">
-                                                                        {selectedDesigns[index].designImages.map((img) => (
-                                                                            <div key={img.imageId}>
-
-                                                                                <img src={`${img.designUrl}`} alt=""
-                                                                                    width="500"
-                                                                                    imageStyle={{
-                                                                                        objectFit: "cover",
-                                                                                    }} />
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
+                                                    <div>
+                                                        {[...Array(selectedOption?.optionSheetCount)].map(
+                                                            (_, index) => (
+                                                                <div key={index}>
+                                                                    <h6 className="mt-3">
+                                                                        Choose Design Option{" "} for label Sheet {" "}
+                                                                        {selectedOption?.optionSheetCount > 1
+                                                                            ? index + 1
+                                                                            : ""}
+                                                                    </h6>
+                                                                    <hr />
 
 
-                                                            </div>
-                                                        ),
-                                                    )}
+                                                                    <div>
+                                                                        <ProductDesignSelector
+                                                                            productDesigns={productDesigns}
+                                                                            onInputsChange={handleInputsUpdate}
+                                                                            onChangeDesign={handleDesignSelect} />                                                                </div>
+
+                                                                    {selectedDesigns[index]?.designImages?.length > 0 && (
+                                                                        <div className="design-preview fade-in d-flex flex-wrap gap-3 mb-2">
+                                                                            {selectedDesigns[index].designImages.map((img) => (
+                                                                                <div key={img.imageId}>
+
+                                                                                    <img src={`${img.designUrl}`} alt=""
+                                                                                        width="500"
+                                                                                        imageStyle={{
+                                                                                            objectFit: "cover",
+                                                                                        }} />
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    )}
+
+
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
 
-                                    {(product.pCategory === "Pencils" || product.pCategory === "Stickers") && (
-                                        <div className="mb-2 mt-3">
-                                            <h5 className="text-center mb-2">Choose Your Option</h5>
-                                            {options.map((opt, idx) => (
-                                                <div
-                                                    key={opt.id || idx}
-                                                    className={`border rounded p-3 mb-3 ${selectedOption === opt
-                                                        ? "border-primary border-3 bg-light"
-                                                        : "border-secondary"
-                                                        }`}>
-                                                    <div className="">
-                                                        <div className="d-flex flex-row gap-3 justify-content-between align-items-center">
-                                                            <label htmlFor="opt">
-                                                                <RadioButton className="me-2" inputId="opt" onChange={() => setSelectedOption(opt)} checked={selectedOption === opt} />
-                                                                <span
-                                                                    style={{ whiteSpace: "nowrap", flex: 1, fontWeight: "500" }}>
-                                                                    {opt.optionLabel}
-                                                                </span>
+                                        {(product.pCategory === "Pencils" || product.pCategory === "Stickers") && (
+                                            <div className="mb-2 mt-3">
+                                                <h5 className="text-center mb-2">Choose Your Option</h5>
+                                                {options.map((opt, idx) => (
+                                                    <div
+                                                        key={opt.id || idx}
+                                                        className={`border rounded p-3 mb-3 ${selectedOption === opt
+                                                            ? "border-primary border-3 bg-light"
+                                                            : "border-secondary"}`}>
+                                                        <div className="">
+                                                            <div className="d-flex flex-row gap-3 justify-content-between align-items-center">
+                                                                <label htmlFor="opt">
+                                                                    <RadioButton className="me-2" inputId="opt" onChange={() => setSelectedOption(opt)} checked={selectedOption === opt} />
+                                                                    <span
+                                                                        style={{ whiteSpace: "nowrap", flex: 1, fontWeight: "500" }}>
+                                                                        {opt.optionLabel}
+                                                                    </span>
 
-                                                                <span style={{ fontWeight: "500" }}> ({opt.optionSheetCount}) </span>
-                                                            </label>
+                                                                    <span style={{ fontWeight: "500" }}> ({opt.optionSheetCount}) </span>
+                                                                </label>
 
-                                                            {opt.mostPopular && (
-                                                                <span className="badge bg-warning text-dark p-2">
-                                                                    Most Popular
-                                                                </span>
-                                                            )}
+                                                                {opt.mostPopular && (
+                                                                    <span className="badge bg-warning text-dark p-2">
+                                                                        Most Popular
+                                                                    </span>
+                                                                )}
 
-                                                            {opt.discount !== null && (
-                                                                <span className="badge bg-success d-block p-2">
-                                                                    {opt.discount?.toFixed(2)}% Off
-                                                                </span>
-                                                            )}
+                                                                {opt.discount !== null && (
+                                                                    <span className="badge bg-success d-block p-2">
+                                                                        {opt.discount?.toFixed(2)}% Off
+                                                                    </span>
+                                                                )}
 
-                                                        </div>
+                                                            </div>
 
 
-                                                        <div className="mt-1 text-md-end text-start">
+                                                            <div className="mt-1 text-md-end text-start">
 
-                                                            {opt.oldPrice !== 0 && (
-                                                                <div className="text-muted text-decoration-line-through">
-                                                                    ₹{opt.oldPrice?.toFixed(2)}
+                                                                {opt.oldPrice !== 0 && (
+                                                                    <div className="text-muted text-decoration-line-through">
+                                                                        ₹{opt.oldPrice?.toFixed(2)}
+                                                                    </div>
+                                                                )}
+                                                                <div className="fw-semibold text-primary">
+                                                                    ₹{opt.originalPrice.toFixed(2)}
                                                                 </div>
-                                                            )}
-                                                            <div className="fw-semibold text-primary">
-                                                                ₹{opt.originalPrice.toFixed(2)}
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                                ))}
+                                            </div>
+                                        )}
 
-                                    {product.pCategory === "Tables Book" && (
-                                        <div className="mb-3 table-book-c">
-                                            {
-                                                options.map((opt, i) => (
+                                        {product.pCategory === "Tables Book" && (
+                                            <div className="mb-3 table-book-c">
+                                                {options.map((opt, i) => (
                                                     <div key={i} className="d-flex flex-row gap-3">
                                                         {opt.discount !== null && (
                                                             <span className="d-block">
@@ -580,175 +580,167 @@ const ProductDetails = () => {
                                                         </div>
 
                                                     </div>
-                                                ))
-                                            }
-                                        </div>
-                                    )}
+                                                ))}
+                                            </div>
+                                        )}
 
-                                    {toggles.showUploadMultiple && (
-                                        <div className="mb-3">
-                                            <div className="card shadow-sm">
-                                                <div className="card-body">
-                                                    <h6 className="card-title">Upload up to 24 Photos</h6>
-                                                    <div
-                                                        className="border border-2 border-secondary-subtle rounded p-3 text-center"
-                                                        style={{ borderStyle: "dashed" }}
-                                                    >
-                                                        <input
-                                                            type="file"
-                                                            accept="image/*"
-                                                            multiple
-                                                            className="form-control mb-2"
-                                                            id="multiPhotoUpload"
-                                                            onChange={handleMultiUpload}
-                                                        />
-                                                    </div>
+                                        {toggles.showUploadMultiple && (
+                                            <div className="mb-3">
+                                                <div className="card shadow-sm">
+                                                    <div className="card-body">
+                                                        <h6 className="card-title">Upload up to 24 Photos</h6>
+                                                        <div
+                                                            className="border border-2 border-secondary-subtle rounded p-3 text-center"
+                                                            style={{ borderStyle: "dashed" }}
+                                                        >
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                multiple
+                                                                className="form-control mb-2"
+                                                                id="multiPhotoUpload"
+                                                                onChange={handleMultiUpload} />
+                                                        </div>
 
-                                                    {/* Preview Section */}
-                                                    <div className="d-flex flex-wrap gap-1 mt-2">
-                                                        {previews.map((photo, index) => (
-                                                            <div
-                                                                key={index}
-                                                                className="position-relative"
-                                                            >
-                                                                <img
-                                                                    src={photo.previewUrl}
-                                                                    alt={`preview-${index}`}
-                                                                    style={{
-                                                                        width: "80px",
-                                                                        height: "80px",
-                                                                        objectFit: "cover",
-                                                                        border: "1px solid #ddd",
-                                                                    }}
-                                                                />
+                                                        {/* Preview Section */}
+                                                        <div className="d-flex flex-wrap gap-1 mt-2">
+                                                            {previews.map((photo, index) => (
+                                                                <div
+                                                                    key={index}
+                                                                    className="position-relative"
+                                                                >
+                                                                    <img
+                                                                        src={photo.previewUrl}
+                                                                        alt={`preview-${index}`}
+                                                                        style={{
+                                                                            width: "80px",
+                                                                            height: "80px",
+                                                                            objectFit: "cover",
+                                                                            border: "1px solid #ddd",
+                                                                        }} />
 
-                                                                <i className="pi pi-trash position-absolute" style={{
-                                                                    top: "2px",
-                                                                    right: "2px",
-                                                                    color: "red",
-                                                                    background: "white",
-                                                                    borderRadius: "50%",
-                                                                    padding: "4px",
-                                                                    cursor: "pointer",
-                                                                    fontSize: "14px",
-                                                                }} onClick={() => handleRemovePhoto(index)} ></i>
+                                                                    <i className="pi pi-trash position-absolute" style={{
+                                                                        top: "2px",
+                                                                        right: "2px",
+                                                                        color: "red",
+                                                                        background: "white",
+                                                                        borderRadius: "50%",
+                                                                        padding: "4px",
+                                                                        cursor: "pointer",
+                                                                        fontSize: "14px",
+                                                                    }} onClick={() => handleRemovePhoto(index)}></i>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+
+                                                        <div className="mt-4">
+                                                            <label className="mb-1" htmlFor="coverPagename">
+                                                                Enter Text for Cover Page
+                                                            </label>
+                                                            <input
+                                                                id="coverPagename"
+                                                                type="text"
+                                                                className="form-control"
+                                                                placeholder="Enter text here..."
+                                                                value={coverPageName}
+                                                                maxLength={9}
+                                                                onChange={(e) => setCoverPageName(e.target.value)} />
+                                                            <div className="note-container">
+                                                                <Info size={18} color="#007bff" />
+                                                                <span style={{ fontSize: "12px" }}>
+                                                                    <strong>Note:</strong> Enter text like <em>Harry</em>, <em>Vivek</em>, etc.
+                                                                </span>
                                                             </div>
-                                                        ))}
-                                                    </div>
-
-                                                    <div className="mt-4">
-                                                        <label className="mb-1" htmlFor="coverPagename">
-                                                            Enter Text for Cover Page
-                                                        </label>
-                                                        <input
-                                                            id="coverPagename"
-                                                            type="text"
-                                                            className="form-control"
-                                                            placeholder="Enter text here..."
-                                                            value={coverPageName}
-                                                            maxLength={8}
-                                                            onChange={(e) => setCoverPageName(e.target.value)}
-                                                        />
-                                                        <div className="note-container">
-                                                            <Info size={18} color="#007bff" />
-                                                            <span style={{ fontSize: "12px" }}>
-                                                                <strong>Note:</strong> Enter text like <em>Harry</em>, <em>Vivek</em>, etc.
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
 
-                                    {/* {product?.pCategory === "Stickers" && toggles.showUpload && (
-                                        <UserCustomImage
-                                            productId={id}
-                                            uploadedImage={imageFromChild}
-                                            onCustomDataChange={handleCustomDataChange}
-                                        />
-                                    )} */}
+                                        {/* {product?.pCategory === "Stickers" && toggles.showUpload && (
+        <UserCustomImage
+            productId={id}
+            uploadedImage={imageFromChild}
+            onCustomDataChange={handleCustomDataChange}
+        />
+    )} */}
 
-                                    {
-                                        product.pCategory === "Tables Book" && (
+                                        {product.pCategory === "Tables Book" && (
                                             <div className="text-center fw-semibold">
                                                 (Or)
                                             </div>
-                                        )
-                                    }
+                                        )}
 
 
-                                    {product?.pCategory === "Tables Book" && toggles.showUploadMultiple && (
-                                        <div className="user-preview-container">
-                                            <UserCustomImage
-                                                productId={id}
-                                                uploadedImage={null}
-                                                onCustomDataChange={handleCustomDataChange}
-                                                coverpagevalue={childCoverPageName}
-                                            />
-                                        </div>
+                                        {product?.pCategory === "Tables Book" && toggles.showUploadMultiple && (
+                                            <div className="user-preview-container">
+                                                <UserCustomImage
+                                                    productId={id}
+                                                    uploadedImage={null}
+                                                    onCustomDataChange={handleCustomDataChange}
+                                                    coverpagevalue={childCoverPageName} />
+                                            </div>
 
-                                    )}
+                                        )}
 
 
-                                    {toggles.showInput && (product?.pCategory === "Pencils") && (
-                                        <div className="mb-3">
-                                            <label htmlFor="mainName" className="fw-semibold mb-1">
-                                                Enter Your Name
+                                        {toggles.showInput && (product?.pCategory === "Pencils") && (
+                                            <div className="mb-3">
+                                                <label htmlFor="mainName" className="fw-semibold mb-1">
+                                                    Enter Your Name
+                                                </label>
+                                                <input
+                                                    id="mainName"
+                                                    type="text"
+                                                    className="form-control mb-2 h-75"
+                                                    placeholder="enter name"
+                                                    value={mainName}
+                                                    onChange={(e) => setMainName(e.target.value)} />
+                                            </div>
+                                        )}
+
+                                        <div className="d-flex flex-row  gap-2 mb-3">
+                                            <Checkbox id="giftWrap" onChange={() => setGiftWrap((prev) => !prev)} checked={giftWrap}></Checkbox>
+                                            <label
+                                                className="form-check-label"
+                                                htmlFor="giftWrap">
+                                                🎁 Gift Wrap
                                             </label>
-                                            <input
-                                                id="mainName"
-                                                type="text"
-                                                className="form-control mb-2 h-75"
-                                                placeholder="enter name"
-                                                value={mainName}
-                                                onChange={(e) => setMainName(e.target.value)}
-                                            />
                                         </div>
-                                    )}
 
-                                    <div className="d-flex flex-row  gap-2 mb-3">
-                                        <Checkbox id="giftWrap" onChange={() => setGiftWrap((prev) => !prev)} checked={giftWrap}></Checkbox>
-                                        <label
-                                            className="form-check-label"
-                                            htmlFor="giftWrap">
-                                            🎁 Gift Wrap
-                                        </label>
-                                    </div>
+                                        <div className="mn-single-qty">
+                                            <div className="qty-plus-minus">
+                                                <i className="pi pi-minus" style={{ fontSize: ".8rem" }}
+                                                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                                                ></i>
+                                                <input className="qty-input" type="text" name="ms_qtybtn" disabled
+                                                    value={quantity} />
+                                                <i className="pi pi-plus" style={{ fontSize: ".8rem" }}
+                                                    onClick={() => setQuantity((q) => q + 1)}
+                                                ></i>
+                                            </div>
+                                            <div className="mn-btns">
+                                                <div className="mn-single-cart">
+                                                    <button
+                                                        onClick={() => {
+                                                            addCart(selectedOption, userSessionId, id);
+                                                        }}
 
-                                    <div className="mn-single-qty">
-                                        <div className="qty-plus-minus">
-                                            <i className="pi pi-minus" style={{ fontSize: ".8rem" }}
-                                                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                                            ></i>
-                                            <input className="qty-input" type="text" name="ms_qtybtn" disabled
-                                                value={quantity} />
-                                            <i className="pi pi-plus" style={{ fontSize: ".8rem" }}
-                                                onClick={() => setQuantity((q) => q + 1)}
-                                            ></i>
-                                        </div>
-                                        <div className="mn-btns">
-                                            <div className="mn-single-cart">
-                                                <button
-                                                    onClick={() => {
-                                                        addCart(selectedOption, userSessionId, id)
-                                                    }}
-
-                                                    className="btn btn-primary mn-btn-2 mn-add-cart"><span>
-                                                        {isAuthenticated ? "Add To Cart" : "Login to Add Cart"}
-                                                    </span></button>
+                                                        className="btn btn-primary mn-btn-2 mn-add-cart"><span>
+                                                            {isAuthenticated ? "Add To Cart" : "Login to Add Cart"}
+                                                        </span></button>
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
 
                                 </div>
-
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </div></>
 
 
     )

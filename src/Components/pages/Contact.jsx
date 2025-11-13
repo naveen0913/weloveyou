@@ -50,7 +50,7 @@ const Contact = () => {
     return (
         <>
             <div className="mn-main-content">
-                <div className="mn-breadcrumb m-b-30">
+                <div className="mn-breadcrumb m-b-30 mt-4">
                     <div className="row">
                         <div className="col-12">
                             <div className="row gi_breadcrumb_inner">
@@ -86,13 +86,13 @@ const Contact = () => {
 
                     <div className="content-container">
                         <div className="first-content">
-                            Have love-filled questions? Want to know more about our love-driven, love-inspired, and love-wrapped world? We’d love, love, and absolutely love to hear from you! Your thoughts, feedback, and messages are always lovable, love-worthy, and loved by us. So don’t hesitate, reach out with love, for love, and in the name of love!
+                            Have ❤️love-filled questions? Want to know more about our ❤️love-driven, ❤️love-inspired, and ❤️love-wrapped world? We’d love❤️, love❤️, and absolutely love❤️ to hear from you! Your thoughts, feedback, and messages are always lovable, ❤️love-worthy, and loved by us. So don’t hesitate, reach out with love❤️, for love❤️, and in the name of love❤️!
                         </div>
                         <div className="sec-content">
-                            Because at We Love You, every connection is built on love, love, and more love!
+                            Because at We Love❤️ You, every connection is built on love❤️, love❤️, and more love❤️!
                         </div>
                         <div className="third-content">
-                            "We’d Love to Hear from You!"
+                            "We’d Love❤️ to Hear from You!"
                         </div>
                     </div>
 
